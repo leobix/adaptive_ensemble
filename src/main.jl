@@ -164,7 +164,11 @@ function main()
     y = y_test[:, 1];
     y = (y .- mean(y[1:floor(Int, n/2),:], dims =1))./ std(y[1:floor(Int, n/2),:], dims=1);
 
-    reg = 1/(args["past"]*args["num-past"])
+    if args["reg"] == -1
+        reg = 1/(args["past"]*args["num-past"])
+    else
+        reg = args["reg"]
+    end
 
     eval_method(X, y, args["train_test_split"], args["past"], args["num-past"], args["val"], args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
         args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
