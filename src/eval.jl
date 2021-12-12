@@ -42,14 +42,14 @@ function compute_CVaR(errs, α_risk)
 end
 
 
-function eval_method(X, y, split_, past, num_past, val, uncertainty, ϵ_inf, δ_inf, last_yT,
+function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_inf, δ_inf, last_yT,
         ϵ_l2, δ_l2, ρ, reg, max_cuts, verbose,
         fix_β0, more_data_for_β0, benders, ridge)
 
     threshold_benders = 0.01
     n, p = size(X)
     split_index = floor(Int,n*split_)
-    #TODO change spli_index with max(split inex, 1)
+    #TODO change split_index with max(split inex, 1)
     X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, split_index-num_past*past+1, num_past*past, val, uncertainty, last_yT)
 
     β_list0 = zeros(val, p)
@@ -79,12 +79,13 @@ function eval_method(X, y, split_, past, num_past, val, uncertainty, ϵ_inf, δ_
 
         β_listt[s,:] = βt_val[past-1,:]
         β_list0[s,:] = β0_val
-        β_l2 = l2_regression(X0,y0,ρ);
+        β_l2 = l2_regression(vcat(X0,Xt),vcat(y0,yt),ρ);
         β_listl2[s,:] = β_l2
 
     end
 
-    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, uncertainty, last_yT)
+    X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, uncertainty, last_yT)
+    _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, uncertainty, last_yT)
 
     err_0 = [abs(yt_true[s]-dot(Xt[s,:],β_list0[s,:])) for s=1:val]
     err_t = [abs(yt_true[s]-dot(Xt[s,:],β_listt[s,:])) for s=1:val]
@@ -115,5 +116,6 @@ function eval_method(X, y, split_, past, num_past, val, uncertainty, ϵ_inf, δ_
     println("CVAR 0.15 :", compute_CVaR(err_t, 0.15))
     println("R2 : ", R2_err(err_t, yt_true))
 end
+
 
 

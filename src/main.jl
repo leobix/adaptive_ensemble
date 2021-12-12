@@ -42,6 +42,11 @@ function parse_commandline()
             default = "data/energy_y_test_val.csv"
             arg_type = String
 
+        "--data"
+            help = "filename of targets y"
+            default = "energy"
+            arg_type = String
+
         "--train_test_split"
             help = "train_test_split value"
             arg_type = Float64
@@ -147,14 +152,28 @@ function main()
     for (arg,val) in args
         println("  $arg  =>  $val")
     end
+    if args["data"] == "energy"
+        X_test_adaptive = CSV.read(args["filename-X"], DataFrame)
+        y_test = CSV.read(args["filename-y"], DataFrame, header = 0)
+    end
 
-    X_test_adaptive = CSV.read(args["filename-X"], DataFrame)
-    y_test = CSV.read(args["filename-y"], DataFrame, header = 0)
-    # select!(X_test_adaptive, Not([:RANSACRegressor, :GaussianProcessRegressor, :KernelRidge, :Lars, :AdaBoostRegressor,
-    #                      :DummyRegressor, :ExtraTreeRegressor, :Lasso, :LassoLars, :PassiveAggressiveRegressor]))
+    if args["data"] == "safi"
+        X_test_adaptive = CSV.read("data/X_test_adaptive.csv", DataFrame)
+        y_test = CSV.read("data/y_test_speed.csv", DataFrame)
+        y_test = y_test[!, "speed"]
+    end
 
+    if args["data"] == "traffic"
+        X_test_adaptive = CSV.read("data/traffic_predictions_test_val.csv", DataFrame)
+        X_test_adaptive = X_test_adaptive[!,[2, 3,5,8,9,11,12,13,25]]
+        y_test = CSV.read("data/traffic_test_val_scaled.csv", DataFrame)
+        y_test = y_test[!, "target"]
+    end
+
+
+
+    #TODO code end-id -1
     X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
-    #X[:,1] = ones(n)
     n, p = size(X)
 
     #TODO Change the n/2 to split index
@@ -170,7 +189,8 @@ function main()
         reg = args["reg"]
     end
 
-    eval_method(X, y, args["train_test_split"], args["past"], args["num-past"], args["val"], args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
+    #TODO code all_past -1
+    eval_method(X, y, y, args["train_test_split"], args["past"], args["num-past"], args["val"], args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
         args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
         args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"])
     end
