@@ -10,6 +10,22 @@ function R2_err(err, y_true)
     return 1 - SSR/SST
 end
 
+function get_metrics(err, yt_true)
+    #TODO ADD saving mechanism
+    MAE = mean(err)
+    CVAR_05 = compute_CVaR(err, 0.05)
+    CVAR_15 = compute_CVaR(err, 0.15)
+    R2 = R2_err(err, yt_true)
+    MAPE = sum(abs.(err./yt_true))*100/size(err)[1]
+    RMSE = sqrt(sum(abs2(err)))/size(err)[1]
+    println("MAE : ", MAE)
+    println("CVAR 0.05 :", CVAR_05)
+    println("CVAR 0.15 :", CVAR_15)
+    println("R2 : ", R2)
+    println("MAPE : ", MAPE)
+    println("RMSE : ", RMSE)
+end
+
 
 function compute_CVaR(errs, α_risk)
 #     '''
@@ -49,8 +65,11 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
     threshold_benders = 0.01
     n, p = size(X)
     split_index = floor(Int,n*split_)
-    #TODO change split_index with max(split inex, 1)
-    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, split_index-num_past*past+1, num_past*past, val, uncertainty, last_yT)
+    if val == -1
+        val = size(X)[1]
+    end
+    #TODO check split_index with max(split inex, 1)
+    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), num_past*past, val, uncertainty, last_yT)
 
     β_list0 = zeros(val, p)
     β_listt = zeros(val, p)
@@ -58,10 +77,11 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
     β_l2_init = l2_regression(X0,y0,ρ);
     for s=1:val
 
+        #TODO check split_index with max(split inex, 1)
         if more_data_for_β0
-            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, split_index-num_past*past+1, s+(num_past-1)*past, past-1, uncertainty, last_yT)
+            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), s+(num_past-1)*past, past-1, uncertainty, last_yT)
         else
-            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, s+split_index-num_past*past+1, (num_past-1)*past, past-1, uncertainty, last_yT)
+            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), (num_past-1)*past, past-1, uncertainty, last_yT)
         end
 
 
@@ -92,29 +112,19 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
     err_baseline = [abs(yt_true[s]-dot(Xt[s,:],β_l2_init)) for s=1:val]
     err_l2 = [abs(yt_true[s]-dot(Xt[s,:],β_listl2[s,:])) for s=1:val]
 
+    #TODO check get_metrics
     println("\n### β0 Baseline ###")
-    println("MAE Baseline: ", mean(err_baseline))
-    println("CVAR 0.05 :", compute_CVaR(err_baseline, 0.05))
-    println("CVAR 0.15 :", compute_CVaR(err_baseline, 0.15))
-    println("R2 : ", R2_err(err_baseline, yt_true))
+    get_metrics(err_baseline, yt_true)
 
     println("\n### β0 Baseline Retrained ###")
-    println("MAE Baseline: ", mean(err_l2))
-    println("CVAR 0.05 :", compute_CVaR(err_l2, 0.05))
-    println("CVAR 0.15 :", compute_CVaR(err_l2, 0.15))
-    println("R2 : ", R2_err(err_l2, yt_true))
+    get_metrics(err_l2, yt_true)
 
     println("\n### β0 Adaptive ###")
-    println("MAE 0: ", mean(err_0))
-    println("CVAR 0.05 :", compute_CVaR(err_0, 0.05))
-    println("CVAR 0.15 :", compute_CVaR(err_0, 0.15))
-    println("R2 : ", R2_err(err_0, yt_true))
+    get_metrics(err_0, yt_true)
 
     println("\n### βt Adaptive ###")
-    println("MAE t: ", mean(err_t))
-    println("CVAR 0.05 :", compute_CVaR(err_t, 0.05))
-    println("CVAR 0.15 :", compute_CVaR(err_t, 0.15))
-    println("R2 : ", R2_err(err_t, yt_true))
+    get_metrics(err_t, yt_true)
+
 end
 
 

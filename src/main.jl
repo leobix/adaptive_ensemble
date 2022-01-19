@@ -170,18 +170,26 @@ function main()
         y_test = y_test[!, "target"]
     end
 
+    if args["data"][1:3] == "M3F"
+        id = args["data"][9:end]
+        X_test_adaptive = CSV.read("data/M3F_data_"+id+".csv", DataFrame)
+        y_test = CSV.read("data/M3F_target_"+id+".csv", DataFrame)
+        y_test = y_test[!, "target"]
 
-
-    #TODO code end-id -1
+    #TODO check end-id -1
+    if args["end-id"] == -1
+        args["end-id"] = size(X_test_adaptive)[2]
+    end
     X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
     n, p = size(X)
 
-    #TODO Change the n/2 to split index
-    X = (X .- mean(X[1:floor(Int, n/2),:], dims =1))./ std(X[1:floor(Int, n/2),:], dims=1)#[!,1]
+    #TODO check the n/2 to split index
+    split_index = floor(Int,n*args["train_test_split"])
+    X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
     #X[:,1] = ones(n)
 
     y = y_test[:, 1];
-    y = (y .- mean(y[1:floor(Int, n/2),:], dims =1))./ std(y[1:floor(Int, n/2),:], dims=1);
+    y = (y .- mean(y[1:floor(Int, split_index),:], dims =1))./ std(y[1:floor(Int, split_index),:], dims=1);
 
     if args["reg"] == -1
         reg = 1/(args["past"]*args["num-past"])
