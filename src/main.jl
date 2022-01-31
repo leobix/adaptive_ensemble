@@ -19,6 +19,7 @@ include("utils.jl")
 include("algos/benders.jl")
 include("algos/master_primal.jl")
 include("algos/OLS.jl")
+include("algos/adaptive_linear_decision_rule.jl")
 
 const GRB_ENV = Gurobi.Env()
 
@@ -152,6 +153,7 @@ function main()
     for (arg,val) in args
         println("  $arg  =>  $val")
     end
+
     if args["data"] == "energy"
         X_test_adaptive = CSV.read(args["filename-X"], DataFrame)
         y_test = CSV.read(args["filename-y"], DataFrame, header = 0)
@@ -175,11 +177,14 @@ function main()
         X_test_adaptive = CSV.read("data/M3F_data_"+id+".csv", DataFrame)
         y_test = CSV.read("data/M3F_target_"+id+".csv", DataFrame)
         y_test = y_test[!, "target"]
+    end
 
     #TODO check end-id -1
     if args["end-id"] == -1
         args["end-id"] = size(X_test_adaptive)[2]
     end
+
+    #TODO assert end id < number of models
     X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
     n, p = size(X)
 
@@ -198,9 +203,12 @@ function main()
     end
 
     #TODO code all_past -1
+
     eval_method(X, y, y, args["train_test_split"], args["past"], args["num-past"], args["val"], args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
         args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
         args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"])
-    end
+
+    println("Results completed")
+end
 
 main()
