@@ -1,5 +1,14 @@
 function prepare_data_from_y(X, y, n0, n, m, uncertainty, last_yT = false)
 
+
+#     # Input:
+#     X: features
+#     y: targets
+#     n0:  the index where the training data starts for beta 0
+#     n: the number of samples for learning beta 0, there is a total of n+1
+#     m: the number of samples for the adaptive part
+
+
     X0 = Matrix(X[n0:n0+n,:])
     X0[:,1] = ones(n+1)
     y0 = y[n0:n0+n,:][:]
