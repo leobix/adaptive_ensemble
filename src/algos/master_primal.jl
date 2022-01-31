@@ -3,7 +3,7 @@
 
 
 function master_primal_l2(X0, Xt, y0, Dmin, Dmax, epsilon, delta, reg, ρ, ϵ_l2, δ_l2, β0_fix = false, β0_val = 0)
-
+    ## Version where the adaptive part is L1 loss
     M = 1000
     n0, p = size(X0)
     n, _ = size(Xt)
@@ -62,7 +62,7 @@ end
 
 
 function master_primal_l2_ridge(X0, Xt, y0, Dmin, Dmax, epsilon, delta, reg, ρ, ϵ_l2, δ_l2, β0_fix = false, β0_val = 0)
-
+    ## Version where the adaptive part is L2 loss.
     M = 1000
     n0, p = size(X0)
     n, _ = size(Xt)
@@ -74,11 +74,14 @@ function master_primal_l2_ridge(X0, Xt, y0, Dmin, Dmax, epsilon, delta, reg, ρ,
     # Add variables
     @variable(model, β[i=1:n,j=1:p])
     @variable(model, β0[j=1:p])
+
+    #z models if y takes Dmin or Dmax
     @variable(model, z[i=1:n], Bin)
     @variable(model, y[i=1:n])
     # Add objective
+    #TODO CHANGE THE REGULARIZATION
     @objective(model, Min, 1/n0*sum((y0[i]-sum(X0[i,j]*β0[j] for j=1:p))^2 for i=1:n0)
-        + reg*sum((y[i] - dot(Xt[i,:],β[i,:]))^2 for i=1:n) + ρ*sum(β0[j]^2 for j=1:p))
+        + 1/n*sum((y[i] - dot(Xt[i,:],β[i,:]))^2 for i=1:n) + ρ*sum(β0[j]^2 for j=1:p) + ρ/n*sum(sum(β[i,j]^2 for j=1:p) for i=1:n))
 
     #@constraint(model,[i=1:n], y .- dot(X,β) .<= b)
     #@constraint(model,[i=1:n],-y .+ dot(X,β) .<= b)
@@ -113,3 +116,4 @@ function master_primal_l2_ridge(X0, Xt, y0, Dmin, Dmax, epsilon, delta, reg, ρ,
     #println("Y ", getvalue.(y))
     return objective_value(model), getvalue.(β), getvalue.(β0)
 end
+
