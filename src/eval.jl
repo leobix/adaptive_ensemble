@@ -98,8 +98,10 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
     # Version where we adapt from the beginning and we add data every time
 
-    #TODO Initialize Bandit
-    #TODO Initialize PA
+    β_list_bandits_t = zeros(val, p)
+    β_list_bandits_all = zeros(val, p)
+    β_list_PA = zeros(val, p)
+    β_PA = β_l2_init
 
     for s=1:val
 
@@ -166,6 +168,14 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
         β_linear_adaptive_pure_test = β_linear_adaptive_pure_0 + V0_adaptive_pure * Z_test[1,:]
         β_linear_adaptive_pure_test_Vt = β_linear_adaptive_pure_0_Vt + Vt_adaptive_pure[end,:,:] * Z_test[1,:]
 
+        #BASELINES
+        β_list_bandit_all[s,:] = compute_bandit_weights(cat(X0,Xt), vcat(y0,yt))
+        β_list_bandit_t[s,:] = compute_bandit_weights(Xt, yt)
+        β_list_bandit_t[s,:] = compute_bandit_weights(Xt, yt)
+        β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[end,:], yt[end])
+        β_list_PA[s,:] = β_PA
+
+
         β_listt[s,:] = βt_val[past-1,:] #TODO check with end
         β_list0[s,:] = β0_val
         β_l2 = l2_regression(vcat(X0,Xt),vcat(y0,yt),ρ);
@@ -190,6 +200,9 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
     #pred = [sum(Xt[i, j] * (β0_1[i,j] + sum(V0_1[i, j, :] .* Z[i, :])) for j=1:P) for i=1:val]
     err_mean = [abs(yt_true[s]-mean(Xt[s,:])) for s=1:val]
     err_0 = [abs(yt_true[s]-dot(Xt[s,:],β_list0[s,:])) for s=1:val]
+    err_bandit_full = [abs(yt_true[s]-dot(Xt[s,:],β_list_bandit_all[s,:])) for s=1:val]
+    err_bandit_t = [abs(yt_true[s]-dot(Xt[s,:],β_list_bandit_t[s,:])) for s=1:val]
+    err_PA = [abs(yt_true[s]-dot(Xt[s,:],β_list_PA[s,:])) for s=1:val]
     err_t = [abs(yt_true[s]-dot(Xt[s,:],β_listt[s,:])) for s=1:val]
     err_baseline = [abs(yt_true[s]-dot(Xt[s,:],β_l2_init)) for s=1:val]
     err_l2 = [abs(yt_true[s]-dot(Xt[s,:],β_listl2[s,:])) for s=1:val]
@@ -202,6 +215,16 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
     #TODO check get_metrics
     println("\n### Mean Baseline ###")
     get_metrics(err_mean, yt_true)
+
+    println("\n### Bandits Full Baseline ###")
+    get_metrics(err_bandit_full, yt_true)
+
+    println("\n### Bandits Only Last T Baseline ###")
+    get_metrics(err_bandit_t, yt_true)
+
+    println("\n### Passive-Aggressive Baseline ###")
+    ### The Beta 0 that is originating from the adaptive formulation
+    get_metrics(err_PA, yt_true)
 
     println("\n### β0 Baseline ###")
     get_metrics(err_baseline, yt_true)
