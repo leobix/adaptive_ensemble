@@ -153,6 +153,10 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
         obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
 
+        #TODO Compute coef for bandit
+
+        #TODO Compute coef for PA
+
         #Line to get Z_{t+1}: CHECKED
         X_for_Z = X[split_index-past+s+1:split_index+s+1,:]
         y_for_Z = y[split_index-past+s+1:split_index+s+1,:]
