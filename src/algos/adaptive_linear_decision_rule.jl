@@ -19,7 +19,7 @@ function adaptive_ridge_regression_exact(X, y, ρ_β0, ρ_V0, T, N0)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
-
+    #Considers there is potentially a stable part in the time series
     # Create model
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
@@ -54,12 +54,43 @@ function adaptive_ridge_regression_exact(X, y, ρ_β0, ρ_V0, T, N0)
     return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
 end
 
+function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β0, ρ_V0, T)
+
+    #Version with actual robust equivalence
+    #The formula for the regularization is different
+    #no stable part
+    # Create model
+    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    set_optimizer_attribute(model, "OutputFlag", 0)
+    X, Z, y = get_X_Z_y(X, y, T)
+
+    N, P = size(X)
+    # Add variables
+
+    @variable(model, β0[j=1:P])
+    @variable(model, V0[j=1:P, k=1:T*P+T])
+    @variable(model, t>=0)
+    @variable(model, β[t=1:N,j=1:P])
+
+    # Add objective
+    @objective(model, Min, t + 1/N*ρ_V0 * sum(β[t,k]^2 for t=1:N for k=1:P)
+    )
+
+    @constraint(model, t >= 1 / N * sum((y[i] - sum(transpose(X[i, :])*β[i,:]))^2 for i=1:N))
+
+    #linear decision rule for adaptive RO
+    @constraint(model, [i=1:N], β[i,:] .== β0.+V0*Z[i,:])
+
+    optimize!(model);
+    return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
+end
+
 
 function adaptive_ridge_regression_exact_Vt(X, y, ρ_β0, ρ_V0, T, N0)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
-
+    #Vt can move
     # Create model
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
