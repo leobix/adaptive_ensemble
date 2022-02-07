@@ -13,13 +13,9 @@ using ArgParse
 using CSV
 using Random
 
-include("eval.jl")
+include("eval2.jl")
 include("utils.jl")
 
-include("algos/benders.jl")
-include("algos/master_primal.jl")
-include("algos/OLS.jl")
-include("algos/adaptive_linear_decision_rule.jl")
 
 const GRB_ENV = Gurobi.Env()
 
@@ -204,7 +200,9 @@ function main()
 
     #TODO code all_past -1
 
-    eval_method(X, y, y, args["train_test_split"], args["past"], args["num-past"], args["val"], args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
+    val = min(args["val"], n-split_index)
+
+    eval_method(X, y, y, args["train_test_split"], args["past"], args["num-past"], val, args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
         args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
         args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"])
 
