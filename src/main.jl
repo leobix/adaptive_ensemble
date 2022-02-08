@@ -186,10 +186,14 @@ function main()
 
     #TODO check the n/2 to split index
     split_index = floor(Int,n*args["train_test_split"])
-    X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
+    #X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
+    y = y_test[:, 1];
+    X = (X .- mean(y[1:floor(Int, split_index),:], dims =1))./ std(y[1:floor(Int, split_index),:], dims=1);#[!,1]
+
+
     #X[:,1] = ones(n)
 
-    y = y_test[:, 1];
+
     y = (y .- mean(y[1:floor(Int, split_index),:], dims =1))./ std(y[1:floor(Int, split_index),:], dims=1);
 
     if args["reg"] == -1
