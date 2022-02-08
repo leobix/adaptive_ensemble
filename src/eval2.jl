@@ -7,6 +7,8 @@ include("algos/OLS.jl")
 include("algos/adaptive_linear_decision_rule.jl")
 include("metrics.jl")
 
+#TODO: COMPUTE ALL METRICS IN THE ORIGINAL SPACE, in particular MAPE
+
 function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_inf, δ_inf, last_yT,
         ϵ_l2, δ_l2, ρ, reg, max_cuts, verbose,
         fix_β0, more_data_for_β0, benders, ridge)
@@ -37,10 +39,11 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
     #TODO: Uncomment
     #obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
 
-    β_list_bandits_t = zeros(val, p)
-    β_list_bandits_all = zeros(val, p)
+    β_list_bandits_t = zeros(val, p-1)
+    β_list_bandits_all = zeros(val, p-1)
     β_list_PA = zeros(val, p)
-    β_PA = β_l2_init
+    #IMPORTANT: We initialize with equal weights but we could also initialize with l2 weights
+    β_PA = ones(p)/(p)#β_l2_init[2:end]
 
     for s=1:val
 
@@ -57,13 +60,14 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
         #Line to get Z_{t+1}
         X_for_Z = X[split_index-past+s+1:split_index+s+1,:]
+        X_for_Z[:,1] .= 1
         y_for_Z = y[split_index-past+s+1:split_index+s+1,:]
         X_, Z_test, y_ = get_X_Z_y(X_for_Z, y_for_Z, past)
 
         #BASELINES
-        β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt), vcat(y0,yt))
-        β_list_bandits_t[s,:] = compute_bandit_weights(Xt, yt)
-        β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[end,:], yt[end])
+        β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt))
+        β_list_bandits_t[s,:] = compute_bandit_weights(Xt[:,2:end], yt)
+        β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[end,1:end], yt[end])
         β_list_PA[s,:] = β_PA
         #β_l2 = l2_regression(vcat(X0,Xt),vcat(y0,yt),ρ);
         #β_listl2[s,:] = β_l2
@@ -79,10 +83,10 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
     X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, uncertainty, last_yT)
     _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, uncertainty, last_yT)
-    err_mean = [abs(yt_true[s]-mean(Xt[s,:])) for s=1:val]
-    err_bandit_full = [abs(yt_true[s]-dot(Xt[s,:],β_list_bandits_all[s,:])) for s=1:val]
-    err_bandit_t = [abs(yt_true[s]-dot(Xt[s,:],β_list_bandits_t[s,:])) for s=1:val]
-    err_PA = [abs(yt_true[s]-dot(Xt[s,:],β_list_PA[s,:])) for s=1:val]
+    err_mean = [abs(yt_true[s]-mean(Xt[s,2:end])) for s=1:val]
+    err_bandit_full = [abs(yt_true[s]-dot(Xt[s,2:end],β_list_bandits_all[s,:])) for s=1:val]
+    err_bandit_t = [abs(yt_true[s]-dot(Xt[s,2:end],β_list_bandits_t[s,:])) for s=1:val]
+    err_PA = [abs(yt_true[s]-dot(Xt[s,1:end],β_list_PA[s,:])) for s=1:val]
     err_baseline = [abs(yt_true[s]-dot(Xt[s,:],β_l2_init)) for s=1:val]
     #err_l2 = [abs(yt_true[s]-dot(Xt[s,:],β_listl2[s,:])) for s=1:val]
 
