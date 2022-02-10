@@ -175,8 +175,8 @@ function main()
 
     if args["data"][1:3] == "M3F"
         id = args["data"][4:end]
-        X_test_adaptive = CSV.read("data/data_M3F/data/M3F_data_"*id*".csv", DataFrame)
-        y_test = CSV.read("data/data_M3F/M3F_targets/M3F_target_"*id*".csv", DataFrame)
+        X_test_adaptive = DataFrame(CSV.File("data/data_M3F/data/M3F_data_"*id*".csv"))
+        y_test = DataFrame(CSV.File("data/data_M3F/M3F_targets/M3F_target_"*id*".csv"))
         y_test = y_test[!, "target"]
     end
 
