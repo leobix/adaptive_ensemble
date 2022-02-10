@@ -13,8 +13,8 @@ end
 function get_metrics(err, yt_true)
     #TODO ADD saving mechanism
     MAE = mean(err)
-    CVAR_05 = compute_CVaR(err, 0.05)
-    CVAR_15 = compute_CVaR(err, 0.15)
+    #CVAR_05 = compute_CVaR(err, 0.05)
+    #CVAR_15 = compute_CVaR(err, 0.15)
     R2 = R2_err(err, yt_true)
     MAPE = 100*sum(abs.(err./yt_true))/size(err)[1]
     RMSE = sqrt(sum(abs2.(err))/size(err)[1])
@@ -22,8 +22,8 @@ function get_metrics(err, yt_true)
     println("MAPE : ", MAPE)
     println("RMSE : ", RMSE)
     println("R2 : ", R2)
-    println("CVAR 0.05 :", CVAR_05)
-    println("CVAR 0.15 :", CVAR_15)
+    #println("CVAR 0.05 :", CVAR_05)
+    #println("CVAR 0.15 :", CVAR_15)
 end
 
 

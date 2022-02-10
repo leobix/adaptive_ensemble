@@ -1,3 +1,12 @@
+include("algos/multi_armed_bandits.jl")
+include("algos/passive_agressive.jl")
+include("algos")
+include("algos/benders.jl")
+include("algos/master_primal.jl")
+include("algos/OLS.jl")
+include("algos/adaptive_linear_decision_rule.jl")
+
+
 function R2(y_true, y_test)
     SSR = sum(abs2.(y_true.-y_test))
     SST = sum(abs2.(y_true.-mean(y_true)))
@@ -16,14 +25,14 @@ function get_metrics(err, yt_true)
     CVAR_05 = compute_CVaR(err, 0.05)
     CVAR_15 = compute_CVaR(err, 0.15)
     R2 = R2_err(err, yt_true)
-    MAPE = sum(abs.(err./yt_true))*100/size(err)[1]
-    RMSE = sqrt(sum(abs2.(err)))/size(err)[1]
+    MAPE = 100*sum(abs.(err./yt_true))/size(err)[1]
+    RMSE = sqrt(sum(abs2.(err))/size(err)[1])
     println("MAE : ", MAE)
-    println("CVAR 0.05 :", CVAR_05)
-    println("CVAR 0.15 :", CVAR_15)
-    println("R2 : ", R2)
     println("MAPE : ", MAPE)
     println("RMSE : ", RMSE)
+    println("R2 : ", R2)
+    println("CVAR 0.05 :", CVAR_05)
+    println("CVAR 0.15 :", CVAR_15)
 end
 
 
@@ -98,10 +107,10 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
     # Version where we adapt from the beginning and we add data every time
 
-    β_list_bandits_t = zeros(val, p)
-    β_list_bandits_all = zeros(val, p)
-    β_list_PA = zeros(val, p)
-    β_PA = β_l2_init
+    β_list_bandits_t = zeros(val, p-1)
+    β_list_bandits_all = zeros(val, p-1)
+    β_list_PA = zeros(val, p-1)
+    β_PA = β_l2_init[2:end]
 
     for s=1:val
 
@@ -155,12 +164,9 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
         obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
 
-        #TODO Compute coef for bandit
-
-        #TODO Compute coef for PA
-
         #Line to get Z_{t+1}: CHECKED
         X_for_Z = X[split_index-past+s+1:split_index+s+1,:]
+        X_for_Z[:,1] .= 1 #SUPER IMPORTANT AS I PUT 1 with prepare_data_from_y
         y_for_Z = y[split_index-past+s+1:split_index+s+1,:]
         X_, Z_test, y_ = get_X_Z_y(X_for_Z, y_for_Z, past)
 
@@ -169,10 +175,9 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
         β_linear_adaptive_pure_test_Vt = β_linear_adaptive_pure_0_Vt + Vt_adaptive_pure[end,:,:] * Z_test[1,:]
 
         #BASELINES
-        β_list_bandit_all[s,:] = compute_bandit_weights(cat(X0,Xt), vcat(y0,yt))
-        β_list_bandit_t[s,:] = compute_bandit_weights(Xt, yt)
-        β_list_bandit_t[s,:] = compute_bandit_weights(Xt, yt)
-        β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[end,:], yt[end])
+        β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt))
+        β_list_bandits_t[s,:] = compute_bandit_weights(Xt[:,2:end], yt)
+        β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[end,[:,2:end]], yt[end])
         β_list_PA[s,:] = β_PA
 
 
@@ -184,25 +189,27 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
         β_list_linear_adaptive_pure[s,:] = β_linear_adaptive_pure_test
         β_list_linear_adaptive_pure_Vt[s,:] = β_linear_adaptive_pure_test_Vt
         β_list_linear_adaptive_trained_one[s,:] = β0_0 + V0_0 * Z_test[1,:]
-        println("SIZES ", size(β0_0), "SIZES ", size(V0_0), "SIZES ", size(Z_test))
+        #println("SIZES ", size(β0_0), "SIZES ", size(V0_0), "SIZES ", size(Z_test))
         β_list_linear_adaptive_trained_one_standard[s,:] = β0_1 + V0_1 * Z_test[1, :]
-        println("SIZES ", β_list_linear_adaptive_trained_one_standard)
+        #println("SIZES ", β_list_linear_adaptive_trained_one_standard)
 
 
     end
-    #TODO Passive-Aggressive
-    #TODO Multi-armed bandit
+
     #TODO Best underlying model
 
     X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, uncertainty, last_yT)
     _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, uncertainty, last_yT)
-    println(yt_true)
+    #println(yt_true)
     #pred = [sum(Xt[i, j] * (β0_1[i,j] + sum(V0_1[i, j, :] .* Z[i, :])) for j=1:P) for i=1:val]
-    err_mean = [abs(yt_true[s]-mean(Xt[s,:])) for s=1:val]
+
+    err_mean = [abs(yt_true[s]-mean(Xt[s,2:end])) for s=1:val]
+    err_bandit_full = [abs(yt_true[s]-dot(Xt[s,2:end],β_list_bandits_all[s,:])) for s=1:val]
+    err_bandit_t = [abs(yt_true[s]-dot(Xt[s,2:end],β_list_bandits_t[s,:])) for s=1:val]
+    err_PA = [abs(yt_true[s]-dot(Xt[s,2:end],β_list_PA[s,:])) for s=1:val]
+
     err_0 = [abs(yt_true[s]-dot(Xt[s,:],β_list0[s,:])) for s=1:val]
-    err_bandit_full = [abs(yt_true[s]-dot(Xt[s,:],β_list_bandit_all[s,:])) for s=1:val]
-    err_bandit_t = [abs(yt_true[s]-dot(Xt[s,:],β_list_bandit_t[s,:])) for s=1:val]
-    err_PA = [abs(yt_true[s]-dot(Xt[s,:],β_list_PA[s,:])) for s=1:val]
+
     err_t = [abs(yt_true[s]-dot(Xt[s,:],β_listt[s,:])) for s=1:val]
     err_baseline = [abs(yt_true[s]-dot(Xt[s,:],β_l2_init)) for s=1:val]
     err_l2 = [abs(yt_true[s]-dot(Xt[s,:],β_listl2[s,:])) for s=1:val]

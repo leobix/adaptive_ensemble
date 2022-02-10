@@ -8,7 +8,7 @@ function prepare_data_from_y(X, y, n0, n, m, uncertainty, last_yT = false)
 #     n: the number of samples for learning beta 0, there is a total of n+1
 #     m: the number of samples for the adaptive part
 
-
+    #TODO HAndle edge case when n0+n too big
     X0 = Matrix(X[n0:n0+n,:])
     X0[:,1] = ones(n+1)
     y0 = y[n0:n0+n,:][:]
@@ -23,7 +23,6 @@ function prepare_data_from_y(X, y, n0, n, m, uncertainty, last_yT = false)
 
     D_min = yt .- uncertainty.*abs.(yt)
     D_max = yt .+ uncertainty.*abs.(yt)
-
     return X0, y0, Xt, yt, yt_true, D_min, D_max
 end
 
