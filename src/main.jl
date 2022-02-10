@@ -169,9 +169,9 @@ function main()
     end
 
     if args["data"][1:3] == "M3F"
-        id = args["data"][9:end]
-        X_test_adaptive = CSV.read("data/M3F_data_"+id+".csv", DataFrame)
-        y_test = CSV.read("data/M3F_target_"+id+".csv", DataFrame)
+        id = args["data"][4:end]
+        X_test_adaptive = CSV.read("data/data_M3F/data/M3F_data_"*id*".csv", DataFrame)
+        y_test = CSV.read("data/data_M3F/M3F_targets/M3F_target_"*id*".csv", DataFrame)
         y_test = y_test[!, "target"]
     end
 
@@ -180,21 +180,26 @@ function main()
         args["end-id"] = size(X_test_adaptive)[2]
     end
 
-    #TODO assert end id < number of models
+    #TODO check assert end id < number of models
+    if args["end-id"] > size(X_test_adaptive)[2]
+        println("There are only ", size(X_test_adaptive)[2], " ensemble members.")
+        args["end-id"] = min(args["end-id"],size(X_test_adaptive)[2])
+    end
+
     X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
     n, p = size(X)
 
     #TODO check the n/2 to split index
     split_index = floor(Int,n*args["train_test_split"])
+
     #X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
     y = y_test[:, 1];
-    X = (X .- mean(y[1:floor(Int, split_index),:], dims =1))./ std(y[1:floor(Int, split_index),:], dims=1);#[!,1]
+    mean_y = mean(y[1:floor(Int, split_index),:])
+    std_y = std(y[1:floor(Int, split_index),:])
 
-
-    #X[:,1] = ones(n)
-
-
-    y = (y .- mean(y[1:floor(Int, split_index),:], dims =1))./ std(y[1:floor(Int, split_index),:], dims=1);
+    X = (X .- mean_y)./std_y;
+    y = (y .- mean_y)./std_y;
+    println("Mean target: ", mean_y, " Std target: ", std_y)
 
     if args["reg"] == -1
         reg = 1/(args["past"]*args["num-past"])
@@ -204,11 +209,12 @@ function main()
 
     #TODO code all_past -1
 
-    val = min(args["val"], n-split_index)
+    val = min(args["val"], n-split_index-1)
 
+    #TODO: Clean with only args to be passed
     eval_method(X, y, y, args["train_test_split"], args["past"], args["num-past"], val, args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
         args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
-        args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"])
+        args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"], mean_y, std_y)
 
     println("Results completed")
 end
