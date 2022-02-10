@@ -1,6 +1,5 @@
 include("algos/multi_armed_bandits.jl")
 include("algos/passive_agressive.jl")
-include("algos")
 include("algos/benders.jl")
 include("algos/master_primal.jl")
 include("algos/OLS.jl")
