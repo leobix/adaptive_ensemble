@@ -9,7 +9,7 @@ include("metrics.jl")
 
 #TODO: COMPUTE ALL METRICS IN THE ORIGINAL SPACE, in particular MAPE
 
-function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_inf, δ_inf, last_yT,
+function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_inf, δ_inf, last_yT,
         ϵ_l2, δ_l2, ρ, reg, max_cuts, verbose,
         fix_β0, more_data_for_β0, benders, ridge, mean_y, std_y)
 
@@ -38,8 +38,8 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
 
     #_, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past)
-    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(X0, y0, ρ, 100*ρ, past)
-    _, β0_1, V0_1 = adaptive_ridge_regression_standard(X0, y0, ρ, 100*ρ, past)
+    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(X0, y0, ρ, args["rho_V"], past)
+    _, β0_1, V0_1 = adaptive_ridge_regression_standard(X0, y0, ρ, args["rho_V"], past)
 
     #TODO: Uncomment
     #obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
@@ -110,20 +110,20 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
     #TODO check get_metrics
     println("\n### Mean Baseline ###")
-    get_metrics(err_mean, yt_true)
+    get_metrics(args, "mean", err_mean, yt_true)
 
     println("\n### Bandits Full Baseline ###")
-    get_metrics(err_bandit_full, yt_true)
+    get_metrics(args, "bandits_full", err_bandit_full, yt_true)
 
     println("\n### Bandits Only Last T Baseline ###")
-    get_metrics(err_bandit_t, yt_true)
+    get_metrics(args, "bandits_recent", err_bandit_t, yt_true)
 
     println("\n### Passive-Aggressive Baseline ###")
     ### The Beta 0 that is originating from the adaptive formulation
-    get_metrics(err_PA, yt_true)
+    get_metrics(args, "PA", err_PA, yt_true)
 
     println("\n### β0 Baseline ###")
-    get_metrics(err_baseline, yt_true)
+    get_metrics(args, "ridge", err_baseline, yt_true)
 
 #     println("\n### β0 Baseline Retrained ###")
 #     get_metrics(err_l2, yt_true)
@@ -135,11 +135,11 @@ function eval_method(X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
-    get_metrics(err_linear_adaptive_trained_one, yt_true)
+    get_metrics(args, "adaptive_ridge_exact", err_linear_adaptive_trained_one, yt_true)
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
-    get_metrics(err_linear_adaptive_trained_one_standard, yt_true)
+    get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true)
 
 end
 

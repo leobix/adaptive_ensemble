@@ -129,12 +129,17 @@ function parse_commandline()
             default = 0.01
 
         "--rho"
-            help = "rho"
+            help = "rho for Beta 0"
+            arg_type = Float64
+            default = 0.1
+
+        "--rho_V"
+            help = "rho for V0"
             arg_type = Float64
             default = 0.1
 
         "--reg"
-            help = "rho"
+            help = "Deprecated. Regularization factor for the adaptive term"
             arg_type = Float64
             default = 0.1
 
@@ -212,11 +217,22 @@ function main()
     val = min(args["val"], n-split_index-1)
 
     #TODO: Clean with only args to be passed
-    eval_method(X, y, y, args["train_test_split"], args["past"], args["num-past"], val, args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
-        args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
-        args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"], mean_y, std_y)
+    try
+        eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
+            args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
+            args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"], mean_y, std_y)
 
-    println("Results completed")
+        println("Results completed")
+    catch e
+        println(e)
+        println("Problem with Dataset ", args["data"])
+        #errors = DataFrame(Dataset = Int64[], Dataset2 = Int64[])
+
+        errors = DataFrame(CSV.File("errors.csv"))
+
+        push!(errors, (parse(Int,args["data"][4:end]), 0) )
+        CSV.write("errors.csv", errors)
+    end
 end
 
 main()
