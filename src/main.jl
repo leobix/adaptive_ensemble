@@ -156,20 +156,20 @@ function main()
     end
 
     if args["data"] == "energy"
-        X_test_adaptive = DataFrame(CSV.File(args["filename-X"])
-        y_test = DataFrame(CSV.File(args["filename-y"], header = 0)
+        X_test_adaptive = DataFrame(CSV.File(args["filename-X"]))
+        y_test = DataFrame(CSV.File(args["filename-y"]), header = 0)
     end
 
     if args["data"] == "safi"
-        X_test_adaptive = DataFrame(CSV.File("data/X_test_adaptive.csv")
+        X_test_adaptive = DataFrame(CSV.File("data/X_test_adaptive.csv"))
         y_test = DataFrame(CSV.File("data/y_test_speed.csv")
         y_test = y_test[!, "speed"]
     end
 
     if args["data"] == "traffic"
-        X_test_adaptive = DataFrame(CSV.File("data/traffic_predictions_test_val.csv")
+        X_test_adaptive = DataFrame(CSV.File("data/traffic_predictions_test_val.csv"))
         X_test_adaptive = X_test_adaptive[!,[2, 3,5,8,9,11,12,13,25]]
-        y_test = DataFrame(CSV.File("data/traffic_test_val_scaled.csv")
+        y_test = DataFrame(CSV.File("data/traffic_test_val_scaled.csv"))
         y_test = y_test[!, "target"]
     end
 
