@@ -162,7 +162,7 @@ function main()
 
     if args["data"] == "safi"
         X_test_adaptive = DataFrame(CSV.File("data/X_test_adaptive.csv"))
-        y_test = DataFrame(CSV.File("data/y_test_speed.csv")
+        y_test = DataFrame(CSV.File("data/y_test_speed.csv"))
         y_test = y_test[!, "speed"]
     end
 
