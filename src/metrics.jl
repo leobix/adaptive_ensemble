@@ -63,17 +63,17 @@ end
 
 function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15)
 
-#     results = DataFrame(Dataset = String[], End_id = Int64[],
-#         Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
-#         Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[])
+    try
+        results = DataFrame(CSV.File("results/results_"*args["data"]*".csv"))
+        push!(results, (args["data"], args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
+        CSV.write("results/results_"*args["data"]*".csv", results)
+    catch e
+        results = DataFrame(Dataset = String[], End_id = Int64[],
+            Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
+            Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[])
 
-    results = DataFrame(CSV.File("results.csv"))
+        push!(results, (args["data"], args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
+        CSV.write("results/results_"*args["data"]*".csv", results)
+    end
 
-    push!(results, (args["data"], args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
-    CSV.write("results.csv", results)
-
-#             CSV.write(filename, df; append=true, writeheader=false)
-#             CSV.write(string("sparsity_", data_set,"_", parameter_range), DataFrame(obj_values))
-#             CSV.write(string("sparsity_", data_set,"_", parameter_range), DataFrame(best_parameters) ; append=true)
-#             CSV.write(string("sparsity_", data_set,"_", parameter_range), DataFrame(all_accuracies) ; append=true)
 end
