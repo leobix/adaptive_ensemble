@@ -185,6 +185,15 @@ function main()
         y_test = y_test[!, "target"]
     end
 
+    if args["data"][1:end-3] == "hurricane"
+        if args["data"][end-1:end] == "EP"
+            X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean.csv"))[:,6:end]
+        else
+            X_test_adaptive = DataFrame(CSV.File("data/NA_ARO_Intensity_2014_clean.csv"))[:,6:end]
+        end
+        y_test = X_test_adaptive[!, "TRUTH"]
+    end
+
     #TODO check end-id -1
     if args["end-id"] == -1
         args["end-id"] = size(X_test_adaptive)[2]
@@ -223,9 +232,7 @@ function main()
 
     #TODO: Clean with only args to be passed
     try
-        eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
-            args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
-            args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"], mean_y, std_y)
+        eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
 
         println("Results completed")
     catch e

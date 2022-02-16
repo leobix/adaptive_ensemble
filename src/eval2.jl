@@ -8,9 +8,7 @@ include("metrics.jl")
 
 #TODO: COMPUTE ALL METRICS IN THE ORIGINAL SPACE, in particular MAPE
 
-function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertainty, ϵ_inf, δ_inf, last_yT,
-        ϵ_l2, δ_l2, ρ, reg, max_cuts, verbose,
-        fix_β0, more_data_for_β0, benders, ridge, mean_y, std_y)
+function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, std_y)
 
     threshold_benders = 0.01
     n, p = size(X)
@@ -19,7 +17,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertaint
         val = size(X)[1]
     end
 
-    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, uncertainty, last_yT)
+    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"], args["last_yT"])
     println("There are ", size(X)[1], " samples in total.")
     println("We start training at index ", max(split_index-num_past*past+1, 1))
     println("We test between index ", max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index), " and ",  max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index)+val+1)
@@ -27,9 +25,8 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertaint
     β_list0 = zeros(val, p)
     β_listt = zeros(val, p)
     β_listl2 = zeros(val, p)
-    #THE BASELINE is stronger if I put X0,Xt than X0 alone
-    #β_l2_init = l2_regression(vcat(X0,Xt),vcat(y0,yt),ρ);
-    β_l2_init = l2_regression(X0,y0,ρ);
+
+    β_l2_init = l2_regression(X0,y0,args["rho"]);
 
     #β_list_linear_adaptive_pure_Vt = zeros(val, p)
     β_list_linear_adaptive_trained_one = zeros(val, p)
@@ -37,8 +34,8 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertaint
 
 
     #_, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past)
-    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(X0, y0, args["rho_beta"], ρ, args["rho_V"], past)
-    _, β0_1, V0_1 = adaptive_ridge_regression_standard(X0, y0, ρ, args["rho_V"], past)
+    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(X0, y0, args["rho_beta"], args["rho"], args["rho_V"], past)
+    _, β0_1, V0_1 = adaptive_ridge_regression_standard(X0, y0, args["rho"], args["rho_V"], past)
 
     #TODO: Uncomment
     #obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
@@ -54,10 +51,10 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertaint
     for s=1:val
 
         #TODO check split_index with max(split inex, 1)
-        if more_data_for_β0
-            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), s+(num_past-1)*past, past-1, uncertainty, last_yT)
+        if args["more_data_for_beta0"]
+            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), s+(num_past-1)*past, past-1, args["uncertainty"], args["last_yT"])
         else
-            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), (num_past-1)*past, past-1, uncertainty, last_yT)
+            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), (num_past-1)*past, past-1, args["uncertainty"], args["last_yT"])
         end
 
         #TODO: evaluate also if we change Vt regularly
@@ -87,8 +84,8 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertaint
 
     #TODO Best underlying model
     println("Evaluation finished. Metrics start.")
-    X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, uncertainty, last_yT)
-    _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, uncertainty, last_yT)
+    X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, args["uncertainty"], args["last_yT"])
+    _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, args["uncertainty"], args["last_yT"])
 
     # Unstandardize for metrics
     yt_true = yt_true.*std_y.+mean_y
