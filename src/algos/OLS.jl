@@ -3,7 +3,8 @@ function l2_regression(X, y, rho; solver_output=0)
 
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", solver_output)
-    set_optimizer_attribute(model, "NonConvex", 2)
+    #Should work without but uncomment in case
+    #set_optimizer_attribute(model, "NonConvex", 2)
 
     @variable(model,beta[j=1:p])
     @variable(model, sse>=0)
@@ -16,3 +17,6 @@ function l2_regression(X, y, rho; solver_output=0)
     #println("Obj ", objective_value(model))
     return value.(beta)
 end
+
+
+
