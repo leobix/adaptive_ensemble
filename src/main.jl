@@ -128,6 +128,11 @@ function parse_commandline()
             arg_type = Float64
             default = 0.01
 
+        "--rho_beta"
+            help = "rho for Beta in Adaptive Ridge Linear Decision Rule"
+            arg_type = Float64
+            default = 0.1
+
         "--rho"
             help = "rho for Beta 0"
             arg_type = Float64
@@ -157,7 +162,7 @@ function main()
 
     if args["data"] == "energy"
         X_test_adaptive = DataFrame(CSV.File(args["filename-X"]))
-        y_test = DataFrame(CSV.File(args["filename-y"]), header = 0)
+        y_test = DataFrame(CSV.File(args["filename-y"]))
     end
 
     if args["data"] == "safi"

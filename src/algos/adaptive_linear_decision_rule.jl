@@ -54,7 +54,7 @@ function adaptive_ridge_regression_exact(X, y, ρ_β0, ρ_V0, T, N0)
     return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
 end
 
-function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β0, ρ_V0, T)
+function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β, ρ_β0, ρ_V0, T)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
@@ -73,7 +73,7 @@ function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β0, ρ_V0, T)
     @variable(model, β[t=1:N,j=1:P])
 
     # Add objective
-    @objective(model, Min, t + 1/N*ρ_β0 * sum(β[t,k]^2 for t=1:N for k=1:P)
+    @objective(model, Min, t + 1/N*ρ_β * sum(β[t,k]^2 for t=1:N for k=1:P)
                            + ρ_β0 * sum(β0[j]^2 for j=1:P) + ρ_V0 * sum(V0[j,k]^2 for j=1:P for k=1:T*P+T) ###IMPORTANT TO ADD OR REMOVE
     )
 

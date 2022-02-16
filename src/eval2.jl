@@ -37,7 +37,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, uncertaint
 
 
     #_, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past)
-    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(X0, y0, ρ, args["rho_V"], past)
+    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(X0, y0, args["rho_beta"], ρ, args["rho_V"], past)
     _, β0_1, V0_1 = adaptive_ridge_regression_standard(X0, y0, ρ, args["rho_V"], past)
 
     #TODO: Uncomment
