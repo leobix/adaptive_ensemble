@@ -10,7 +10,6 @@ include("metrics.jl")
 
 function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, std_y)
 
-    threshold_benders = 0.01
     n, p = size(X)
     split_index = floor(Int,n*split_)
     if val == -1
@@ -128,6 +127,108 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 #     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part Vt ###")
 #     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
 #     get_metrics(err_linear_adaptive_pure_Vt, yt_true)
+
+    println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE ###")
+    ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
+    get_metrics(args, "adaptive_ridge_exact", err_linear_adaptive_trained_one, yt_true)
+
+    println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD ###")
+    ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
+    get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true)
+
+end
+
+
+
+function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, val, mean_y, std_y)
+
+    n, p = size(X)
+    split_index = floor(Int,n*split_)
+    if val == -1
+        val = size(X)[1]
+    end
+
+    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"], args["last_yT"])
+    println("Training data X0 size ", size(X0))
+    println("Testing data Xt size ", size(Xt))
+    println("Z ", size(Z0))
+    println("y ", size(y0))
+    println("There are ", size(X)[1], " samples in total.")
+    println("We start training at index ", max(split_index-num_past*past+1, 1))
+    println("We test between index ", max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index), " and ",  max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index)+val+1)
+
+    β_list0 = zeros(val, p)
+    β_listt = zeros(val, p)
+    β_listl2 = zeros(val, p)
+
+    β_l2_init = l2_regression(X0,y0,args["rho"]);
+
+    β_list_linear_adaptive_trained_one = zeros(val, p)
+    β_list_linear_adaptive_trained_one_standard = zeros(val, p)
+
+    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable_hurricane(X0, Z0, y0, args["rho_beta"], args["rho"], args["rho_V"])
+    _, β0_1, V0_1 = adaptive_ridge_regression_exact_no_stable_hurricane(X0, Z0, y0, 0, args["rho"], args["rho_V"])
+    println("Beta 0", β0_0)
+    println("V 0 ", V0_0)
+
+    β_list_bandits_t = zeros(val, p-1)
+    β_list_bandits_all = zeros(val, p-1)
+    β_list_PA = zeros(val, p)
+    #IMPORTANT: We initialize with equal weights but we could also initialize with l2 weights
+    β_PA = ones(p)/(p)#β_l2_init[2:end]
+    println("Optimization finished. Evaluation starts.")
+
+    #SOLVE PROBLEM WITH s=1
+    for s=1:val
+        #BASELINES
+        if s == 1
+            β_list_bandits_all[s,:] = ones(p-1)/(p-1)
+        else
+            β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt[1:s-1,:])[:,1:end-1], vcat(y0,yt[1:s-1]))
+            #do not take the intercept term into account
+            #β_list_bandits_t[s,:] = compute_bandit_weights(Xt[1:s,1:end-1], yt[s])
+            β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[s-1,:], yt[s-1])
+        end
+        β_list_PA[s,:] = β_PA
+
+        β_list_linear_adaptive_trained_one[s,:] = β0_0 + V0_0 * Zt[s,:]
+        β_list_linear_adaptive_trained_one_standard[s,:] = β0_1 + V0_1 * Zt[s,:]
+
+#         println("Iter ", s)
+#         println(β_list_linear_adaptive_trained_one_standard[s,:])
+#         println()
+    end
+
+    # Unstandardize for metrics
+    yt_true = yt_true.*std_y.+mean_y
+
+    # Unstandardize predictions as well
+    # The reason why we put 1:end-1 is because the last element is the intercept term (1)
+    err_mean = [abs(yt_true[s]-(mean(Xt[s,1:end-1]).*std_y.+mean_y)) for s=1:val]
+    err_bandit_full = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_bandits_all[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_bandit_t = [abs(yt_true[s]-yt_true[s-1]) for s=2:val]
+    err_PA = [abs(yt_true[s]-(dot(Xt[s,:],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_baseline = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init).*std_y.+mean_y)) for s=1:val]
+
+    err_linear_adaptive_trained_one = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_linear_adaptive_trained_one_standard = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_standard[s,:]).*std_y.+mean_y)) for s=1:val]
+
+    #TODO check get_metrics
+    println("\n### Mean Baseline ###")
+    get_metrics(args, "mean", err_mean, yt_true)
+
+    println("\n### Bandits Full Baseline ###")
+    get_metrics(args, "bandits_full", err_bandit_full, yt_true)
+
+    println("\n### Last Timestep Baseline ###")
+    get_metrics(args, "bandits_recent", err_bandit_t, yt_true[2:end])
+
+    println("\n### Passive-Aggressive Baseline ###")
+    ### The Beta 0 that is originating from the adaptive formulation
+    get_metrics(args, "PA", err_PA, yt_true)
+
+    println("\n### β0 Baseline ###")
+    get_metrics(args, "ridge", err_baseline, yt_true)
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
