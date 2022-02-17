@@ -27,6 +27,35 @@ function prepare_data_from_y(X, y, n0, n, m, uncertainty, last_yT = false)
 end
 
 
+function prepare_data_from_y_hurricane(X, Z, y, n0, n, m, uncertainty, last_yT = false)
+
+    """ Nuance with previous: takes Z as input as well
+    #     # Input:
+    #     X: features
+    #     y: targets
+    #     n0:  the index where the training data starts for beta 0
+    #     n: the number of samples for learning beta 0, there is a total of n+1
+    #     m: the number of samples for the adaptive part
+    """
+    #TODO HAndle edge case when n0+n too big
+    X0 = Matrix(X[n0:n0+n,:])
+    Z0 = Matrix(Z[n0:n0+n,:])
+    y0 = y[n0:n0+n,:][:]
+
+    yt_true = y[n0+n+1:n0+n+m,:][:]
+    Xt = Matrix(X[n0+n+1:n0+n+m,:])
+    Zt = Matrix(Z[n0+n+1:n0+n+m,:])
+    yt = yt_true
+    if last_yT
+        yt_true[m] = mean(Xt[m])
+    end
+
+    D_min = yt .- uncertainty.*abs.(yt)
+    D_max = yt .+ uncertainty.*abs.(yt)
+    return X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max
+end
+
+
 
 function prepare_data_from_X(X, y, n0, n, m, std_factor)
 
