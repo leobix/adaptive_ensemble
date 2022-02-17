@@ -46,6 +46,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     β_PA = ones(p)/(p)#β_l2_init[2:end]
     println("Optimization finished. Evaluation starts.")
 
+    last_timesteps = zeros(val)
 
     for s=1:val
 
@@ -78,7 +79,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         #β_list_linear_adaptive_pure_Vt[s,:] = β_linear_adaptive_pure_0_Vt + Vt_adaptive_pure[end,:,:] * Z_test[1,:]
         β_list_linear_adaptive_trained_one[s,:] = β0_0 + V0_0 * Z_test[1,:]
         β_list_linear_adaptive_trained_one_standard[s,:] = β0_1 + V0_1 * Z_test[1, :]
-
+        last_timesteps[s] = Z_test[1,end]
     end
 
     #TODO Best underlying model
@@ -92,7 +93,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     # Unstandardize predictions as well
     # The reason why we put 2:end is because the first element is the intercept term (1)
     err_mean = [abs(yt_true[s]-(mean(Xt[s,2:end]).*std_y.+mean_y)) for s=1:val]
-    err_last_timestep = [abs(yt_true[s]-(Zt[s,end].*std_y.+mean_y)) for s=2:val]
+    err_last_timestep = [abs(yt_true[s]-(last_timesteps[s].*std_y.+mean_y)) for s=2:val]
     err_best_model = get_best_model_errors(yt_true, Xt, mean_y, std_y)
     err_bandit_full = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_bandits_all[s,:]).*std_y.+mean_y)) for s=1:val]
     err_bandit_t = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_bandits_t[s,:]).*std_y.+mean_y)) for s=1:val]
