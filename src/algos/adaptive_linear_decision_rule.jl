@@ -24,6 +24,9 @@ function adaptive_ridge_regression_exact(X, y, ρ_β0, ρ_V0, T, N0)
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(X, y, T)
+    println("X", X[4,:])
+    println("Z", Z[4,:])
+    println("y", y[1:4])
 
     N, P = size(X)
     # Add variables
@@ -63,6 +66,9 @@ function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β, ρ_β0, ρ_V0, T
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(X, y, T)
+    println("X", X[4,:])
+    println("Z", Z[4,:])
+    println("y", y[1:4])
 
     N, P = size(X)
     # Add variables
@@ -193,4 +199,39 @@ function adaptive_ridge_regression_slowly_varying(X, y, ρ_β0, ρ_V0, T)
 
     optimize!(model);
     return objective_value(model), getvalue.(β0), getvalue.(V0)
+end
+
+
+##########################################
+
+function adaptive_ridge_regression_exact_no_stable_hurricane(X, Z, y, ρ_β, ρ_β0, ρ_V0)
+
+    #Version with actual robust equivalence
+    #The formula for the regularization is different
+    #no stable part
+    # Create model
+    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    set_optimizer_attribute(model, "OutputFlag", 0)
+
+    N, P = size(X)
+    T = size(Z,2)
+    # Add variables
+
+    @variable(model, β0[j=1:P])
+    @variable(model, V0[j=1:P, k=1:T])
+    @variable(model, t>=0)
+    @variable(model, β[t=1:N,j=1:P])
+
+    # Add objective
+    @objective(model, Min, t + 1/N*ρ_β * sum(β[t,k]^2 for t=1:N for k=1:P)
+                           + ρ_β0 * sum(β0[j]^2 for j=1:P) + ρ_V0 * sum(V0[j,k]^2 for j=1:P for k=1:T) ###IMPORTANT TO ADD OR REMOVE
+    )
+
+    @constraint(model, t >= 1 / N * sum((y[i] - sum(transpose(X[i, :])*β[i,:]))^2 for i=1:N))
+
+    #linear decision rule for adaptive RO
+    @constraint(model, [i=1:N], β[i,:] .== β0.+V0*Z[i,:])
+
+    optimize!(model);
+    return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
 end
