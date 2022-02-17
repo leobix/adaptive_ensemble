@@ -92,6 +92,8 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     # Unstandardize predictions as well
     # The reason why we put 2:end is because the first element is the intercept term (1)
     err_mean = [abs(yt_true[s]-(mean(Xt[s,2:end]).*std_y.+mean_y)) for s=1:val]
+    err_last_timestep = [abs(yt_true[s]-(Zt[s,end].*std_y.+mean_y)) for s=2:val]
+    err_best_model = get_best_model_errors(yt_true, Xt, mean_y, std_y)
     err_bandit_full = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_bandits_all[s,:]).*std_y.+mean_y)) for s=1:val]
     err_bandit_t = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_bandits_t[s,:]).*std_y.+mean_y)) for s=1:val]
     err_PA = [abs(yt_true[s]-(dot(Xt[s,1:end],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
@@ -106,6 +108,12 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     #TODO check get_metrics
     println("\n### Mean Baseline ###")
     get_metrics(args, "mean", err_mean, yt_true)
+
+    println("\n### Last Timestep Baseline ###")
+    get_metrics(args, "last_timestep", err_last_timestep, yt_true[2:end])
+
+    println("\n### Best Model Baseline ###")
+    get_metrics(args, "best model", err_best_model, yt_true)
 
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
@@ -200,13 +208,15 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     end
 
     # Unstandardize for metrics
+
     yt_true = yt_true.*std_y.+mean_y
 
     # Unstandardize predictions as well
     # The reason why we put 1:end-1 is because the last element is the intercept term (1)
     err_mean = [abs(yt_true[s]-(mean(Xt[s,1:end-1]).*std_y.+mean_y)) for s=1:val]
+    err_best_model = get_best_model_errors(yt_true, Xt, mean_y, std_y)
     err_bandit_full = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_bandits_all[s,:]).*std_y.+mean_y)) for s=1:val]
-    err_bandit_t = [abs(yt_true[s]-yt_true[s-1]) for s=2:val]
+    err_last_timestep = [abs(yt_true[s]-(Zt[s,end].*std_y.+mean_y)) for s=2:val]
     err_PA = [abs(yt_true[s]-(dot(Xt[s,:],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
     err_baseline = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init).*std_y.+mean_y)) for s=1:val]
 
@@ -217,11 +227,14 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     println("\n### Mean Baseline ###")
     get_metrics(args, "mean", err_mean, yt_true)
 
+    println("\n### Best Model Baseline ###")
+    get_metrics(args, "best model", err_best_model, yt_true)
+
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
 
     println("\n### Last Timestep Baseline ###")
-    get_metrics(args, "bandits_recent", err_bandit_t, yt_true[2:end])
+    get_metrics(args, "last_timestep", err_last_timestep, yt_true[2:end])
 
     println("\n### Passive-Aggressive Baseline ###")
     ### The Beta 0 that is originating from the adaptive formulation

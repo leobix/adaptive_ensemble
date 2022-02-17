@@ -10,6 +10,29 @@ function R2_err(err, y_true)
     return 1 - SSR/SST
 end
 
+function MAPE(err, yt_true)
+    return 100*sum(abs.(err./yt_true))/size(err)[1]
+end
+
+function get_best_model_errors(yt_true, Xt, mean_y, std_y)
+"""
+Determines the best model in hindsight, wrt MAPE
+"""
+    n = size(Xt, 2)
+    val = size(yt_true, 1)
+    best_err = [abs(yt_true[s]-(Xt[s,1].*std_y.+mean_y)) for s=1:val]
+    best_MAPE = MAPE(best_err, yt_true)
+    for i=2:n
+        err = [abs(yt_true[s]-(Xt[s,i].*std_y.+mean_y)) for s=1:val]
+        new_MAPE = MAPE(err, yt_true)
+        if new_MAPE < best_MAPE
+            best_err = err
+            best_MAPE = new_MAPE
+        end
+    end
+    return best_err
+end
+
 function get_metrics(args, method, err, yt_true)
     #TODO ADD saving mechanism
     MAE = mean(err)

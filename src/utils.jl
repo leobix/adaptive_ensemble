@@ -27,6 +27,8 @@ function prepare_data_from_y(X, y, n0, n, m, uncertainty, last_yT = false)
 end
 
 
+
+
 function prepare_data_from_y_hurricane(X, Z, y, n0, n, m, uncertainty, last_yT = false)
 
     """ Nuance with previous: takes Z as input as well
@@ -73,3 +75,6 @@ function prepare_data_from_X(X, y, n0, n, m, std_factor)
 
     return X0, y0, Xt, yt, yt_true, D_min, D_max
 end
+
+
+
