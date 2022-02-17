@@ -15,6 +15,7 @@ using Random
 
 include("eval2.jl")
 include("utils.jl")
+include("utils_hurricane.jl")
 
 
 const GRB_ENV = Gurobi.Env()
@@ -186,15 +187,17 @@ function main()
     end
 
     if args["data"][1:end-3] == "hurricane"
+    ### Choose END-ID 12 for DL/ML only
+    ### Choose END-ID 15 for ML+OP
         if args["data"][end-1:end] == "EP"
-            X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean.csv"))[:,6:end]
+            X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean.csv"))
         else
-            X_test_adaptive = DataFrame(CSV.File("data/NA_ARO_Intensity_2014_clean.csv"))[:,6:end]
+            X_test_adaptive = DataFrame(CSV.File("data/NA_ARO_Intensity_2014_clean.csv"))
         end
-        y_test = X_test_adaptive[!, "TRUTH"]
+        X_test_adaptive, Z, y_test = prepare_data_storms(X_test_adaptive, args["past"], args["end-id"])
+        args["end-id"] = size(X_test_adaptive)[2]
     end
 
-    #TODO check end-id -1
     if args["end-id"] == -1
         args["end-id"] = size(X_test_adaptive)[2]
     end
@@ -218,13 +221,16 @@ function main()
 
     X = (X .- mean_y)./std_y;
     y = (y .- mean_y)./std_y;
+    if args["data"][1:end-3] == "hurricane"
+        Z = (Z .- mean_y)./std_y
+    end
     println("Mean target: ", mean_y, " Std target: ", std_y)
 
-    if args["reg"] == -1
-        reg = 1/(args["past"]*args["num-past"])
-    else
-        reg = args["reg"]
-    end
+#     if args["reg"] == -1
+#         reg = 1/(args["past"]*args["num-past"])
+#     else
+#         reg = args["reg"]
+#     end
 
     #TODO code all_past -1
 
@@ -232,8 +238,11 @@ function main()
 
     #TODO: Clean with only args to be passed
     try
-        eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
-
+        if args["data"][1:end-3] == "hurricane"
+            eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
+        else
+            eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
+        end
         println("Results completed")
     catch e
         println(e)
