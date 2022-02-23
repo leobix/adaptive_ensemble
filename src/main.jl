@@ -15,6 +15,7 @@ using Random
 
 include("eval2.jl")
 include("utils.jl")
+include("utils_hurricane.jl")
 
 
 const GRB_ENV = Gurobi.Env()
@@ -91,7 +92,7 @@ function parse_commandline()
             help = "more_data_for_beta0"
             action = :store_true
 
-        "--fix-beta0"
+        "--CVAR"
             help = "fix beta0"
             action = :store_true
 
@@ -100,6 +101,10 @@ function parse_commandline()
             action = :store_true
 
         "--ridge"
+            help = "verbose"
+            action = :store_true
+
+        "--err_rule"
             help = "verbose"
             action = :store_true
 
@@ -128,8 +133,18 @@ function parse_commandline()
             arg_type = Float64
             default = 0.01
 
+        "--rho_beta"
+            help = "rho for Beta in Adaptive Ridge Linear Decision Rule"
+            arg_type = Float64
+            default = 0.1
+
+        "--rho_stat"
+            help = "rho for statistical error in standard ridge"
+            arg_type = Float64
+            default = 0.1
+
         "--rho"
-            help = "rho for Beta 0"
+            help = "rho for Beta 0 and standard ridge"
             arg_type = Float64
             default = 0.1
 
@@ -157,7 +172,7 @@ function main()
 
     if args["data"] == "energy"
         X_test_adaptive = DataFrame(CSV.File(args["filename-X"]))
-        y_test = DataFrame(CSV.File(args["filename-y"]), header = 0)
+        y_test = DataFrame(CSV.File(args["filename-y"]))
     end
 
     if args["data"] == "safi"
@@ -180,7 +195,18 @@ function main()
         y_test = y_test[!, "target"]
     end
 
-    #TODO check end-id -1
+    if args["data"][1:end-3] == "hurricane"
+    ### Choose END-ID 12 for DL/ML only
+    ### Choose END-ID 15 for ML+OP
+        if args["data"][end-1:end] == "EP"
+            X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean_v2.csv"))
+        else
+            X_test_adaptive = DataFrame(CSV.File("data/NA_ARO_Intensity_2014_clean_v2.csv"))
+        end
+        X_test_adaptive, Z, y_test = prepare_data_storms(X_test_adaptive, args["past"], args["end-id"])
+        args["end-id"] = size(X_test_adaptive)[2]
+    end
+
     if args["end-id"] == -1
         args["end-id"] = size(X_test_adaptive)[2]
     end
@@ -204,13 +230,16 @@ function main()
 
     X = (X .- mean_y)./std_y;
     y = (y .- mean_y)./std_y;
+    if args["data"][1:end-3] == "hurricane"
+        Z = (Z .- mean_y)./std_y
+    end
     println("Mean target: ", mean_y, " Std target: ", std_y)
 
-    if args["reg"] == -1
-        reg = 1/(args["past"]*args["num-past"])
-    else
-        reg = args["reg"]
-    end
+#     if args["reg"] == -1
+#         reg = 1/(args["past"]*args["num-past"])
+#     else
+#         reg = args["reg"]
+#     end
 
     #TODO code all_past -1
 
@@ -218,10 +247,11 @@ function main()
 
     #TODO: Clean with only args to be passed
     try
-        eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, args["uncertainty"], args["epsilon-inf"], args["delta-inf"], args["last_yT"],
-            args["epsilon-l2"], args["delta-l2"], args["rho"], reg, args["max-cuts"], args["verbose"],
-            args["fix-beta0"], args["more_data_for_beta0"], args["benders"], args["ridge"], mean_y, std_y)
-
+        if args["data"][1:end-3] == "hurricane"
+            eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
+        else
+            eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
+        end
         println("Results completed")
     catch e
         println(e)
