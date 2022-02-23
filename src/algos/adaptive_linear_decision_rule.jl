@@ -1,4 +1,4 @@
-function get_X_Z_y(X, y, T)
+function get_X_Z_y(args, X, y, T)
     """
     Input: training data X and corresponding labels y ; how many time-steps from the past to be used
     Output: the past features X with past targets y as a Z training data (no present features)
@@ -8,14 +8,18 @@ function get_X_Z_y(X, y, T)
     Z = ones(n-T, T*p+T)
     for i=T+1:n
         for t=1:T
-            Z[i-T,1+p*(t-1):p*t] = X[i-t,:]
+            if args["err_rule"]
+                Z[i-T,1+p*(t-1):p*t] = X[i-t,:].-y[i-t]
+            else
+                Z[i-T,1+p*(t-1):p*t] = X[i-t,:]
+            end
         end
         Z[i-T, (p*T+1):end] = y[i-T:i-1]
     end
     return X[T+1:end,:], Z, y[T+1:end]
 end
 
-function adaptive_ridge_regression_exact(X, y, ρ_β0, ρ_V0, T, N0)
+function adaptive_ridge_regression_exact(args, X, y, ρ_β0, ρ_V0, T, N0)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
@@ -23,7 +27,7 @@ function adaptive_ridge_regression_exact(X, y, ρ_β0, ρ_V0, T, N0)
     # Create model
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
-    X, Z, y = get_X_Z_y(X, y, T)
+    X, Z, y = get_X_Z_y(args, X, y, T)
     println("X", X[4,:])
     println("Z", Z[4,:])
     println("y", y[1:4])
@@ -57,7 +61,7 @@ function adaptive_ridge_regression_exact(X, y, ρ_β0, ρ_V0, T, N0)
     return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
 end
 
-function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β, ρ_β0, ρ_V0, T)
+function adaptive_ridge_regression_exact_no_stable(args, X, y, ρ_β, ρ_β0, ρ_V0, T)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
@@ -65,7 +69,7 @@ function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β, ρ_β0, ρ_V0, T
     # Create model
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
-    X, Z, y = get_X_Z_y(X, y, T)
+    X, Z, y = get_X_Z_y(args, X, y, T)
     println("X", X[4,:])
     println("Z", Z[4,:])
     println("y", y[1:4])
@@ -93,7 +97,7 @@ function adaptive_ridge_regression_exact_no_stable(X, y, ρ_β, ρ_β0, ρ_V0, T
 end
 
 
-function adaptive_ridge_regression_exact_Vt(X, y, ρ_β0, ρ_V0, T, N0)
+function adaptive_ridge_regression_exact_Vt(args, X, y, ρ_β0, ρ_V0, T, N0)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
@@ -101,7 +105,7 @@ function adaptive_ridge_regression_exact_Vt(X, y, ρ_β0, ρ_V0, T, N0)
     # Create model
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
-    X, Z, y = get_X_Z_y(X, y, T)
+    X, Z, y = get_X_Z_y(args, X, y, T)
 
     N, P = size(X)
     # Add variables
@@ -135,7 +139,7 @@ end
 
 
 
-function adaptive_ridge_regression_standard(X, y, ρ_β0, ρ_V0, T)
+function adaptive_ridge_regression_standard(args, X, y, ρ_β0, ρ_V0, T)
 
 #     Adaptive ridge: does not run fast
 # Regulairzation on beta and V separately
@@ -143,7 +147,7 @@ function adaptive_ridge_regression_standard(X, y, ρ_β0, ρ_V0, T)
     # Create model
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
-    X, Z, y = get_X_Z_y(X, y, T)
+    X, Z, y = get_X_Z_y(args, X, y, T)
 
     N, P = size(X)
     # Add variables
@@ -168,7 +172,7 @@ function adaptive_ridge_regression_standard(X, y, ρ_β0, ρ_V0, T)
 end
 
 
-function adaptive_ridge_regression_slowly_varying(X, y, ρ_β0, ρ_V0, T)
+function adaptive_ridge_regression_slowly_varying(args, X, y, ρ_β0, ρ_V0, T)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
@@ -177,7 +181,7 @@ function adaptive_ridge_regression_slowly_varying(X, y, ρ_β0, ρ_V0, T)
     # Create model
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
-    X, Z, y = get_X_Z_y(X, y, T)
+    X, Z, y = get_X_Z_y(args, X, y, T)
 
     N, P = size(X)
     # Add variables
@@ -204,7 +208,7 @@ end
 
 ##########################################
 
-function adaptive_ridge_regression_exact_no_stable_hurricane(X, Z, y, ρ_β, ρ_β0, ρ_V0)
+function adaptive_ridge_regression_exact_no_stable_hurricane(args, X, Z, y, ρ_β, ρ_β0, ρ_V0)
 
     #Version with actual robust equivalence
     #The formula for the regularization is different
