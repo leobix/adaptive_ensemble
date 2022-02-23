@@ -10,11 +10,13 @@ function get_X_Z_y(args, X, y, T)
         for t=1:T
             if args["err_rule"]
                 Z[i-T,1+p*(t-1):p*t] = X[i-t,:].-y[i-t]
+                Z[i-T, (p*T+1):end] .= 1
             else
                 Z[i-T,1+p*(t-1):p*t] = X[i-t,:]
+                Z[i-T, (p*T+1):end] = y[i-T:i-1]
             end
         end
-        Z[i-T, (p*T+1):end] = y[i-T:i-1]
+
     end
     return X[T+1:end,:], Z, y[T+1:end]
 end
