@@ -25,16 +25,26 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     β_listt = zeros(val, p)
     β_listl2 = zeros(val, p)
 
-    β_l2_init = l2_regression(X0,y0,args["rho"]);
+    β_l2_init = l2_regression(X0,y0,args["rho"], 0); #0 is for beta_stat which I removed
 
     #β_list_linear_adaptive_pure_Vt = zeros(val, p)
     β_list_linear_adaptive_trained_one = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard = zeros(val, p)
 
+    β_list_linear_adaptive_trained_one_err_rule = zeros(val, p)
+    β_list_linear_adaptive_trained_one_standard_err_rule = zeros(val, p)
+
 
     #_, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past)
-    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(X0, y0, args["rho_beta"], args["rho"], args["rho_V"], past)
-    _, β0_1, V0_1 = adaptive_ridge_regression_standard(X0, y0, args["rho"], args["rho_V"], past)
+    args["err_rule"] = false
+    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, args["rho_beta"], args["rho"], args["rho_V"], past)
+    _, β0_1, V0_1 = adaptive_ridge_regression_exact_no_stable(args, X0, y0, 0, args["rho"], args["rho_V"], past)
+
+    #We use the error instead of the forecasts.
+    args["err_rule"] = true
+    _, β0_0_err_rule, V0_0_err_rule, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, args["rho_beta"], args["rho"], args["rho_V"], past)
+    _, β0_1_err_rule, V0_1_err_rule, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, 0, args["rho"], args["rho_V"], past)
+    #_, β0_1, V0_1 = adaptive_ridge_regression_standard(args, X0, y0, args["rho"], args["rho_V"], past)
 
     #TODO: Uncomment
     #obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
@@ -65,7 +75,11 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         X_for_Z = X[split_index-past+s+1:split_index+s+1,:]
         X_for_Z[:,1] .= 1
         y_for_Z = y[split_index-past+s+1:split_index+s+1,:]
-        X_, Z_test, y_ = get_X_Z_y(X_for_Z, y_for_Z, past)
+
+        args["err_rule"] = false
+        X_, Z_test, y_ = get_X_Z_y(args, X_for_Z, y_for_Z, past)
+        args["err_rule"] = true
+        _, Z_test_err_rule, _ = get_X_Z_y(args, X_for_Z, y_for_Z, past)
 
         #BASELINES
         β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt))
@@ -79,6 +93,10 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         #β_list_linear_adaptive_pure_Vt[s,:] = β_linear_adaptive_pure_0_Vt + Vt_adaptive_pure[end,:,:] * Z_test[1,:]
         β_list_linear_adaptive_trained_one[s,:] = β0_0 + V0_0 * Z_test[1,:]
         β_list_linear_adaptive_trained_one_standard[s,:] = β0_1 + V0_1 * Z_test[1, :]
+
+        β_list_linear_adaptive_trained_one_err_rule[s,:] = β0_0_err_rule + V0_0_err_rule * Z_test_err_rule[1,:]
+        β_list_linear_adaptive_trained_one_standard_err_rule[s,:] = β0_1_err_rule + V0_1_err_rule * Z_test_err_rule[1, :]
+
         last_timesteps[s] = Z_test[1,end]
     end
 
@@ -106,6 +124,9 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     err_linear_adaptive_trained_one = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one[s,:]).*std_y.+mean_y)) for s=1:val]
     err_linear_adaptive_trained_one_standard = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_standard[s,:]).*std_y.+mean_y)) for s=1:val]
 
+    err_linear_adaptive_trained_one_err_rule = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_err_rule[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_linear_adaptive_trained_one_standard_err_rule = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_standard_err_rule[s,:]).*std_y.+mean_y)) for s=1:val]
+
     #TODO check get_metrics
     println("\n### Mean Baseline ###")
     get_metrics(args, "mean", err_mean, yt_true)
@@ -114,7 +135,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     get_metrics(args, "last_timestep", err_last_timestep, yt_true[2:end])
 
     println("\n### Best Model Baseline ###")
-    get_metrics(args, "best model", err_best_model, yt_true)
+    get_metrics(args, "best_model", err_best_model, yt_true)
 
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
@@ -145,6 +166,15 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true)
 
+    #SAME AS LAST 2, BUT WITH ERROR RULES
+    println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE + ERROR RULE for Z ###")
+    ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
+    get_metrics(args, "adaptive_ridge_exact_err_rule", err_linear_adaptive_trained_one_err_rule, yt_true)
+
+    println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD + ERROR RULE for Z ###")
+    ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
+    get_metrics(args, "adaptive_ridge_standard_err_rule", err_linear_adaptive_trained_one_standard_err_rule, yt_true)
+
 end
 
 
@@ -170,15 +200,18 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     β_listt = zeros(val, p)
     β_listl2 = zeros(val, p)
 
-    β_l2_init = l2_regression(X0,y0,args["rho"]);
+
+    β_l2_init = l2_regression(X0,y0,args["rho_beta"], 0);
+    ## Uncomment for statistical error regularization
+    #β_l2_init_stat = l2_regression(X0,y0,args["rho_beta"], args["rho_stat"]);
 
     β_list_linear_adaptive_trained_one = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard = zeros(val, p)
 
-    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable_hurricane(X0, Z0, y0, args["rho_beta"], args["rho"], args["rho_V"])
-    _, β0_1, V0_1 = adaptive_ridge_regression_exact_no_stable_hurricane(X0, Z0, y0, 0, args["rho"], args["rho_V"])
-    println("Beta 0", β0_0)
-    println("V 0 ", V0_0)
+    _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable_hurricane(args, X0, Z0, y0, args["rho_beta"], args["rho"], args["rho_V"])
+    _, β0_1, V0_1 = adaptive_ridge_regression_exact_no_stable_hurricane(args, X0, Z0, y0, 0, args["rho"], args["rho_V"])
+#     println("Beta 0", β0_0)
+#     println("V 0 ", V0_0)
 
     β_list_bandits_t = zeros(val, p-1)
     β_list_bandits_all = zeros(val, p-1)
@@ -190,13 +223,13 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     #SOLVE PROBLEM WITH s=1
     for s=1:val
         #BASELINES
-        if s == 1
+        if s < 5
             β_list_bandits_all[s,:] = ones(p-1)/(p-1)
         else
-            β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt[1:s-1,:])[:,1:end-1], vcat(y0,yt[1:s-1]))
+            β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]))
             #do not take the intercept term into account
             #β_list_bandits_t[s,:] = compute_bandit_weights(Xt[1:s,1:end-1], yt[s])
-            β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[s-1,:], yt[s-1])
+            β_PA = compute_PA_weights(0.01, β_PA, Matrix(Xt)[s-4,:], yt[s-4])
         end
         β_list_PA[s,:] = β_PA
 
@@ -220,6 +253,7 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     err_last_timestep = [abs(yt_true[s]-(Zt[s,end].*std_y.+mean_y)) for s=2:val]
     err_PA = [abs(yt_true[s]-(dot(Xt[s,:],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
     err_baseline = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init).*std_y.+mean_y)) for s=1:val]
+    #err_baseline_stat = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init_stat).*std_y.+mean_y)) for s=1:val]
 
     err_linear_adaptive_trained_one = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one[s,:]).*std_y.+mean_y)) for s=1:val]
     err_linear_adaptive_trained_one_standard = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_standard[s,:]).*std_y.+mean_y)) for s=1:val]
@@ -229,7 +263,7 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     get_metrics(args, "mean", err_mean, yt_true)
 
     println("\n### Best Model Baseline ###")
-    get_metrics(args, "best model", err_best_model, yt_true)
+    get_metrics(args, "best_model", err_best_model, yt_true)
 
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
@@ -241,8 +275,11 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     ### The Beta 0 that is originating from the adaptive formulation
     get_metrics(args, "PA", err_PA, yt_true)
 
-    println("\n### β0 Baseline ###")
+    println("\n### Ridge Baseline ###")
     get_metrics(args, "ridge", err_baseline, yt_true)
+
+#     println("\n### Ridge + Stat Baseline ###")
+#     get_metrics(args, "ridge_stat", err_baseline_stat, yt_true)
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
@@ -253,6 +290,3 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true)
 
 end
-
-
-

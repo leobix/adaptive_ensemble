@@ -92,7 +92,7 @@ function parse_commandline()
             help = "more_data_for_beta0"
             action = :store_true
 
-        "--fix-beta0"
+        "--CVAR"
             help = "fix beta0"
             action = :store_true
 
@@ -101,6 +101,10 @@ function parse_commandline()
             action = :store_true
 
         "--ridge"
+            help = "verbose"
+            action = :store_true
+
+        "--err_rule"
             help = "verbose"
             action = :store_true
 
@@ -134,8 +138,13 @@ function parse_commandline()
             arg_type = Float64
             default = 0.1
 
+        "--rho_stat"
+            help = "rho for statistical error in standard ridge"
+            arg_type = Float64
+            default = 0.1
+
         "--rho"
-            help = "rho for Beta 0"
+            help = "rho for Beta 0 and standard ridge"
             arg_type = Float64
             default = 0.1
 
@@ -190,9 +199,9 @@ function main()
     ### Choose END-ID 12 for DL/ML only
     ### Choose END-ID 15 for ML+OP
         if args["data"][end-1:end] == "EP"
-            X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean.csv"))
+            X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean_v2.csv"))
         else
-            X_test_adaptive = DataFrame(CSV.File("data/NA_ARO_Intensity_2014_clean.csv"))
+            X_test_adaptive = DataFrame(CSV.File("data/NA_ARO_Intensity_2014_clean_v2.csv"))
         end
         X_test_adaptive, Z, y_test = prepare_data_storms(X_test_adaptive, args["past"], args["end-id"])
         args["end-id"] = size(X_test_adaptive)[2]
