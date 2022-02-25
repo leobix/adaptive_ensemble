@@ -80,6 +80,11 @@ function parse_commandline()
             arg_type = Int
             default = 25
 
+        "--lead_time"
+            help = "Lead time in timesteps"
+            arg_type = Int
+            default = 1
+
         "--last_yT"
             help = "last_yT"
             action = :store_true
@@ -105,7 +110,11 @@ function parse_commandline()
             action = :store_true
 
         "--err_rule"
-            help = "verbose"
+            help = "Build Z with the regrets instead of the raw history"
+            action = :store_true
+
+        "--err_rule_norm"
+            help = "Build Z with the regrets instead of the raw history, and normalized regrets step-wise"
             action = :store_true
 
         "--uncertainty"
@@ -175,10 +184,25 @@ function main()
         y_test = DataFrame(CSV.File(args["filename-y"]))
     end
 
-    if args["data"] == "safi"
+    if args["data"] == "safi_speed"
+        X_test_adaptive = DataFrame(CSV.File("data/X_test_speed_adaptive_out1.csv"))
+        y_test = DataFrame(CSV.File("data/y_test_speed_adaptive_out1.csv"))
+        y_test = y_test[!, "speed"]
+    end
+
+    if args["data"] == "safi_speed_3"
         X_test_adaptive = DataFrame(CSV.File("data/X_test_adaptive.csv"))
         y_test = DataFrame(CSV.File("data/y_test_speed.csv"))
         y_test = y_test[!, "speed"]
+        X_test_adaptive = Matrix(X_test_adaptive)[:,1:args["end-id"]]
+        X_test_adaptive[:,1] .= 1
+        X_test_adaptive, Z, y_test = get_X_Z_y(args, X_test_adaptive, y_test[:, 1], args["past"])
+    end
+
+    if args["data"] == "safi_cos"
+        X_test_adaptive = DataFrame(CSV.File("data/X_test_cos_adaptive_out1.csv"))
+        y_test = DataFrame(CSV.File("data/y_test_cos_adaptive_out1.csv"))
+        y_test = y_test[!, "cos_wind_dir"]
     end
 
     if args["data"] == "traffic"
@@ -230,7 +254,7 @@ function main()
 
     X = (X .- mean_y)./std_y;
     y = (y .- mean_y)./std_y;
-    if args["data"][1:end-3] == "hurricane"
+    if args["data"][1:end-3] == "hurricane" || args["lead_time"]>1
         Z = (Z .- mean_y)./std_y
     end
     println("Mean target: ", mean_y, " Std target: ", std_y)
@@ -247,7 +271,7 @@ function main()
 
     #TODO: Clean with only args to be passed
     try
-        if args["data"][1:end-3] == "hurricane"
+        if args["data"][1:end-3] == "hurricane" || args["lead_time"]>1
             eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
         else
             eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
