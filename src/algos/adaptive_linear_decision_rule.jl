@@ -5,15 +5,24 @@ function get_X_Z_y(args, X, y, T)
     """
     n, p = size(X)
     #T past time steps * p features + T targets
-    Z = ones(n-T, T*p+T)
-    for i=T+1:n
+    Z = ones(n-T-args["lead_time"]+1, T*p+T)
+    for i=T+args["lead_time"]:n
         for t=1:T
-            if args["err_rule"]
-                Z[i-T,1+p*(t-1):p*t] = X[i-t,:].-y[i-t]
-                Z[i-T, (p*T+1):end] .= 1
-            else
+            if args["lead_time"] > 1
+                Z[i-T-args["lead_time"]+1,1+p*(t-1):p*t] = X[i-t,:]
+                Z[i-T-args["lead_time"]+1, (p*T+1):end] = y[i-T-args["lead_time"]+1:i-args["lead_time"]]
+            elseif !args["err_rule"]
+                println("HERE")
                 Z[i-T,1+p*(t-1):p*t] = X[i-t,:]
                 Z[i-T, (p*T+1):end] = y[i-T:i-1]
+            elseif args["err_rule"] && !args["err_rule_norm"]
+                Z[i-T,1+p*(t-1):p*t] = X[i-t,:].-y[i-t]
+                Z[i-T, (p*T+1):end] .= 1
+            else args["err_rule_norm"]
+                Z[i-T,1+p*(t-1):p*t] = X[i-t,:].-y[i-t]
+                norm_Z = sum(abs.(Z[i-T,1+p*(t-1):p*t]))
+                Z[i-T,:] ./ norm_Z
+                Z[i-T, (p*T+1):end] .= 1
             end
         end
 
