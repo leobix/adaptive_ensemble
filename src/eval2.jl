@@ -60,16 +60,9 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     for s=1:val
 
-        #TODO check split_index with max(split inex, 1)
-        if args["more_data_for_beta0"]
-            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), s+(num_past-1)*past, past-1, args["uncertainty"], args["last_yT"])
-        else
-            X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), (num_past-1)*past, past-1, args["uncertainty"], args["last_yT"])
-        end
-
-        #TODO: evaluate also if we change Vt regularly
-        #obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
-
+        #TODO check split_index with max(split inex, 1) and CHECK the MIN
+        #The min ensures we remain in bounds.
+        X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), min((num_past-1)*past,split_index-past+s), past-1, args["uncertainty"], args["last_yT"])
 
         #Line to get Z_{t+1}
         X_for_Z = X[split_index-past+s+1:split_index+s+1,:]
@@ -84,7 +77,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         #BASELINES
         β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt))
         β_list_bandits_t[s,:] = compute_bandit_weights(Xt[:,2:end], yt)
-        β_PA = compute_PA_weights(0.01, β_PA, Matrix(Xt)[end,1:end], yt[end])
+        β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[end,1:end], yt[end])
         β_list_PA[s,:] = β_PA
         #β_l2 = l2_regression(vcat(X0,Xt),vcat(y0,yt),ρ);
         #β_listl2[s,:] = β_l2

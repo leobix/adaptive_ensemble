@@ -12,7 +12,6 @@ function get_X_Z_y(args, X, y, T)
                 Z[i-T-args["lead_time"]+1,1+p*(t-1):p*t] = X[i-t,:]
                 Z[i-T-args["lead_time"]+1, (p*T+1):end] = y[i-T-args["lead_time"]+1:i-args["lead_time"]]
             elseif !args["err_rule"]
-                println("HERE")
                 Z[i-T,1+p*(t-1):p*t] = X[i-t,:]
                 Z[i-T, (p*T+1):end] = y[i-T:i-1]
             elseif args["err_rule"] && !args["err_rule_norm"]
