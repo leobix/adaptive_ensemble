@@ -88,18 +88,35 @@ end
 
 
 function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15)
+    if args["data"] == 'synthetic'
+        try
+            results = DataFrame(CSV.File("results_3_29/results_"*args["data"]*".csv"))
+            push!(results, (args["data"],
+                args["std_pert"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["period"], args["N_models"], args["seed"],
+                args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
+            CSV.write("results_3_29/results_"*args["data"]*".csv", results)
+        catch e
+            results = DataFrame(Dataset = String[], Std_Pert_y = Float64[], Bias_Range = Float64[], Std_Range = Float64[], Bias_Drift_range = Float64[], Std_Drift_Range = Float64[], Period = Int64[], N_models = Int64[], Seed = Int64[], End_id = Int64[],
+                Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
+                Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[])
 
-    try
-        results = DataFrame(CSV.File("results_2_23/results_"*args["data"]*".csv"))
-        push!(results, (args["data"], args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
-        CSV.write("results_2_23/results_"*args["data"]*".csv", results)
-    catch e
-        results = DataFrame(Dataset = String[], End_id = Int64[],
-            Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
-            Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[])
+            push!(results, (args["data"], args["std_pert"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["period"], args["N_models"],
+                args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
+            CSV.write("results_3_29/results_"*args["data"]*".csv", results)
+        end
+    else
+        try
+            results = DataFrame(CSV.File("results_3_29/results_"*args["data"]*".csv"))
+            push!(results, (args["data"], args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
+            CSV.write("results_3_29/results_"*args["data"]*".csv", results)
+        catch e
+            results = DataFrame(Dataset = String[], End_id = Int64[],
+                Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
+                Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[])
 
-        push!(results, (args["data"], args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
-        CSV.write("results_2_23/results_"*args["data"]*".csv", results)
+            push!(results, (args["data"], args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
+            CSV.write("results_3_29/results_"*args["data"]*".csv", results)
+        end
     end
 
 end
