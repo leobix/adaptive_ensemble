@@ -1,13 +1,16 @@
-using Statistics, StatsBase, Distributions
-####TODO ADD SEED
-function create_y(T, period, bias, σ_pert)
+using Statistics, StatsBase, Distributions, Random
+
+#TODO Add drift on y as well!!!!!
+function create_y(T, period, bias, σ_pert, seed)
+    Random.seed!(seed)
     d = Normal(0, σ_pert)
     y_base = [sin(2*pi*period*t/T) for t=1:2T]
     y = y_base.+rand(d, size(y_base))
     return y
 end
 
-function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_pert, total_drift_additive)
+function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_pert, total_drift_additive, seed)
+    Random.seed!(seed)
     #uniform distribution of models biases
     T = size(y)[1]
     d = Uniform(-bias_range, bias_range)
@@ -47,3 +50,11 @@ function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_
     X[:,1] .= 1
     return X
 end
+
+
+
+# using Distributions
+# mean = [2.,3.]
+# C = [0.2 0; 0 0.3]
+# d = MvNormal(mean, C)
+# x = rand(d, 2000)
