@@ -25,7 +25,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     β_listt = zeros(val, p)
     β_listl2 = zeros(val, p)
 
-    β_l2_init = l2_regression_Convex(X0,y0,args["rho"], 0); #0 is for beta_stat which I removed
+    β_l2_init = l2_regression(X0,y0,args["rho"], 0); #0 is for beta_stat which I removed
 
     #β_list_linear_adaptive_pure_Vt = zeros(val, p)
     β_list_linear_adaptive_trained_one = zeros(val, p)
@@ -194,7 +194,7 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     β_listl2 = zeros(val, p)
 
 
-    β_l2_init = l2_regression_Convex(X0,y0,args["rho_beta"], 0);
+    β_l2_init = l2_regression(X0,y0,args["rho_beta"], 0);
     ## Uncomment for statistical error regularization
     #β_l2_init_stat = l2_regression(X0,y0,args["rho_beta"], args["rho_stat"]);
 
