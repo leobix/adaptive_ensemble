@@ -14,3 +14,7 @@ julia src/main.jl --end-id 22 --val 8 --past 3 --num-past 3 --rho 0.1 --train_te
 /Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia src/main.jl --data hurricane_NA  --end-id 17  --val 500 --train_test_split 0.5 --past 3 --num-past 350 --rho 0.01 --rho_V 0.1 --rho_beta 0.1 --begin-id 1
 
 /Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia src/main_synthetic.jl --past 3 --num-past 73 --val 362 --total_drift_additive --bias_range 0.25 --std_range 0.5
+
+Synthetic:
+
+/Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia src/main_synthetic.jl --past 5 --num-past 200 --val 1000 --total_drift_additive --bias_range 0.25 --std_range 0.5 --T 1000 --num_exp 10 --seed 1
