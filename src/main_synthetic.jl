@@ -215,6 +215,15 @@ function main()
 
     y = create_y(args["T"], args["period"], args["bias"], args["std_pert"], args["seed"])
 
+    #TODO check the n/2 to split index
+    split_index = floor(Int,n*args["train_test_split"])
+
+    #X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
+    #y = y_test[:, 1];
+    mean_y = mean(y[1:floor(Int, split_index),:])
+    std_y = std(y[1:floor(Int, split_index),:])
+    y = (y .- mean_y)./std_y;
+
     for i=1:args["num_exp"]
         args["seed"] = i
         X_test_adaptive = create_ensemble_values(y, args["N_models"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["total_drift_additive"], args["seed"])
@@ -232,26 +241,12 @@ function main()
         X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
         n, p = size(X)
 
-        #TODO check the n/2 to split index
-        split_index = floor(Int,n*args["train_test_split"])
-
-        #X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
-        #y = y_test[:, 1];
-        mean_y = mean(y[1:floor(Int, split_index),:])
-        std_y = std(y[1:floor(Int, split_index),:])
-
         X = (X .- mean_y)./std_y;
-        y = (y .- mean_y)./std_y;
+
         if args["lead_time"]>1
             Z = (Z .- mean_y)./std_y
         end
         println("Mean target: ", mean_y, " Std target: ", std_y)
-
-    #     if args["reg"] == -1
-    #         reg = 1/(args["past"]*args["num-past"])
-    #     else
-    #         reg = args["reg"]
-    #     end
 
         #TODO code all_past -1
 
