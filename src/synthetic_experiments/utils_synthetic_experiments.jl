@@ -9,6 +9,8 @@ function create_y(T, period, bias, σ_pert, seed)
     return y
 end
 
+#TODO add correlation between the normal variables
+#TODO add concept drift in test set only
 function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_pert, total_drift_additive, seed)
     Random.seed!(seed)
     #uniform distribution of models biases
