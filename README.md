@@ -18,3 +18,5 @@ julia src/main.jl --end-id 22 --val 8 --past 3 --num-past 3 --rho 0.1 --train_te
 Synthetic:
 
 /Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia src/main_synthetic.jl --past 5 --num-past 200 --val 1000 --total_drift_additive --bias_range 0.25 --std_range 0.5 --T 1000 --num_exp 10 --seed 1
+
+/Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia src/main_synthetic.jl --past 5 --num-past 100 --val 500 --total_drift_additive --bias_range 0.5 --std_range 0.5 --T 600 --num_exp 2 --seed 1 --N_models 10 --bias_drift 0.1 --std_drift 0.1 --CVAR
