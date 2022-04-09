@@ -18,6 +18,8 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"], args["last_yT"])
     println("There are ", size(X)[1], " samples in total.")
+    println("Number of samples in train set: ", size(y0))
+    args["train_length"] = size(y0)[1]
     println("We start training at index ", max(split_index-num_past*past+1, 1))
     println("We test between index ", max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index), " and ",  max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index)+val+1)
 
