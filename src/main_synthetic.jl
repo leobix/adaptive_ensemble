@@ -156,7 +156,12 @@ function parse_commandline()
             default = 10
 
         "--T"
-            help = "Number of timesteps in the train data"
+            help = "Number of total timesteps available in the train data"
+            arg_type = Int
+            default = 365
+
+        "--train_length"
+            help = "Number of timesteps used in the train data"
             arg_type = Int
             default = 365
 
