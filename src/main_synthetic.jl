@@ -216,10 +216,9 @@ function main()
     y = create_y(args["T"], args["period"], args["bias"], args["std_pert"], args["seed"])
 
     #TODO check the n/2 to split index
+    n = size(y)[1]
     split_index = floor(Int,n*args["train_test_split"])
 
-    #X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
-    #y = y_test[:, 1];
     mean_y = mean(y[1:floor(Int, split_index),:])
     std_y = std(y[1:floor(Int, split_index),:])
     y = (y .- mean_y)./std_y;
