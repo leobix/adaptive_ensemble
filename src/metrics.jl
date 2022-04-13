@@ -92,7 +92,7 @@ end
 function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, len_test)
     if args["data"] == "synthetic"
         try
-            results = DataFrame(CSV.File("results_3_29/results_"*args["data"]*"_"*args["seed"]*".csv"))
+            results = DataFrame(CSV.File("results_3_29/results_"*args["data"]*"_"*string(args["seed"])*".csv"))
             push!(results, (args["data"], args["train_length"], len_test,
                 args["std_pert"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["period"], args["N_models"], args["seed"], args["T"],
                 args["end-id"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15))
