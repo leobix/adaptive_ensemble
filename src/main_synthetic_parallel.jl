@@ -228,6 +228,7 @@ function main()
     std_y = std(y[1:floor(Int, split_index),:])
     y = (y .- mean_y)./std_y;
 
+    args["end-id"] = args["N_models"]
     if args["seed"] > 0
         #args["seed"] = i
         X_test_adaptive = create_ensemble_values(y, args["N_models"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["total_drift_additive"], args["seed"])
