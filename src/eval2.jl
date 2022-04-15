@@ -79,7 +79,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         #BASELINES
         β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt))
         β_list_bandits_t[s,:] = compute_bandit_weights(Xt[:,2:end], yt)
-        β_PA = compute_PA_weights(0.001, β_PA, Matrix(Xt)[end,1:end], yt[end])
+        β_PA = compute_PA_weights(args["rho_beta"], β_PA, Matrix(Xt)[end,1:end], yt[end])
         β_list_PA[s,:] = β_PA
         #β_l2 = l2_regression(vcat(X0,Xt),vcat(y0,yt),ρ);
         #β_listl2[s,:] = β_l2
