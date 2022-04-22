@@ -200,8 +200,18 @@ function parse_commandline()
             arg_type = Float64
             default = 0.1
 
+        "--y_bias_drift"
+            help = "Error bias drift of the target values"
+            arg_type = Float64
+            default = 0.
+
+        "--y_std_drift"
+            help = "Error std drift of the target values"
+            arg_type = Float64
+            default = 0.
+
         "--total_drift_additive"
-            help = "Build Z with the regrets instead of the raw history, and normalized regrets step-wise"
+            help = "add all drifts on top of each other, should be always activated a priori with our setting"
             action = :store_true
 
     end
@@ -224,14 +234,10 @@ function main()
     n = size(y)[1]
     split_index = floor(Int,n*args["train_test_split"])
 
-    mean_y = mean(y[1:floor(Int, split_index),:])
-    std_y = std(y[1:floor(Int, split_index),:])
-    y = (y .- mean_y)./std_y;
 
-    args["end-id"] = args["N_models"]
     if args["seed"] > 0
         #args["seed"] = i
-        X_test_adaptive = create_ensemble_values(y, args["N_models"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["total_drift_additive"], args["seed"])
+        X_test_adaptive, y = create_ensemble_values(y, args["N_models"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["total_drift_additive"], args["y_bias_drift"], args["y_std_drift"], args["seed"])
 
         if args["end-id"] == -1
             args["end-id"] = size(X_test_adaptive)[2]
@@ -246,6 +252,14 @@ function main()
         X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
         n, p = size(X)
 
+        #Standardize y
+        mean_y = mean(y[1:floor(Int, split_index),:])
+        std_y = std(y[1:floor(Int, split_index),:])
+        y = (y .- mean_y)./std_y;
+
+        args["end-id"] = args["N_models"]
+
+        #Standardize X
         X = (X .- mean_y)./std_y;
 
         if args["lead_time"]>1
