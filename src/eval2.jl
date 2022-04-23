@@ -6,6 +6,8 @@ include("algos/OLS.jl")
 include("algos/adaptive_linear_decision_rule.jl")
 include("metrics.jl")
 
+using Dates
+
 #TODO: COMPUTE ALL METRICS IN THE ORIGINAL SPACE, in particular MAPE
 
 function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, std_y)
@@ -27,25 +29,47 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     β_listt = zeros(val, p)
     β_listl2 = zeros(val, p)
 
+    #### Standard Ridge Regression
+    start = now()
     β_l2_init = l2_regression(X0,y0,args["rho"], 0); #0 is for beta_stat which I removed
+    l2_regression_time = (now() - start).value
+    println("Time L2 Regression ", l2_regression_time)
 
     #β_list_linear_adaptive_pure_Vt = zeros(val, p)
+
     β_list_linear_adaptive_trained_one = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard = zeros(val, p)
+
 
     β_list_linear_adaptive_trained_one_err_rule = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard_err_rule = zeros(val, p)
 
-
-    #_, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past)
+    #### ARO Ridge + standard. The regularization is applied to all reg coefs, including a separate reg on beta and V
     args["err_rule"] = false
+    start = now()
     _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, args["rho_beta"], args["rho"], args["rho_V"], past)
-    _, β0_1, V0_1 = adaptive_ridge_regression_exact_no_stable(args, X0, y0, 0, args["rho"], args["rho_V"], past)
+    arole_allreg_regression_time = (now() - start).value
+    println("Time Adaptive Regression Standard ", arole_allreg_regression_time)
 
-    #We use the error instead of the forecasts.
+    #### ARO Ridge + standard. The regularization is applied to beta and V only not the time varying beta
+    start = now()
+    _, β0_1, V0_1 = adaptive_ridge_regression_exact_no_stable(args, X0, y0, 0, args["rho"], args["rho_V"], past)
+    arole_beta0andV_regression_time = (now() - start).value
+    println("Time Adaptive Regression Standard ", arole_beta0andV_regression_time)
+
+    #### We use the error of the forecasts in the past timesteps instead of the forecasts themselves.
+    #### ARO Ridge + Error rule for Z instead of the values of the past forecasts
     args["err_rule"] = true
+
+    start = now()
     _, β0_0_err_rule, V0_0_err_rule, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, args["rho_beta"], args["rho"], args["rho_V"], past)
+    arole_allreg_errorrule_regression_time = (now() - start).value
+    println("Time Adaptive Regression Standard ", arole_allreg_errorrule_regression_time)
+
+    start = now()
     _, β0_1_err_rule, V0_1_err_rule, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, 0, args["rho"], args["rho_V"], past)
+    arole_beta0andV_errorrule_regression_time = (now() - start).value
+    println("Time Adaptive Regression Standard ", arole_beta0andV_errorrule_regression_time)
     #_, β0_1, V0_1 = adaptive_ridge_regression_standard(args, X0, y0, args["rho"], args["rho_V"], past)
 
     #TODO: Uncomment
@@ -143,7 +167,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     get_metrics(args, "PA", err_PA, yt_true)
 
     println("\n### β0 Baseline ###")
-    get_metrics(args, "ridge", err_baseline, yt_true)
+    get_metrics(args, "ridge", err_baseline, yt_true, l2_regression_time)
 
 #     println("\n### β0 Baseline Retrained ###")
 #     get_metrics(err_l2, yt_true)
@@ -155,20 +179,20 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
-    get_metrics(args, "adaptive_ridge_exact", err_linear_adaptive_trained_one, yt_true)
+    get_metrics(args, "adaptive_ridge_exact", err_linear_adaptive_trained_one, yt_true, arole_allreg_regression_time)
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
-    get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true)
+    get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true, arole_beta0andV_regression_time)
 
-    #SAME AS LAST 2, BUT WITH ERROR RULES
+    #SAME AS LAST 2, BUT WITH ERROR RULES i.e., instead of forecast values we use the previous errors of the models
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE + ERROR RULE for Z ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
-    get_metrics(args, "adaptive_ridge_exact_err_rule", err_linear_adaptive_trained_one_err_rule, yt_true)
+    get_metrics(args, "adaptive_ridge_exact_err_rule", err_linear_adaptive_trained_one_err_rule, yt_true, arole_allreg_errorrule_regression_time)
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD + ERROR RULE for Z ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
-    get_metrics(args, "adaptive_ridge_standard_err_rule", err_linear_adaptive_trained_one_standard_err_rule, yt_true)
+    get_metrics(args, "adaptive_ridge_standard_err_rule", err_linear_adaptive_trained_one_standard_err_rule, yt_true, arole_beta0andV_errorrule_regression_time)
 
 end
 
