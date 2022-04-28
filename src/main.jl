@@ -170,6 +170,11 @@ function parse_commandline()
             arg_type = Float64
             default = 0.1
 
+        "--train_length"
+            help = "Number of timesteps used in the train data. Here by default for later use in other functions. useless as an argument."
+            arg_type = Int
+            default = 0
+
 
     end
     return parse_args(s)
