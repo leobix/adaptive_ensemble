@@ -110,18 +110,24 @@ function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, len_
             CSV.write(filename*"results_"*args["data"]*"_"*string(args["seed"])*".csv", results)
         end
     else
+        param_combo = "0"
         try
-            results = DataFrame(CSV.File(filename*"results_"*args["data"]*".csv"))
+            param_combo = string(args["param_combo"])
+        catch e
+
+        end
+        try
+            results = DataFrame(CSV.File(filename*"results_"*args["data"]*"_"*param_combo*".csv"))
             push!(results, (args["data"], args["train_length"], len_test, args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time))
             #CSV.write("results_3_29/results_"*args["data"]*"_"*string(args["seed"])*".csv", results)
-            CSV.write(filename*"results_"*args["data"]*".csv", results)
+            CSV.write(filename*"results_"*args["data"]*"_"*param_combo*".csv", results)
         catch e
             results = DataFrame(Dataset = String[], Train_Length = Int64[], Test_Length = Int64[], End_id = Int64[],
                 Rho_beta = Float64[], Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
                 Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[], Time = Int64[])
 
             push!(results, (args["data"], args["train_length"], len_test, args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time))
-            CSV.write(filename*"results_"*args["data"]*".csv", results)
+            CSV.write(filename*"results_"*args["data"]*"_"*param_combo*".csv", results)
         end
     end
 

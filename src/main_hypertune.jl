@@ -1,3 +1,5 @@
+#Note: this file is the same as main.jl but is more convenient to hypertune in a given range of features
+
 import Pkg
 #be careful: implies you created a robust virtual environment
 #Pkg.activate("robust")
@@ -175,6 +177,11 @@ function parse_commandline()
             arg_type = Int
             default = 0
 
+        "--param_combo"
+            help = "hyperparameters combo to be tested"
+            arg_type = Int
+            default = 0
+
 
     end
     return parse_args(s)
@@ -182,6 +189,33 @@ end
 
 function main()
     args = parse_commandline()
+
+
+
+    rho_beta_list = [0, 0.001, 0.01, 0.1, 1]
+    rho_list = [0, 0.001, 0.01, 0.1, 1]
+    rho_V_list = [0, 0.001, 0.01, 0.1, 1]
+    past_list = [1, 2, 3, 4, 5, 6, 7]
+    hyper_number = size(rho_beta_list)[1]*size(rho_list)[1]*size(rho_V_list)[1]*size(past_list)[1]
+    hyperparam_combos = zeros(hyper_number, 4)
+    acc = 1
+    for r_beta in  rho_beta_list
+        for rho in rho_list
+            for rho_V in rho_V_list
+                for past in past_list
+                    hyperparam_combos[acc,:] = [r_beta, rho, rho_V, past]
+                    acc += 1
+                end
+            end
+        end
+    end
+
+    combo = hyperparam_combos[args["param_combo"],:]
+    args["rho_beta"] = combo[1]
+    args["rho"] = combo[2]
+    args["rho_V"] = combo[3]
+    args["past"] = Int(combo[4])
+
     println("Arguments:")
     for (arg,val) in args
         println("  $arg  =>  $val")

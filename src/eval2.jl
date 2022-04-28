@@ -39,8 +39,6 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     β_list_linear_adaptive_trained_one = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard = zeros(val, p)
-
-
     β_list_linear_adaptive_trained_one_err_rule = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard_err_rule = zeros(val, p)
 
@@ -214,6 +212,8 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     println("There are ", size(X)[1], " samples in total.")
     println("We start training at index ", max(split_index-num_past*past+1, 1))
     println("We test between index ", max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index), " and ",  max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index)+val+1)
+    args["train_length"] = size(y0)[1]
+
 
     β_list0 = zeros(val, p)
     β_listt = zeros(val, p)
@@ -242,13 +242,15 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     #SOLVE PROBLEM WITH s=1
     for s=1:val
         #BASELINES
+        #The reason why 5 in particular, is because the first 4 samples represent 4*6h of predictions and we are meant to predict 24h in advance so there is a lag to take into account.
+        #Note that with hurricanes the samples are not necessarily contiguous, and that for a next hurricane we reuse the best weights obtained from the previous one.
         if s < 5
             β_list_bandits_all[s,:] = ones(p-1)/(p-1)
         else
             β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]))
             #do not take the intercept term into account
             #β_list_bandits_t[s,:] = compute_bandit_weights(Xt[1:s,1:end-1], yt[s])
-            β_PA = compute_PA_weights(0.01, β_PA, Matrix(Xt)[s-4,:], yt[s-4])
+            β_PA = compute_PA_weights(args["rho_beta"], β_PA, Matrix(Xt)[s-4,:], yt[s-4])
         end
         β_list_PA[s,:] = β_PA
 
