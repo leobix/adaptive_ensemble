@@ -58,7 +58,7 @@ function separate_storms(storms)
     y_storms = copy(storms)
     current_speed_storms = copy(storms)
     for i = 1:n
-        #forecasts start at index 8
+        #forecasts start at index 8, the rest is truth, current speed and some ids
         data_storms[i] = storms[i][!, 8:end]
         y_storms[i] = storms[i][!, "TRUTH"]
         current_speed_storms[i] = storms[i][!, "CURRENT_SPEED"]
@@ -77,6 +77,7 @@ function get_X_Z_y_hurricane(X, y, current_speed, T)
     Z = ones(n-T, T*p+T)
     for i=T+1:n
         for t=1:T
+            #we can't use err_rule because we don't have access to the ground truth values yet.
             Z[i-T,1+p*(t-1):p*t] = X[i-t,:]
         end
         # here we put the current speed and past current speed instead of the targets since it would be cheating

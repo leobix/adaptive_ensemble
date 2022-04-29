@@ -195,7 +195,7 @@ function main()
     rho_beta_list = [0, 0.001, 0.01, 0.1, 1]
     rho_list = [0, 0.001, 0.01, 0.1, 1]
     rho_V_list = [0, 0.001, 0.01, 0.1, 1]
-    past_list = [1, 2, 3, 4, 5, 6, 7]
+    past_list = [2, 3, 4, 5]
     hyper_number = size(rho_beta_list)[1]*size(rho_list)[1]*size(rho_V_list)[1]*size(past_list)[1]
     hyperparam_combos = zeros(hyper_number, 4)
     acc = 1
@@ -284,6 +284,7 @@ function main()
     end
 
     X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
+    println(X[1:5,:])
     n, p = size(X)
 
     #TODO check the n/2 to split index
