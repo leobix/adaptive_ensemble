@@ -247,6 +247,12 @@ function main()
         y_test = y_test[!, "cos_wind_dir"]
     end
 
+    if args["data"] == "safi_sin"
+        X_test_adaptive = DataFrame(CSV.File("data/X_test_sin_adaptive_out1.csv"))
+        y_test = DataFrame(CSV.File("data/y_test_sin_adaptive_out1.csv"))
+        y_test = y_test[!, "sin_wind_dir"]
+    end
+
     if args["data"] == "traffic"
         X_test_adaptive = DataFrame(CSV.File("data/traffic_predictions_test_val.csv"))
         X_test_adaptive = X_test_adaptive[!,[2, 3,5,8,9,11,12,13,25]]
