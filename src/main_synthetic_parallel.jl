@@ -150,6 +150,11 @@ function parse_commandline()
             arg_type = Float64
             default = 0.1
 
+        "--p_ber"
+            help = "For discrete noise on the ensemble members. 1 is usual drifting noise. Lower means sometimes no additional noise."
+            arg_type = Float64
+            default = 1.0
+
         "--N_models"
             help = "Number of models in the ensemble"
             arg_type = Int
@@ -237,7 +242,7 @@ function main()
 
     if args["seed"] > 0
         #args["seed"] = i
-        X_test_adaptive, y = create_ensemble_values(y, args["N_models"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["total_drift_additive"], args["y_bias_drift"], args["y_std_drift"], args["seed"])
+        X_test_adaptive, y = create_ensemble_values(y, args["N_models"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["total_drift_additive"], args["y_bias_drift"], args["y_std_drift"], args["seed"], args["p_ber"])
 
         if args["end-id"] == -1
             args["end-id"] = size(X_test_adaptive)[2]
