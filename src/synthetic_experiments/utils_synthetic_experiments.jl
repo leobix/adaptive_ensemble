@@ -11,7 +11,7 @@ end
 
 #TODO add correlation between the normal variables
 #TODO add concept drift in test set only
-function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_pert, total_drift_additive, y_bias_drift, y_std_drift, seed)
+function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_pert, total_drift_additive, y_bias_drift, y_std_drift, seed, p_ber = 1)
     Random.seed!(seed)
     #uniform distribution of models biases
     T = size(y)[1]
@@ -42,9 +42,14 @@ function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_
         biases_perturb = rand(d, N_models)
         d = Uniform(0, σ_pert)
         variances_perturb = rand(d, N_models)
+        bernoulli = Binomial(1,p_ber)
         for i=1:N_models
             d = Normal(biases_perturb[i], variances_perturb[i])
-            X[:,i] = X[:,i] .+ [t/T for t=1:T].*rand(d, T)
+            if p_ber < 1
+                X[:,i] = X[:,i] .+ rand(d, T).*rand(bernoulli, T)
+            else
+                X[:,i] = X[:,i] .+ [t/T for t=1:T].*rand(d, T)
+            end
         end
     end
     if y_std_drift+y_bias_drift>0
