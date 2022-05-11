@@ -9,7 +9,7 @@ function create_y(T, period, bias, σ_pert, seed)
     return y
 end
 
-#TODO add correlation between the normal variables
+#TODO add correlation between the normal variables: https://juliastats.org/Distributions.jl/stable/multivariate/
 #TODO add concept drift in test set only
 function create_ensemble_values(y, N_models, bias_range, std_range, δ_pert, σ_pert, total_drift_additive, y_bias_drift, y_std_drift, seed, p_ber = 1)
     Random.seed!(seed)

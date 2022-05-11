@@ -37,7 +37,7 @@ function parse_commandline()
 
         "--filename-X"
             help = "filename of data X"
-            default = "data/energy_predictions_test_val.csv"
+            default = "data/energy_predictions_test_val2.csv"
             arg_type = String
 
         "--filename-y"
@@ -223,7 +223,7 @@ function main()
 
     if args["data"] == "energy"
         X_test_adaptive = DataFrame(CSV.File(args["filename-X"]))
-        y_test = DataFrame(CSV.File(args["filename-y"]))
+        y_test = Matrix(DataFrame(CSV.File(args["filename-y"])))
     end
 
     if args["data"] == "safi_speed"

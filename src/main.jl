@@ -192,6 +192,11 @@ function main()
         y_test = DataFrame(CSV.File(args["filename-y"]))
     end
 
+    if args["data"] == "imports"
+        X_test_adaptive = DataFrame(CSV.File("MYPATH"))
+        y_test = DataFrame(CSV.File("MYPATH"))
+    end
+
     if args["data"] == "safi_speed"
         X_test_adaptive = DataFrame(CSV.File("data/X_test_speed_adaptive_out1.csv"))
         y_test = DataFrame(CSV.File("data/y_test_speed_adaptive_out1.csv"))
