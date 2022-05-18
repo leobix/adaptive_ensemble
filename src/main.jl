@@ -35,7 +35,7 @@ function parse_commandline()
 
         "--filename-X"
             help = "filename of data X"
-            default = "data/energy_predictions_test_val.csv"
+            default = "data/energy_predictions_test_val2.csv"
             arg_type = String
 
         "--filename-y"

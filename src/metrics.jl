@@ -25,6 +25,7 @@ Determines the best model in hindsight, wrt MAPE
     for i=2:n
         err = [abs(yt_true[s]-(Xt[s,i].*std_y.+mean_y)) for s=1:val]
         new_MAPE = MAPE(err, yt_true)
+        println("Model ", i, " MAPE : ", new_MAPE)
         if new_MAPE < best_MAPE
             best_err = err
             best_MAPE = new_MAPE
