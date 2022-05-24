@@ -1,7 +1,6 @@
-from least_squares import *
-from least_absolute_deviation import *
-from adaptive_ridge import *
-from adaptive_lad import *
+from python_code.least_squares import *
+from python_code.least_absolute_deviation import *
+from python_code.adaptive_lad import *
 
 def model(method, X, y, reg_beta0, reg_V0, alpha, delta, T, intercept_V0):
 
