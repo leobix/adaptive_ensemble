@@ -29,99 +29,99 @@ function parse_commandline()
 
     @add_arg_table! s begin
         "--filename-results"
-            help = "filename to save results file"
+            help = "filename path to save results file"
             default = "results.csv"
             arg_type = String
 
         "--filename-X"
-            help = "filename of data X"
+            help = "filename path of the data X"
             default = "data/energy_predictions_test_val2.csv"
             arg_type = String
 
         "--filename-y"
-            help = "filename of targets y"
+            help = "filename path of targets y"
             default = "data/energy_y_test_val.csv"
             arg_type = String
 
         "--data"
-            help = "filename of targets y"
+            help = "for specific use case where we precoded the data paths, supports energy, hurricane_NA, hurricane_EP, safi"
             default = "energy"
             arg_type = String
 
         "--train_test_split"
-            help = "train_test_split value"
+            help = "train test split value, between 0 and 1"
             arg_type = Float64
             default = 0.5
 
         "--past"
-            help = "number of max cuts in Benders problem"
+            help = "window size of past data used in the decision rule of the adaptive ridge model"
             arg_type = Int
             default = 10
 
         "--num-past"
-            help = "number of past"
+            help = "training size will be past*num_past, so both parameters are connected"
             arg_type = Int
             default = 100
 
         "--val"
-            help = "number of max cuts in Benders problem"
+            help = "size of the test set, -1 is all data after training set"
             arg_type = Int
-            default = 10
+            default = -1
 
         "--max-cuts"
-            help = "number of max cuts in Benders problem"
+            help = "deprecated (useless) number of max cuts in Benders problem"
             arg_type = Int
             default = 10
 
         "--begin-id"
-            help = ""
+            help = "when several ensemble members are available allows to only use models with index greater or equal to this id"
             arg_type = Int
             default = 2
 
         "--end-id"
-            help = ""
+            help = "when several ensemble members are available allows to only use models with index smaller or equal to this id"
             arg_type = Int
             default = 25
 
         "--lead_time"
-            help = "Lead time in timesteps"
+            help = "Lead time in timesteps for predictions, in general 1, otherwise may need coding adjustments"
             arg_type = Int
             default = 1
 
         "--last_yT"
-            help = "last_yT"
+            help = "deprecated (useless)"
             action = :store_true
 
         "--benders"
-            help = "ridge"
+            help = "deprecated (useless)"
             action = :store_true
 
         "--more_data_for_beta0"
-            help = "more_data_for_beta0"
+            help = "deprecated (useless)"
             action = :store_true
 
         "--CVAR"
-            help = "fix beta0"
+            help = "will compute the CVaR value (takes more computational time)"
             action = :store_true
 
         "--verbose"
-            help = "verbose"
+            help = "useless"
             action = :store_true
 
         "--ridge"
-            help = "verbose"
+            help = "useless"
             action = :store_true
 
         "--err_rule"
-            help = "Build Z with the regrets instead of the raw history"
+            help = "Build Z with the regrets instead of the raw history, no need to touch this parameter"
             action = :store_true
 
         "--err_rule_norm"
-            help = "Build Z with the regrets instead of the raw history, and normalized regrets step-wise"
+            help = "Build Z with the regrets instead of the raw history, and normalized regrets step-wise, no need to touch this parameter"
             action = :store_true
 
         "--uncertainty"
-            help = "uncertainty percentage parameter"
+            help = "useless"
             arg_type = Float64
             default = 0.0
 
@@ -146,22 +146,22 @@ function parse_commandline()
             default = 0.01
 
         "--rho_beta"
-            help = "rho for Beta in Adaptive Ridge Linear Decision Rule"
+            help = "rho for Beta_t in Adaptive Ridge Linear Decision Rule"
             arg_type = Float64
             default = 0.1
 
         "--rho_stat"
-            help = "rho for statistical error in standard ridge"
+            help = "(useless) rho for statistical error in standard ridge"
             arg_type = Float64
             default = 0.1
 
         "--rho"
-            help = "rho for Beta 0 and standard ridge"
+            help = "rho for Beta 0 and standard ridge and parameter for PA and Exp3"
             arg_type = Float64
             default = 0.1
 
         "--rho_V"
-            help = "rho for V0"
+            help = "rho for V0 in Adaptive Ridge"
             arg_type = Float64
             default = 0.1
 
@@ -188,6 +188,7 @@ function main()
     end
 
     if args["data"] == "energy"
+        #predecided path
         X_test_adaptive = DataFrame(CSV.File(args["filename-X"]))
         y_test = DataFrame(CSV.File(args["filename-y"]))
     end
@@ -198,12 +199,15 @@ function main()
     end
 
     if args["data"] == "safi_speed"
+    #predecided path
         X_test_adaptive = DataFrame(CSV.File("data/X_test_speed_adaptive_out1.csv"))
         y_test = DataFrame(CSV.File("data/y_test_speed_adaptive_out1.csv"))
         y_test = y_test[!, "speed"]
     end
 
     if args["data"] == "safi_speed_3"
+    #predecided path
+    #because we predict 3 steps in advance, the data needs small adjustments
         X_test_adaptive = DataFrame(CSV.File("data/X_test_adaptive.csv"))
         y_test = DataFrame(CSV.File("data/y_test_speed.csv"))
         y_test = y_test[!, "speed"]
@@ -213,12 +217,14 @@ function main()
     end
 
     if args["data"] == "safi_cos"
+    #predecided path
         X_test_adaptive = DataFrame(CSV.File("data/X_test_cos_adaptive_out1.csv"))
         y_test = DataFrame(CSV.File("data/y_test_cos_adaptive_out1.csv"))
         y_test = y_test[!, "cos_wind_dir"]
     end
 
     if args["data"] == "traffic"
+    #predecided path
         X_test_adaptive = DataFrame(CSV.File("data/traffic_predictions_test_val.csv"))
         X_test_adaptive = X_test_adaptive[!,[2, 3,5,8,9,11,12,13,25]]
         y_test = DataFrame(CSV.File("data/traffic_test_val_scaled.csv"))
@@ -226,6 +232,7 @@ function main()
     end
 
     if args["data"][1:3] == "M3F"
+    #predecided path
         id = args["data"][4:end]
         X_test_adaptive = DataFrame(CSV.File("data/data_M3F/data/M3F_data_"*id*".csv"))
         y_test = DataFrame(CSV.File("data/data_M3F/M3F_targets/M3F_target_"*id*".csv"))
@@ -234,7 +241,9 @@ function main()
 
     if args["data"][1:end-3] == "hurricane"
     ### Choose END-ID 12 for DL/ML only
-    ### Choose END-ID 15 for ML+OP
+    ### Choose END-ID 16 for ML+OP
+    ### FSSE 17
+    ### OFCL 18
         if args["data"][end-1:end] == "EP"
             X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean_v2.csv"))
         else
@@ -249,43 +258,51 @@ function main()
     end
 
     #TODO check assert end id < number of models
+    # We catch up a potential error that the last model id is greater than the actual number of models available
     if args["end-id"] > size(X_test_adaptive)[2]
         println("There are only ", size(X_test_adaptive)[2], " ensemble members.")
         args["end-id"] = min(args["end-id"],size(X_test_adaptive)[2])
     end
 
+    #Loads the desired forecasts
     X = Matrix(X_test_adaptive)[:,args["begin-id"]:args["end-id"]]
+
     n, p = size(X)
 
-    #TODO check the n/2 to split index
+    # We determine the data sample index on which we switch from training to testing
     split_index = floor(Int,n*args["train_test_split"])
 
     #X = (X .- mean(X[1:floor(Int, split_index),:], dims =1))./ std(X[1:floor(Int, split_index),:], dims=1)#[!,1]
+
+    #Depending on how the test data is organized, this may need adjustments
     y = y_test[:, 1];
+
+    #To standardize we compute the mean and std of the target
     mean_y = mean(y[1:floor(Int, split_index),:])
     std_y = std(y[1:floor(Int, split_index),:])
 
+    #We substract the mean and std of the targets to the training data
     X = (X .- mean_y)./std_y;
     y = (y .- mean_y)./std_y;
+
+    #TODO Check why I put this here and not 2 lines higher
     if args["data"][1:end-3] == "hurricane" || args["lead_time"]>1
         Z = (Z .- mean_y)./std_y
     end
-    println("Mean target: ", mean_y, " Std target: ", std_y)
 
-#     if args["reg"] == -1
-#         reg = 1/(args["past"]*args["num-past"])
-#     else
-#         reg = args["reg"]
-#     end
+    println("Mean target: ", mean_y, " Std target: ", std_y)
 
     #TODO code all_past -1
 
+    #determine the last sample index of the validation/test set
     val = min(args["val"], n-split_index-1)
 
-    #TODO: Clean with only args to be passed
     try
+        #Hurricane forecasting use case requires some adjustments
         if args["data"][1:end-3] == "hurricane" || args["lead_time"]>1
             eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
+
+        #Launch the evaluation
         else
             eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
         end
@@ -293,7 +310,6 @@ function main()
     catch e
         println(e)
         println("Problem with Dataset ", args["data"])
-        #errors = DataFrame(Dataset = Int64[], Dataset2 = Int64[])
 
         errors = DataFrame(CSV.File("errors.csv"))
 
