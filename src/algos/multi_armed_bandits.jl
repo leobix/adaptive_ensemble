@@ -1,4 +1,5 @@
 function compute_bandit_weights(X, y)
+    # Exp3 algorithm
     #Compute the multi-armed-bandit optimal weights for choosing the expert to follow
     #The sum of the weights is equal to 1
     #Expects the entire data as input and updates at each timestep the experts weights
@@ -21,5 +22,6 @@ function compute_bandit_weights(X, y)
         β[i] = exp(-η*regrets[i])/sum(exp(-η*regrets[i]) for i=1:p)
     end
 
+    # return weights
     return β
 end

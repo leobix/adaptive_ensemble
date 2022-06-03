@@ -1,7 +1,8 @@
 function get_X_Z_y(args, X, y, T)
     """
     Input: training data X and corresponding labels y ; how many time-steps from the past to be used
-    Output: the past features X with past targets y as a Z training data (no present features)
+    Output: the past features X with past targets y as a Z training data (no present features),
+    this is part of the decision rule beta_t = beta_0 + V_0 * Z_t
     """
     n, p = size(X)
     #T past time steps * p features + T targets

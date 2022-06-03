@@ -35,7 +35,10 @@ Determines the best model in hindsight, wrt MAPE
 end
 
 function get_metrics(args, method, err, yt_true, time = 0)
-    #TODO ADD saving mechanism
+    ```
+    Given the errors made by a given model, and the true values, computes the different metrics.
+    Also saves the values in the dataframe
+    ```
     MAE = mean(err)
     R2 = R2_err(err, yt_true)
     MAPE = 100*sum(abs.(err./yt_true))/size(err)[1]
