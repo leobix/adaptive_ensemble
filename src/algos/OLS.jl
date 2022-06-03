@@ -1,11 +1,17 @@
 function l2_regression(X, y, rho, rho_stat; solver_output=0)
+    ```
+    X: training data
+    y: regression targets
+    rho: regularization factor for ridge penalty
+    rho_stat: not used in the paper
+    ```
+
     n,p = size(X)
 
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
-    #model = Model(with_optimizer(Mosek.Optimizer))
+
     set_optimizer_attribute(model, "OutputFlag", solver_output)
-    #Should work without but uncomment in case
-    #set_optimizer_attribute(model, "NonConvex", 2)
+
 
     @variable(model,beta[j=1:p])
     @variable(model, sse>=0)
@@ -27,6 +33,9 @@ function l2_regression(X, y, rho, rho_stat; solver_output=0)
 end
 
 function l2_regression_Convex(X, y, rho, rho_stat; solver_output=0)
+    ```
+    This version of the ridge problem uses the Convex.jl package.
+    ```
     n,p = size(X)
 
     beta = Variable(p)

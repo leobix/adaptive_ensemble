@@ -1,5 +1,27 @@
 # Ensemble Modeling: An Adaptive Robust Optimization Approach
 
+The following repository hosts the code to perform ensemble modeling in the context of time series forecasting.
+
+The following methods are benchmarked:
+XXX complete with paper
+- Ensemble Mean
+
+The repository is organized as follows:
+
+
+- ```/data``` contains all the data for the different use cases
+- ```/src``` contains all the core Julia code: 
+  - ```/algos``` contains the different ensemble models' algorithms 
+  - ```/synthetic_experiment``` contains helpers to perform the synthetic experiments
+  - ```eval2.jl``` contains the core function that trains and test the different models (discard eval.jl)
+  - ```main.jl``` is the executable file to launch an experiment and specify all hyperparameters
+  - ```main_hypertune.jl``` is the executable file to launch an experiment and conduct a hyperparameter search conveniently when a cluster is available
+  - ```main_synthetic.jl``` is the executable file to launch all synthetic experiments using a cluster
+  - ```metrics.jl``` contains the different metrics to compare the performance, and add the results to a dataframe
+  - ```utils.jl``` contains helpers functions
+  - ```utils_hurricane.jl``` contains helpers functions for the hurricane forecasting use case
+
+
 /Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia src/main.jl --data energy --end-id 8 --val 2000 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5
 
 Comprises all data:

@@ -8,8 +8,6 @@ include("metrics.jl")
 
 using Dates
 
-#TODO: COMPUTE ALL METRICS IN THE ORIGINAL SPACE, in particular MAPE
-
 function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, std_y)
 
     n, p = size(X)
@@ -18,16 +16,26 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         val = size(X)[1]
     end
 
-    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"], args["last_yT"])
+
+    # Notice the small adjustments to make sure the indices work
+    training_index_begin = max(split_index-num_past*past+1, 1) #first index of training data
+    training_index_end = min(num_past*past, split_index) #last index of training data (included)
+
+    # Prepare all data based on the desired splits
+    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, training_index_begin, training_index_end, val, args["uncertainty"], args["last_yT"])
+
     println("There are ", size(X)[1], " samples in total.")
     println("Number of samples in train set: ", size(y0))
     args["train_length"] = size(y0)[1]
-    println("We start training at index ", max(split_index-num_past*past+1, 1))
+    println("We start training at index ", training_index_begin)
+    #TODO Make a check that this is corresponding to training_index_end+1
     println("We test between index ", max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index), " and ",  max(split_index-num_past*past+1, 1)+1+min(num_past*past, split_index)+val+1)
 
-    β_list0 = zeros(val, p)
-    β_listt = zeros(val, p)
-    β_listl2 = zeros(val, p)
+    #initialize the lists to store all the weights optimized for each time step (can be constant)
+    #TODO In fact useless, check
+    #β_list0 = zeros(val, p)
+    #β_listt = zeros(val, p)
+    #β_listl2 = zeros(val, p)
 
     #### Standard Ridge Regression
     start = now()
@@ -37,19 +45,20 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     #β_list_linear_adaptive_pure_Vt = zeros(val, p)
 
+    #Initialize for the adaptive ridge
     β_list_linear_adaptive_trained_one = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard = zeros(val, p)
     β_list_linear_adaptive_trained_one_err_rule = zeros(val, p)
     β_list_linear_adaptive_trained_one_standard_err_rule = zeros(val, p)
 
-    #### ARO Ridge + standard. The regularization is applied to all reg coefs, including a separate reg on beta and V
+    #### ARO Ridge + standard. The regularization is applied to all reg coefs, including an additional reg on beta and V
     args["err_rule"] = false
     start = now()
     _, β0_0, V0_0, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, args["rho_beta"], args["rho"], args["rho_V"], past)
     arole_allreg_regression_time = (now() - start).value
     println("Time Adaptive Regression Standard ", arole_allreg_regression_time)
 
-    #### ARO Ridge + standard. The regularization is applied to beta and V only not the time varying beta
+    #### ARO Ridge + standard. The regularization is applied to beta 0 and V only from the decision rule not the time varying beta.
     start = now()
     _, β0_1, V0_1 = adaptive_ridge_regression_exact_no_stable(args, X0, y0, 0, args["rho"], args["rho_V"], past)
     arole_beta0andV_regression_time = (now() - start).value
@@ -57,6 +66,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     #### We use the error of the forecasts in the past timesteps instead of the forecasts themselves.
     #### ARO Ridge + Error rule for Z instead of the values of the past forecasts
+    # The regularization is applied to all reg coefs, including an additional reg on beta and V
     args["err_rule"] = true
 
     start = now()
@@ -64,6 +74,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     arole_allreg_errorrule_regression_time = (now() - start).value
     println("Time Adaptive Regression Standard ", arole_allreg_errorrule_regression_time)
 
+    # Now, the regularization is applied to beta 0 and V only from the decision rule not the time varying beta.
     start = now()
     _, β0_1_err_rule, V0_1_err_rule, _ = adaptive_ridge_regression_exact_no_stable(args, X0, y0, 0, args["rho"], args["rho_V"], past)
     arole_beta0andV_errorrule_regression_time = (now() - start).value
@@ -73,6 +84,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     #TODO: Uncomment
     #obj, β_linear_adaptive_pure_0_Vt, Vt_adaptive_pure, _ = adaptive_ridge_regression_exact_Vt(vcat(X0,Xt), vcat(y0,yt), ρ, ρ, past, 1)
 
+    #Initialize the different benchmarks
     β_list_bandits_t = zeros(val, p-1)
     β_list_bandits_all = zeros(val, p-1)
     β_list_PA = zeros(val, p)
@@ -84,8 +96,8 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     for s=1:val
 
-        #TODO check split_index with max(split inex, 1) and CHECK the MIN
-        #The min ensures we remain in bounds.
+        #TODO check split_index with max(split index, 1) and CHECK the MIN
+        #The min and max ensure we remain in bounds.
         X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), min((num_past-1)*past,split_index-past+s), past-1, args["uncertainty"], args["last_yT"])
 
         #Line to get Z_{t+1}
@@ -93,6 +105,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         X_for_Z[:,1] .= 1
         y_for_Z = y[split_index-past+s+1:split_index+s+1,:]
 
+        #computation of Z_t changes depending on if we use forecasts and targets in the decision rule or forecasts - targets
         args["err_rule"] = false
         X_, Z_test, y_ = get_X_Z_y(args, X_for_Z, y_for_Z, past)
         args["err_rule"] = true
@@ -103,11 +116,15 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         β_list_bandits_t[s,:] = compute_bandit_weights(Xt[:,2:end], yt)
         β_PA = compute_PA_weights(args["rho_beta"], β_PA, Matrix(Xt)[end,1:end], yt[end])
         β_list_PA[s,:] = β_PA
+
+        #A possibility is to retrain L2 at each time step with the new data but too expensive to compute
         #β_l2 = l2_regression(vcat(X0,Xt),vcat(y0,yt),ρ);
         #β_listl2[s,:] = β_l2
 
         #TODO Add if needed
         #β_list_linear_adaptive_pure_Vt[s,:] = β_linear_adaptive_pure_0_Vt + Vt_adaptive_pure[end,:,:] * Z_test[1,:]
+
+        #Coefficients for Adaptive Ridge
         β_list_linear_adaptive_trained_one[s,:] = β0_0 + V0_0 * Z_test[1,:]
         β_list_linear_adaptive_trained_one_standard[s,:] = β0_1 + V0_1 * Z_test[1, :]
 
@@ -117,12 +134,12 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         last_timesteps[s] = Z_test[1,end]
     end
 
-    #TODO Best underlying model
-    println("Evaluation finished. Metrics start.")
+    println("Evaluation finished. Evaluation start.")
+    #TODO Check if I can remove the second line since I always use y_true now
     X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, args["uncertainty"], args["last_yT"])
     _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, args["uncertainty"], args["last_yT"])
 
-    # Unstandardize for metrics
+    # Unstandardize target for computing metrics
     yt_true = yt_true.*std_y.+mean_y
 
     # Unstandardize predictions as well
@@ -134,17 +151,18 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     err_bandit_t = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_bandits_t[s,:]).*std_y.+mean_y)) for s=1:val]
     err_PA = [abs(yt_true[s]-(dot(Xt[s,1:end],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
     err_baseline = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init).*std_y.+mean_y)) for s=1:val]
-    #err_l2 = [abs(yt_true[s]-dot(Xt[s,:],β_listl2[s,:])) for s=1:val]
 
-    #TODO: Uncomment
-    #err_linear_adaptive_pure_Vt = [abs(yt_true[s]-dot(Xt[s,:],β_list_linear_adaptive_pure_Vt[s,:])) for s=1:val]
+
     err_linear_adaptive_trained_one = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one[s,:]).*std_y.+mean_y)) for s=1:val]
     err_linear_adaptive_trained_one_standard = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_standard[s,:]).*std_y.+mean_y)) for s=1:val]
 
     err_linear_adaptive_trained_one_err_rule = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_err_rule[s,:]).*std_y.+mean_y)) for s=1:val]
     err_linear_adaptive_trained_one_standard_err_rule = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one_standard_err_rule[s,:]).*std_y.+mean_y)) for s=1:val]
 
-    #TODO check get_metrics
+    #Uncomment if needed
+    #err_linear_adaptive_pure_Vt = [abs(yt_true[s]-dot(Xt[s,:],β_list_linear_adaptive_pure_Vt[s,:])) for s=1:val]
+    #err_l2 = [abs(yt_true[s]-dot(Xt[s,:],β_listl2[s,:])) for s=1:val]
+
     println("\n### Mean Baseline ###")
     get_metrics(args, "mean", err_mean, yt_true)
 
@@ -167,14 +185,6 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     println("\n### β0 Baseline ###")
     get_metrics(args, "ridge", err_baseline, yt_true, l2_regression_time)
 
-#     println("\n### β0 Baseline Retrained ###")
-#     get_metrics(err_l2, yt_true)
-
-    #TODO: Uncomment
-#     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part Vt ###")
-#     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
-#     get_metrics(err_linear_adaptive_pure_Vt, yt_true)
-
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_exact", err_linear_adaptive_trained_one, yt_true, arole_allreg_regression_time)
@@ -192,12 +202,21 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard_err_rule", err_linear_adaptive_trained_one_standard_err_rule, yt_true, arole_beta0andV_errorrule_regression_time)
 
+    #println("\n### β0 Baseline Retrained ###")
+    #get_metrics(err_l2, yt_true)
+
+    #TODO: Uncomment
+#     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part Vt ###")
+#     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
+#     get_metrics(err_linear_adaptive_pure_Vt, yt_true)
 end
 
 
 
 function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, val, mean_y, std_y)
-
+    ```
+    Specific function for the hurricane forecasting use case. Requires some adjustments because we predict t+24h and can't use the targets until they are would have been available in real time.
+    ```
     n, p = size(X)
     split_index = floor(Int,n*split_)
     if val == -1

@@ -25,6 +25,7 @@ Determines the best model in hindsight, wrt MAPE
     for i=2:n
         err = [abs(yt_true[s]-(Xt[s,i].*std_y.+mean_y)) for s=1:val]
         new_MAPE = MAPE(err, yt_true)
+        println("Model ", i, " MAPE : ", new_MAPE)
         if new_MAPE < best_MAPE
             best_err = err
             best_MAPE = new_MAPE
@@ -34,7 +35,10 @@ Determines the best model in hindsight, wrt MAPE
 end
 
 function get_metrics(args, method, err, yt_true, time = 0)
-    #TODO ADD saving mechanism
+    ```
+    Given the errors made by a given model, and the true values, computes the different metrics.
+    Also saves the values in the dataframe
+    ```
     MAE = mean(err)
     R2 = R2_err(err, yt_true)
     MAPE = 100*sum(abs.(err./yt_true))/size(err)[1]

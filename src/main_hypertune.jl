@@ -269,7 +269,9 @@ function main()
 
     if args["data"][1:end-3] == "hurricane"
     ### Choose END-ID 12 for DL/ML only
-    ### Choose END-ID 15 for ML+OP
+    ### Choose END-ID 16 for ML+OP
+    ### FSSE 17
+    ### OFCL 18
         if args["data"][end-1:end] == "EP"
             X_test_adaptive = DataFrame(CSV.File("data/EP_ARO_Intensity_2014_clean_v2.csv"))
         else
