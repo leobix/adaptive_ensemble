@@ -56,7 +56,7 @@ function parse_commandline()
         "--past"
             help = "window size of past data used in the decision rule of the adaptive ridge model"
             arg_type = Int
-            default = 10
+            default = 3
 
         "--num-past"
             help = "training size will be past*num_past, so both parameters are connected"
