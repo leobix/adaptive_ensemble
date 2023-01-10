@@ -12,8 +12,8 @@ using Gurobi
 using ArgParse
 using CSV
 using Random
-using Mosek
-using MosekTools
+#using Mosek
+#using MosekTools
 using Convex
 
 include("eval2.jl")

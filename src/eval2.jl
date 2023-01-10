@@ -214,9 +214,9 @@ end
 
 
 function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, val, mean_y, std_y)
-    ```
+    """
     Specific function for the hurricane forecasting use case. Requires some adjustments because we predict t+24h and can't use the targets until they are would have been available in real time.
-    ```
+    """
     n, p = size(X)
     split_index = floor(Int,n*split_)
     if val == -1
