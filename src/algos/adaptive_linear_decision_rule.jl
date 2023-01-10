@@ -6,6 +6,9 @@ function get_X_Z_y(args, X, y, T)
     """
     n, p = size(X)
     #T past time steps * p features + T targets
+    println(n)
+    println(args["lead_time"])
+    println(T)
     Z = ones(n-T-args["lead_time"]+1, T*p+T)
     for i=T+args["lead_time"]:n
         for t=1:T
