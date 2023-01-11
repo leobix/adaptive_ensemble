@@ -59,7 +59,8 @@ function separate_storms(storms)
     current_speed_storms = copy(storms)
     for i = 1:n
         #forecasts start at index 8, the rest is truth, current speed and some ids
-        data_storms[i] = storms[i][!, 8:end]
+        #to test only using operational models, choose 13 instead of 8
+        data_storms[i] = storms[i][!, 14:end]
         y_storms[i] = storms[i][!, "TRUTH"]
         current_speed_storms[i] = storms[i][!, "CURRENT_SPEED"]
     end
