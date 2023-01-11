@@ -94,7 +94,7 @@ end
 
 
 function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, len_test, time)
-    filename = "results_5_10/"
+    filename = "results_11_12_id14_16/" #"results_11_11/"#
     if args["data"] == "synthetic"
         try
             results = DataFrame(CSV.File(filename*"results_"*args["data"]*"_"*string(args["seed"])*".csv"))
