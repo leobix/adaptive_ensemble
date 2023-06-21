@@ -27,17 +27,20 @@ The repository is organized as follows:
 
 We evaluated the following ensembles on the same data:
 
-Best Model in Hindsight: we determine in hindsight what was the best ensemble member on the test data with respect to the MAPE and report its performance for all metrics. Notice that in real-time, it is impossible to know which model would be the best on the overall test set, which means the best model in hindsight is a competitive benchmark.
+We evaluated the following ensembles on the same data:
 
-Ensemble Mean: consists of weighing each model equally, predicting the average of all ensemble members at each time step.
+- **Best Model in Hindsight**: we determine in hindsight what was the best ensemble member on the test data with respect to the MAPE and report its performance for all metrics. Notice that in real-time, it is impossible to know which model would be the best on the overall test set, which means the best model in hindsight is a competitive benchmark.
 
-Exp3: under the multi-armed bandit setting, Exp3 weighs the different models to minimize the regret compared to the best model so far. The update rule is given by:
+- **Ensemble Mean**: consists of weighing each model equally, predicting the average of all ensemble members at each time step.
 
+- **Exp3**: under the multi-armed bandit setting, Exp3 weighs the different models to minimize the regret compared to the best model so far. The update rule is given by:
 
+```math
 \begin{align*}
-    \boldsymbol{\beta}_{t+1}^i &= \exp\left(\frac{-\eta_t \cdot \operatorname{Regret}_t^i}{\sum_{i=1}^m \exp(-\eta\cdot \operatorname{Regret}_t^i)}\right),  \text{ with} \\ \quad \operatorname{Regret}_t^i &= \sum_{s=t-t_0}^{t}(y_s-X_s^i)^2, \quad \forall i\in[1,m], \ \text{and} \\
-    \eta_t &= \sqrt{\frac{8\log(m)}{t_0}},
-    \end{align*}
+\boldsymbol{\beta}_{t+1}^i &= \exp\left(\frac{-\eta_t \cdot \operatorname{Regret}_t^i}{\sum_{i=1}^m \exp(-\eta\cdot \operatorname{Regret}_t^i)}\right),  \text{ with} \\ \quad \operatorname{Regret}_t^i &= \sum_{s=t-t_0}^{t}(y_s-X_s^i)^2, \quad \forall i\in[1,m], \ \text{and} \\
+\eta_t &= \sqrt{\frac{8\log(m)}{t_0}},
+\end{align*}
+```
 where the window size $t_0$ considered to determine the regularized leader is tuned.
 
 Passive-Aggressive: a well-known margin-based online learning algorithm that updates the weights of its linear model based on the following equation:
