@@ -26,21 +26,21 @@ The repository is organized as follows:
 Here are a few examples of jobs to execute (assuming you can use julia from your terminal, otherwise replace with something like ```/Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia``` depending on your OS and version):
 
 **Energy dataset**:
-```julia src/main.jl --data energy --end-id 8 --val 2000 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
+- ```julia src/main.jl --data energy --end-id 8 --val 2000 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
 
 Wind speed forecasting dataset:
-```julia src/main.jl --data safi --end-id 8 --val 4245 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
+- ```julia src/main.jl --data safi --end-id 8 --val 4245 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
 
 Hurricane dataset:
 
-```julia src/main.jl --data hurricane_NA  --end-id 17  --val 500 --train_test_split 0.5 --past 3 --num-past 350 --rho 0.01 --rho_V 0.1 --rho_beta 0.1 --begin-id 1```
+- ```julia src/main.jl --data hurricane_NA  --end-id 17  --val 500 --train_test_split 0.5 --past 3 --num-past 350 --rho 0.01 --rho_V 0.1 --rho_beta 0.1 --begin-id 1```
 
 Synthetic data experiments:
 
-```julia src/main_synthetic.jl --past 5 --num-past 200 --val 1000 --total_drift_additive --bias_range 0.25 --std_range 0.5 --T 1000 --num_exp 10 --seed 1```
+- ```julia src/main_synthetic.jl --past 5 --num-past 200 --val 1000 --total_drift_additive --bias_range 0.25 --std_range 0.5 --T 1000 --num_exp 10 --seed 1```
 
-```julia src/main_synthetic.jl --past 3 --num-past 73 --val 362 --total_drift_additive --bias_range 0.25 --std_range 0.5```
+- ```julia src/main_synthetic.jl --past 3 --num-past 73 --val 362 --total_drift_additive --bias_range 0.25 --std_range 0.5```
 
-```julia src/main_synthetic_parallel.jl --past 5 --num-past 10 --val 500 --total_drift_additive --bias_range 0.5 --std_range 0.5 --T 300 --seed 30 --N_models 15 --bias_drift 0.1 --std_drift 0.1 --CVAR --end-id 20```
+- ```julia src/main_synthetic_parallel.jl --past 5 --num-past 10 --val 500 --total_drift_additive --bias_range 0.5 --std_range 0.5 --T 300 --seed 30 --N_models 15 --bias_drift 0.1 --std_drift 0.1 --CVAR --end-id 20```
 
-```julia src/main_synthetic_parallel.jl --past 5 --num-past 600 --train_test_split 0.75 --period 4 --val 1000 --total_drift_additive --bias_range 0.5 --std_range 0.5 --T 2000 --seed 400 --N_models 10 --bias_drift 0.5 --std_drift 0.5 --CVAR --rho_beta 0.1 --rho 0.1 --rho_V 0.1```
+- ```julia src/main_synthetic_parallel.jl --past 5 --num-past 600 --train_test_split 0.75 --period 4 --val 1000 --total_drift_additive --bias_range 0.5 --std_range 0.5 --T 2000 --seed 400 --N_models 10 --bias_drift 0.5 --std_drift 0.5 --CVAR --rho_beta 0.1 --rho 0.1 --rho_V 0.1```
