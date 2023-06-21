@@ -78,3 +78,16 @@ end
 
 
 
+function save_array_as_csv(args, arr, folder_name::String, file_name::String)
+    if !ispath(folder_name)
+        mkpath(folder_name)
+    end
+    filepath = joinpath(folder_name, "results_"*args["data"]*"_"*string(args["rho_beta"])*"_"*string(args["rho"])*"_"*string(args["rho_V"]) *"_"* file_name * ".csv")
+    try
+        df = DataFrame(arr, :auto)
+        CSV.write(filepath, df)
+    catch e
+        CSV.write(filepath, arr)
+    end
+    println("Array saved as $filepath")
+end
