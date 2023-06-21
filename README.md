@@ -33,23 +33,20 @@ Ensemble Mean: consists of weighing each model equally, predicting the average o
 
 Exp3: under the multi-armed bandit setting, Exp3 weighs the different models to minimize the regret compared to the best model so far. The update rule is given by:
 
-markdown
-Copy code
-    \begin{align*}
+
+\begin{align*}
     \boldsymbol{\beta}_{t+1}^i &= \exp\left(\frac{-\eta_t \cdot \operatorname{Regret}_t^i}{\sum_{i=1}^m \exp(-\eta\cdot \operatorname{Regret}_t^i)}\right),  \text{ with} \\ \quad \operatorname{Regret}_t^i &= \sum_{s=t-t_0}^{t}(y_s-X_s^i)^2, \quad \forall i\in[1,m], \ \text{and} \\
     \eta_t &= \sqrt{\frac{8\log(m)}{t_0}},
     \end{align*}
 where the window size $t_0$ considered to determine the regularized leader is tuned.
 
 Passive-Aggressive: a well-known margin-based online learning algorithm that updates the weights of its linear model based on the following equation:
-markdown
-Copy code
-    \[\boldsymbol{\beta}_{t+1}=\boldsymbol{\beta}_{t}+\operatorname{sign}\left(y_{t}\mathbf{e}-\mathbf{X}_t^\top\boldsymbol{\beta}_{t}\right) \tau_{t} \mathbf{X}_{t}, \quad \tau_t = \frac{\max(0, |\mathbf{X}_t^\top\boldsymbol{\beta}_t  - y_t|-\epsilon)}{\|\mathbf{X}_t\|_2^2},\]
+
+\[\boldsymbol{\beta}_{t+1}=\boldsymbol{\beta}_{t}+\operatorname{sign}\left(y_{t}\mathbf{e}-\mathbf{X}_t^\top\boldsymbol{\beta}_{t}\right) \tau_{t} \mathbf{X}_{t}, \quad \tau_t = \frac{\max(0, |\mathbf{X}_t^\top\boldsymbol{\beta}_t  - y_t|-\epsilon)}{\|\mathbf{X}_t\|_2^2},\]
 where $\epsilon$ is a margin parameter to be tuned.
 
 Ridge: consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$:
-markdown
-Copy code
+
     \begin{equation*}\label{main}
     \begin{array}{ll}
     \displaystyle \min _{\boldsymbol{\beta}} & \displaystyle \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,\\
