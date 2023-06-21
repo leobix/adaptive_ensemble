@@ -22,15 +22,19 @@ Determines the best model in hindsight, wrt MAPE
     val = size(yt_true, 1)
     best_err = [abs(yt_true[s]-(Xt[s,1].*std_y.+mean_y)) for s=1:val]
     best_MAPE = MAPE(best_err, yt_true)
+    errors = Array{Float64, 2}(undef, val, n)
+    errors[:, 1] = [yt_true[s]-(Xt[s,1].*std_y.+mean_y) for s=1:val]
     for i=2:n
         err = [abs(yt_true[s]-(Xt[s,i].*std_y.+mean_y)) for s=1:val]
         new_MAPE = MAPE(err, yt_true)
         println("Model ", i, " MAPE : ", new_MAPE)
+        errors[:, i] = [yt_true[s]-(Xt[s,i].*std_y.+mean_y) for s=1:val]
         if new_MAPE < best_MAPE
             best_err = err
             best_MAPE = new_MAPE
         end
     end
+    CSV.write("results_beta/model_errors.csv", DataFrame(errors, :auto))
     return best_err
 end
 
@@ -95,6 +99,9 @@ end
 
 function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, len_test, time)
     filename = "results_11_12_id14_16/" #"results_11_11/"#
+    if !ispath(filename)
+        mkpath(filename)
+    end
     if args["data"] == "synthetic"
         try
             results = DataFrame(CSV.File(filename*"results_"*args["data"]*"_"*string(args["seed"])*".csv"))
