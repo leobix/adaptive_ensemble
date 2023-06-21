@@ -174,33 +174,41 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
+    save_array_as_csv(args, β_list_bandits_all,"results_beta/", "bandits_full")
 
     println("\n### Bandits Only Last T Baseline ###")
     get_metrics(args, "bandits_recent", err_bandit_t, yt_true)
+    save_array_as_csv(args, β_list_bandits_t,"results_beta/", "bandits_last")
 
     println("\n### Passive-Aggressive Baseline ###")
     ### The Beta 0 that is originating from the adaptive formulation
     get_metrics(args, "PA", err_PA, yt_true)
+    save_array_as_csv(args, β_list_PA,"results_beta/", "PA")
 
     println("\n### β0 Baseline ###")
     get_metrics(args, "ridge", err_baseline, yt_true, l2_regression_time)
+    #save_array_as_csv(args, β_l2_init,"results_beta/", "ridge")
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_exact", err_linear_adaptive_trained_one, yt_true, arole_allreg_regression_time)
+    save_array_as_csv(args, β_list_linear_adaptive_trained_one,"results_beta/", "adaptive_ridge_exact")
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true, arole_beta0andV_regression_time)
+    save_array_as_csv(args, β_list_linear_adaptive_trained_one_standard, "results_beta/", "adaptive_ridge_standard")
 
     #SAME AS LAST 2, BUT WITH ERROR RULES i.e., instead of forecast values we use the previous errors of the models
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE + ERROR RULE for Z ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_exact_err_rule", err_linear_adaptive_trained_one_err_rule, yt_true, arole_allreg_errorrule_regression_time)
+    save_array_as_csv(args, β_list_linear_adaptive_trained_one_err_rule, "results_beta/", "adaptive_ridge_exact_err_rule")
 
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD + ERROR RULE for Z ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard_err_rule", err_linear_adaptive_trained_one_standard_err_rule, yt_true, arole_beta0andV_errorrule_regression_time)
+    save_array_as_csv(args, β_list_linear_adaptive_trained_one_standard_err_rule, "results_beta/", "adaptive_ridge_standard_err_rule")
 
     #println("\n### β0 Baseline Retrained ###")
     #get_metrics(err_l2, yt_true)
@@ -276,9 +284,6 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         β_list_linear_adaptive_trained_one[s,:] = β0_0 + V0_0 * Zt[s,:]
         β_list_linear_adaptive_trained_one_standard[s,:] = β0_1 + V0_1 * Zt[s,:]
 
-#         println("Iter ", s)
-#         println(β_list_linear_adaptive_trained_one_standard[s,:])
-#         println()
     end
 
     # Unstandardize for metrics
