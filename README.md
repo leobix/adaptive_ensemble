@@ -44,7 +44,7 @@ where the window size $t_0$ considered to determine the regularized leader is tu
 - **Passive-Aggressive**: A well-known margin-based online learning algorithm that updates the weights of its linear model based on the following equation:
 
     ```math
-    \boldsymbol{\beta}_{t+1}=\boldsymbol{\beta}_{t}+\operatorname{sign}\left(y_{t}\mathbf{e}-\mathbf{X}_t^\top\boldsymbol{\beta}_{t}\right) \tau_{t} \mathbf{X}_{t}, \quad \tau_t = \frac{\max(0, |\mathbf{X}_t^\top\boldsymbol{\beta}_t  - y_t|-\epsilon)}{\|\mathbf{X}_t\|_2^2},
+    \boldsymbol{\beta}_{t+1}=\boldsymbol{\beta}_{t}+sign\left(y_{t}\mathbf{e}-\mathbf{X}_t^\top\boldsymbol{\beta}_{t}\right) \tau_{t} \mathbf{X}_{t}, \quad \tau_t = \frac{\max(0, |\mathbf{X}_t^\top\boldsymbol{\beta}_t  - y_t|-\epsilon)}{\|\mathbf{X}_t\|_2^2},
     ```
     where $\epsilon$ is a margin parameter to be tuned.
 
@@ -53,10 +53,8 @@ where the window size $t_0$ considered to determine the regularized leader is tu
     ```math
     \min _{\boldsymbol{\beta}} \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,
     ```
-    which gives the closed-form solution:
-    ```math
-    \boldsymbol{\beta} = (\mathbf{X}\mathbf{X}^\top + \lambda \boldsymbol{I})^{-1}\mathbf{X}\mathbf{y}.
-    ```
+    which gives the closed-form solution: $\boldsymbol{\beta} = (\mathbf{X}\mathbf{X}^\top + \lambda \boldsymbol{I})^{-1}\mathbf{X}\mathbf{y}$.
+
 
 
 ## How to use the code:
