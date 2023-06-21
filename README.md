@@ -41,21 +41,23 @@ We evaluated the following ensembles on the same data:
 ```
 where the window size $t_0$ considered to determine the regularized leader is tuned.
 
-Passive-Aggressive: a well-known margin-based online learning algorithm that updates the weights of its linear model based on the following equation:
+- **Passive-Aggressive**: A well-known margin-based online learning algorithm that updates the weights of its linear model based on the following equation:
 
-\[\boldsymbol{\beta}_{t+1}=\boldsymbol{\beta}_{t}+\operatorname{sign}\left(y_{t}\mathbf{e}-\mathbf{X}_t^\top\boldsymbol{\beta}_{t}\right) \tau_{t} \mathbf{X}_{t}, \quad \tau_t = \frac{\max(0, |\mathbf{X}_t^\top\boldsymbol{\beta}_t  - y_t|-\epsilon)}{\|\mathbf{X}_t\|_2^2},\]
-where $\epsilon$ is a margin parameter to be tuned.
+    ```math
+    \boldsymbol{\beta}_{t+1}=\boldsymbol{\beta}_{t}+\operatorname{sign}\left(y_{t}\mathbf{e}-\mathbf{X}_t^\top\boldsymbol{\beta}_{t}\right) \tau_{t} \mathbf{X}_{t}, \quad \tau_t = \frac{\max(0, |\mathbf{X}_t^\top\boldsymbol{\beta}_t  - y_t|-\epsilon)}{\|\mathbf{X}_t\|_2^2},
+    ```
+    where $\epsilon$ is a margin parameter to be tuned.
 
-Ridge: consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$:
+- **Ridge**: Consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$:
 
-$\begin{equation*}\label{main}
-    \begin{array}{ll}
-    \displaystyle \min _{\boldsymbol{\beta}} & \displaystyle \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,\\
-    
-\end{array}
-\end{equation*}
-$
-which gives the closed-form solution: $\boldsymbol{\beta} = (\mathbf{X}\mathbf{X}^\top + \lambda \boldsymbol{I})^{-1}\mathbf{X}\mathbf{y}$.
+    ```math
+    \min _{\boldsymbol{\beta}} \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,
+    ```
+    which gives the closed-form solution:
+    ```math
+    \boldsymbol{\beta} = (\mathbf{X}\mathbf{X}^\top + \lambda \boldsymbol{I})^{-1}\mathbf{X}\mathbf{y}.
+    ```
+
 
 ## How to use the code:
 
