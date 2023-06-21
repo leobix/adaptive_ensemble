@@ -1,8 +1,6 @@
-#Note: this file is the same as main.jl but is more convenient to hypertune in a given range of features
+#Note: this file is mostly the same as main.jl but is more convenient to hypertune in a given range of features to batch jobs
 
 import Pkg
-#be careful: implies you created a robust virtual environment
-#Pkg.activate("robust")
 
 using JuMP
 
@@ -14,11 +12,9 @@ using Gurobi
 using ArgParse
 using CSV
 using Random
-#using Mosek
-#using MosekTools
-#using Convex
 
-#TODO IMPORTANT Change back to eval2.jl
+#NOTE: IMPORTANT Change from eval2.jl to eval_hurricane.jl for the specific hurricane dataset that requires adjustment in building the Z matrix
+# (since we skip 4 timesteps ahead instead of 1 and want to avoid cheating in hindsight, see paper if interested)
 include("eval2.jl")
 include("utils.jl")
 include("utils_hurricane.jl")
@@ -191,8 +187,6 @@ end
 function main()
     args = parse_commandline()
 
-
-
     rho_beta_list = [0, 0.001, 0.01, 0.1, 1]
     rho_list = [0, 0.001, 0.01, 0.1, 1]
     rho_V_list = [0, 0.001, 0.01, 0.1, 1]
@@ -310,12 +304,6 @@ function main()
         Z = (Z .- mean_y)./std_y
     end
     println("Mean target: ", mean_y, " Std target: ", std_y)
-
-#     if args["reg"] == -1
-#         reg = 1/(args["past"]*args["num-past"])
-#     else
-#         reg = args["reg"]
-#     end
 
     #TODO code all_past -1
 
