@@ -6,9 +6,9 @@ function get_X_Z_y(args, X, y, T)
     """
     n, p = size(X)
     #T past time steps * p features + T targets
-    println(n)
-    println(args["lead_time"])
-    println(T)
+#     println(n)
+#     println(args["lead_time"])
+#     println(T)
     Z = ones(n-T-args["lead_time"]+1, T*p+T)
     for i=T+args["lead_time"]:n
         for t=1:T
@@ -42,9 +42,6 @@ function adaptive_ridge_regression_exact(args, X, y, ρ_β0, ρ_V0, T, N0)
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(args, X, y, T)
-    println("X", X[4,:])
-    println("Z", Z[4,:])
-    println("y", y[1:4])
 
     N, P = size(X)
     # Add variables
@@ -84,9 +81,6 @@ function adaptive_ridge_regression_exact_no_stable(args, X, y, ρ_β, ρ_β0, ρ
     model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(args, X, y, T)
-    println("X", X[4,:])
-    println("Z", Z[4,:])
-    println("y", y[1:4])
 
     N, P = size(X)
     # Add variables
