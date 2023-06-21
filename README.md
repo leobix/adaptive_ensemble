@@ -47,12 +47,13 @@ where $\epsilon$ is a margin parameter to be tuned.
 
 Ridge: consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$:
 
-    \begin{equation*}\label{main}
+$\begin{equation*}\label{main}
     \begin{array}{ll}
     \displaystyle \min _{\boldsymbol{\beta}} & \displaystyle \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,\\
     
 \end{array}
 \end{equation*}
+$
 which gives the closed-form solution: $\boldsymbol{\beta} = (\mathbf{X}\mathbf{X}^\top + \lambda \boldsymbol{I})^{-1}\mathbf{X}\mathbf{y}$.
 
 ## How to use the code:
