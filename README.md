@@ -4,10 +4,6 @@ Accurate time series forecasting is essential for a wide range of problems that 
 
 The following repository hosts the code to perform ensemble modeling in the context of time series forecasting.
 
-The following methods are benchmarked:
-XXX complete with paper
-- Ensemble Mean
-
 The repository is organized as follows:
 
 
@@ -25,7 +21,7 @@ The repository is organized as follows:
 
 ## Methods benchmarked
 
-We evaluated the following ensembles on the same data:
+We benchmarked the following ensembles on the same data:
 
 - **Best Model in Hindsight**: we determine in hindsight what was the best ensemble member on the test data with respect to the MAPE and report its performance for all metrics. Notice that in real-time, it is impossible to know which model would be the best on the overall test set, which means the best model in hindsight is a competitive benchmark.
 
@@ -50,9 +46,7 @@ where the window size $t_0$ considered to determine the regularized leader is tu
 
 - **Ridge**: Consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$:
 
-    ```math
-    \min _{\boldsymbol{\beta}} \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,
-    ```
+    $\min _{\boldsymbol{\beta}} \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,$
     which gives the closed-form solution: $\boldsymbol{\beta} = (\mathbf{X}\mathbf{X}^\top + \lambda \boldsymbol{I})^{-1}\mathbf{X}\mathbf{y}$.
 
 
