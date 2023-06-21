@@ -35,7 +35,7 @@ We evaluated the following ensembles on the same data:
 
 ```math
 \begin{align*}
-\boldsymbol{\beta}_{t+1}^i &= \exp\left(\frac{-\eta_t \cdot Regret_t^i}{\sum_{i=1}^m \exp(-\eta\cdot \operatorname{Regret}_t^i)}\right),  \text{ with} \\ \quad \operatorname{Regret}_t^i &= \sum_{s=t-t_0}^{t}(y_s-X_s^i)^2, \quad \forall i\in[1,m], \ \text{and} \\
+\boldsymbol{\beta}_{t+1}^i &= \exp\left(\frac{-\eta_t \cdot Regret_t^i}{\sum_{i=1}^m \exp(-\eta\cdot Regret_t^i)}\right),  \text{ with} \\ \quad Regret_t^i &= \sum_{s=t-t_0}^{t}(y_s-X_s^i)^2, \quad \forall i\in[1,m], \ \text{and} \\
 \eta_t &= \sqrt{\frac{8\log(m)}{t_0}},
 \end{align*}
 ```
