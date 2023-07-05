@@ -1,6 +1,6 @@
 # Ensemble Modeling: An Adaptive Robust Optimization Approach
 
-arXiv link: \url{https://arxiv.org/abs/2304.04308}
+arXiv link: https://arxiv.org/abs/2304.04308
 
 Accurate time series forecasting is essential for a wide range of problems that involve temporal data. However, the performance of a single predictive model can be highly variable due to shifts in the underlying data distribution. Ensemble modeling is a well-established technique for leveraging multiple models to improve accuracy and robustness. This paper proposes a new methodology for building robust ensembles of time series forecasting models.  Our approach utilizes Adaptive Robust Optimization (ARO) to build a linear regression ensemble in which the models' weights can adapt over time. We demonstrate the effectiveness of our method through a series of synthetic experiments and real-world applications, including air pollution management, energy consumption forecasting, and tropical cyclone intensity forecasting. Our results show that our adaptive ensemble outperforms the best ensemble member in hindsight by 16-26\% in root mean square error and 14-28\% in conditional value at risk.
 
