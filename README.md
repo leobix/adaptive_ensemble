@@ -44,14 +44,13 @@ where the window size $t_0$ considered to determine the regularized leader is tu
     ```
     where $\epsilon$ is a margin parameter to be tuned.
 
-- **Ridge**: Consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$:
-
-    $\min _{\boldsymbol{\beta}} \sum_{t=1}^{T}\left(y_{t}-\mathbf{X}_{t}^\top \boldsymbol{\beta}\right)^2+\lambda \|\boldsymbol{\beta}\|_2^2,$
-    which gives the closed-form solution: $\boldsymbol{\beta} = (\mathbf{X}\mathbf{X}^\top + \lambda \boldsymbol{I})^{-1}\mathbf{X}\mathbf{y}$.
+- **Ridge**: Consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$.
 
 
 
 ## How to use the code:
+
+Note: currently working on documenting the code further, but it is ready for use.
 
 Here are a few examples of jobs to execute (assuming you can use julia from your terminal, otherwise replace with something like ```/Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia``` depending on your OS and version):
 
