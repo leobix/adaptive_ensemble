@@ -59,7 +59,7 @@ Here are a few examples of jobs to execute (assuming you can use julia from your
 **Energy dataset**:
 - ```julia src/main.jl --data energy --end-id 8 --val 2000 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
 
-Wind speed forecasting dataset:
+**Wind speed forecasting dataset**:
 - ```julia src/main.jl --data safi --end-id 8 --val 4245 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
 
 Hurricane dataset:
