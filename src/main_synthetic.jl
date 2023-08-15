@@ -140,11 +140,6 @@ function parse_commandline()
             arg_type = Int
             default = 1
 
-        "--bias"
-            help = "Deprecated. Regularization factor for the adaptive term"
-            arg_type = Float64
-            default = 0.
-
         "--std_pert"
             help = "Std perturbation for y"
             arg_type = Float64
@@ -227,6 +222,7 @@ function main()
         args["seed"] = i
         X_test_adaptive = create_ensemble_values(y, args["N_models"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["total_drift_additive"], args["seed"])
 
+y, N_models, bias_range, std_range, δ_pert, σ_pert, total_drift_additive, y_bias_drift, y_std_drift, seed, p_ber = 1
         if args["end-id"] == -1
             args["end-id"] = size(X_test_adaptive)[2]
         end
@@ -251,26 +247,13 @@ function main()
 
         val = min(args["val"], n-split_index-1)
 
-        #TODO: Clean with only args to be passed
-
-           #TODO save results differently for synthetic
-        try
-            if args["lead_time"]>1
-                eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
-            else
-                eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
-            end
-            println("Results completed")
-        catch e
-            println(e)
-            println("Problem with Dataset ", args["data"])
-            #errors = DataFrame(Dataset = Int64[], Dataset2 = Int64[])
-
-            errors = DataFrame(CSV.File("errors.csv"))
-
-            push!(errors, (parse(Int,args["data"][4:end]), 0) )
-            CSV.write("errors.csv", errors)
+        if args["lead_time"]>1
+            eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
+        else
+            eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
         end
+        println("Results completed")
+
     end
 end
 
