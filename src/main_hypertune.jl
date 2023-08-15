@@ -34,12 +34,12 @@ function parse_commandline()
 
         "--filename-X"
             help = "filename of data X"
-            default = "data/energy_predictions_test_val2.csv"
+            default = "data/X_toy_test.csv"
             arg_type = String
 
         "--filename-y"
             help = "filename of targets y"
-            default = "data/energy_y_test_val.csv"
+            default = "data/y_toy_test.csv"
             arg_type = String
 
         "--data"
@@ -53,7 +53,7 @@ function parse_commandline()
             default = 0.5
 
         "--past"
-            help = "number of max cuts in Benders problem"
+            help = "window size to take into account for the past"
             arg_type = Int
             default = 10
 
@@ -67,11 +67,6 @@ function parse_commandline()
             arg_type = Int
             default = 10
 
-        "--max-cuts"
-            help = "number of max cuts in Benders problem"
-            arg_type = Int
-            default = 10
-
         "--begin-id"
             help = ""
             arg_type = Int
@@ -80,19 +75,15 @@ function parse_commandline()
         "--end-id"
             help = ""
             arg_type = Int
-            default = 25
+            default = -1
 
         "--lead_time"
-            help = "Lead time in timesteps"
+            help = "Lead time for predictions in the future. Typically 1, i.e., predict next timestep."
             arg_type = Int
             default = 1
 
         "--last_yT"
             help = "last_yT"
-            action = :store_true
-
-        "--benders"
-            help = "ridge"
             action = :store_true
 
         "--more_data_for_beta0"
@@ -101,14 +92,6 @@ function parse_commandline()
 
         "--CVAR"
             help = "fix beta0"
-            action = :store_true
-
-        "--verbose"
-            help = "verbose"
-            action = :store_true
-
-        "--ridge"
-            help = "verbose"
             action = :store_true
 
         "--err_rule"
@@ -216,9 +199,14 @@ function main()
         println("  $arg  =>  $val")
     end
 
-    if args["data"] == "energy"
+    if args["data"] == "mydata"
         X_test_adaptive = DataFrame(CSV.File(args["filename-X"]))
         y_test = Matrix(DataFrame(CSV.File(args["filename-y"])))
+    end
+
+    if args["data"] == "energy"
+        X_test_adaptive = DataFrame(CSV.File("data/energy_predictions_test_val2.csv"))
+        y_test = Matrix(DataFrame(CSV.File("data/energy_y_test_val.csv")))
     end
 
     if args["data"] == "safi_speed"
