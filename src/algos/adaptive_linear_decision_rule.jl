@@ -39,7 +39,7 @@ function adaptive_ridge_regression_exact(args, X, y, ρ_β0, ρ_V0, T, N0)
     #The formula for the regularization is different
     #Considers there is potentially a stable part in the time series
     # Create model
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(args, X, y, T)
 
@@ -69,7 +69,7 @@ function adaptive_ridge_regression_exact(args, X, y, ρ_β0, ρ_V0, T, N0)
     @constraint(model, [i=1:N0-1], β[i,:] .== β0)
 
     optimize!(model);
-    return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
+    return objective_value(model), value.(β0), value.(V0), value.(β)
 end
 
 function adaptive_ridge_regression_exact_no_stable(args, X, y, ρ_β, ρ_β0, ρ_V0, T)
@@ -78,7 +78,7 @@ function adaptive_ridge_regression_exact_no_stable(args, X, y, ρ_β, ρ_β0, ρ
     #The formula for the regularization is different
     #no stable part
     # Create model
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(args, X, y, T)
 
@@ -101,7 +101,7 @@ function adaptive_ridge_regression_exact_no_stable(args, X, y, ρ_β, ρ_β0, ρ
     @constraint(model, [i=1:N], β[i,:] .== β0.+V0*Z[i,:])
 
     optimize!(model);
-    return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
+    return objective_value(model), value.(β0), value.(V0), value.(β)
 end
 
 
@@ -111,7 +111,7 @@ function adaptive_ridge_regression_exact_Vt(args, X, y, ρ_β0, ρ_V0, T, N0)
     #The formula for the regularization is different
     #Vt can move
     # Create model
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(args, X, y, T)
 
@@ -142,7 +142,7 @@ function adaptive_ridge_regression_exact_Vt(args, X, y, ρ_β0, ρ_V0, T, N0)
     @constraint(model, [i=1:N0-1], β[i,:] .== β0)
 
     optimize!(model);
-    return objective_value(model), getvalue.(β0), getvalue.(Vt), getvalue.(β)
+    return objective_value(model), value.(β0), value.(Vt), value.(β)
 end
 
 
@@ -153,7 +153,7 @@ function adaptive_ridge_regression_standard(args, X, y, ρ_β0, ρ_V0, T)
 # Regulairzation on beta and V separately
 
     # Create model
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(args, X, y, T)
 
@@ -176,7 +176,7 @@ function adaptive_ridge_regression_standard(args, X, y, ρ_β0, ρ_V0, T)
         for i=1:N))
 
     optimize!(model);
-    return objective_value(model), getvalue.(β0), getvalue.(V0)
+    return objective_value(model), value.(β0), value.(V0)
 end
 
 
@@ -187,7 +187,7 @@ function adaptive_ridge_regression_slowly_varying(args, X, y, ρ_β0, ρ_V0, T)
     #no stable part
     #Slowly varying version
     # Create model
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
     set_optimizer_attribute(model, "OutputFlag", 0)
     X, Z, y = get_X_Z_y(args, X, y, T)
 
@@ -210,7 +210,7 @@ function adaptive_ridge_regression_slowly_varying(args, X, y, ρ_β0, ρ_V0, T)
     @constraint(model, [i=1:N], β[i,:] .== β0.+V0*Z[i,:])
 
     optimize!(model);
-    return objective_value(model), getvalue.(β0), getvalue.(V0)
+    return objective_value(model), value.(β0), value.(V0)
 end
 
 
@@ -222,7 +222,7 @@ function adaptive_ridge_regression_exact_no_stable_hurricane(args, X, Z, y, ρ_�
     #The formula for the regularization is different
     #no stable part
     # Create model
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
     set_optimizer_attribute(model, "OutputFlag", 0)
 
     N, P = size(X)
@@ -245,5 +245,5 @@ function adaptive_ridge_regression_exact_no_stable_hurricane(args, X, Z, y, ρ_�
     @constraint(model, [i=1:N], β[i,:] .== β0.+V0*Z[i,:])
 
     optimize!(model);
-    return objective_value(model), getvalue.(β0), getvalue.(V0), getvalue.(β)
+    return objective_value(model), value.(β0), value.(V0), value.(β)
 end

@@ -8,7 +8,9 @@ function l2_regression(X, y, rho, rho_stat; solver_output=0)
 
     n,p = size(X)
 
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    #model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
+
 
     set_optimizer_attribute(model, "OutputFlag", solver_output)
 
