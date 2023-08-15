@@ -78,7 +78,7 @@ function compute_CVaR(errs, α_risk)
 #     '''
     n = size(errs)[1]
     # Create model
-    model = Model(with_optimizer(Gurobi.Optimizer, GRB_ENV))
+    model = Model(optimizer_with_attributes(Gurobi.Optimizer))
     set_optimizer_attribute(model, "OutputFlag", 0)
 
     # Add variables
@@ -128,10 +128,10 @@ function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, len_
         catch e
 
         end
+
         try
             results = DataFrame(CSV.File(filename*"results_"*args["data"]*"_"*param_combo*".csv"))
-            push!(results, (args["data"], args["train_length"], len_test, args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time))
-            #CSV.write("results_3_29/results_"*args["data"]*"_"*string(args["seed"])*".csv", results)
+            push!(results, (args["data"], args["train_length"], len_test, args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time), promote=true)
             CSV.write(filename*"results_"*args["data"]*"_"*param_combo*".csv", results)
         catch e
             results = DataFrame(Dataset = String[], Train_Length = Int64[], Test_Length = Int64[], End_id = Int64[],
