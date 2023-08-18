@@ -75,7 +75,8 @@ Synthetic data experiments:
 
 After the code executes, it will print the performance of the different methods as the following example:
 
-```Best Model Baseline
+```
+### Ensemble Method Name ###
 Length Test Set: 5
 MAE : 0.6459943999999996
 MAPE : 14.946721790791235
