@@ -87,24 +87,79 @@ R2 : 0.48378162107550793
 where MAE = Mean Absolute Error, MAPE = Mean Absolute Percentage Error, RMSE = Root Mean Squared Error, R2 = R2 score.
 To compute the Conditional Value at Risk scores, add --CVAR to your command.
 
-## Arguments for your command:
+## Important Arguments
 
-Arguments
+### 1. File and Data Configuration
+  
+- `--filename-X`
+  - **Description:** Specifies the filename for data X.
+  - **Type:** String
+  - **Default:** `data/X_toy_test.csv`
+  
+- `--filename-y`
+  - **Description:** Specifies the filename for the targets y.
+  - **Type:** String
+  - **Default:** `data/y_toy_test.csv`
+  
+- `--data`
+  - **Description:** Name or identifier for the dataset used.
+  - **Type:** String
+  - **Default:** `mydata`
 
-1. File and Data Configuration
+### 2. Training Configuration
 
---filename-X
-Description: Specifies the filename for data X.
-Type: String
-Default: data/X_toy_test.csv
+- `--train_test_split`
+  - **Description:** Proportion of the dataset to include in the train split.
+  - **Type:** Float64
+  - **Default:** `0.5`
+  
+- `--past`
+  - **Description:** Window size to consider past data points.
+  - **Type:** Int
+  - **Default:** `10`
+  
+- `--num-past`
+  - **Description:** Number of past data points to consider.
+  - **Type:** Int
+  - **Default:** `100`
 
---filename-y
-Description: Specifies the filename for the targets y.
-Type: String
-Default: data/y_toy_test.csv
+- `--val`
+  - **Description:** Number of samples (timesteps) in validation set.
+  - **Type:** Int
+  - **Default:** `10`
 
---data
-Description: Name or identifier for the dataset used.
-Type: String
-Default: mydata
+### 3. Model Configuration
+
+- `--begin-id`
+  - **Description:** Start ID for a range.
+  - **Type:** Int
+  - **Default:** `2`
+
+- `--end-id`
+  - **Description:** End ID for a range. Use `-1` for end of list.
+  - **Type:** Int
+  - **Default:** `-1`
+
+### 4. Advanced Configuration
+  
+- `--CVAR`
+  - **Description:** If set, fixes the value of beta0.
+  - **Action:** store_true
+
+### 5. Optimization Parameters
+
+- `--epsilon-inf`, `--delta-inf`, `--epsilon-l2`, `--delta-l2`
+  - **Description:** Parameters for optimization constraints. Specify values according to the specific constraint type.
+  - **Type:** Float64
+  - **Default:** `0.01` for each
+  
+- `--rho_beta`, `--rho_stat`, `--rho`, `--rho_V`
+  - **Description:** Rho parameters for various adaptive models and ridge adjustments.
+  - **Type:** Float64
+  - **Default:** `0.1` for each
+
+- `--param_combo`
+  - **Description:** Specifies a combination of hyperparameters for testing.
+  - **Type:** Int
+  - **Default:** `0`
 
