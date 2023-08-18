@@ -87,3 +87,24 @@ R2 : 0.48378162107550793
 where MAE = Mean Absolute Error, MAPE = Mean Absolute Percentage Error, RMSE = Root Mean Squared Error, R2 = R2 score.
 To compute the Conditional Value at Risk scores, add --CVAR to your command.
 
+## Arguments for your command:
+
+Arguments
+
+1. File and Data Configuration
+
+--filename-X
+Description: Specifies the filename for data X.
+Type: String
+Default: data/X_toy_test.csv
+
+--filename-y
+Description: Specifies the filename for the targets y.
+Type: String
+Default: data/y_toy_test.csv
+
+--data
+Description: Name or identifier for the dataset used.
+Type: String
+Default: mydata
+
