@@ -72,3 +72,17 @@ Hurricane dataset:
 Synthetic data experiments:
 
 - ```julia src/main_synthetic_parallel.jl --past 5 --num-past 10 --train_test_split 0.75 --period 4 --val 1000 --total_drift_additive --bias_range 0.5 --std_range 0.5 --T 2000 --seed 1 --N_models 10 --bias_drift 0.5 --std_drift 0.5 --CVAR --rho_beta 0.001 --rho 0.001 --rho_V 0.001```
+
+After the code executes, it will print the performance of the different methods as the following example:
+
+```Best Model Baseline
+Length Test Set: 5
+MAE : 0.6459943999999996
+MAPE : 14.946721790791235
+RMSE : 0.8771973071235729
+R2 : 0.48378162107550793
+```
+
+where MAE = Mean Absolute Error, MAPE = Mean Absolute Percentage Error, RMSE = Root Mean Squared Error, R2 = R2 score.
+To compute the Conditional Value at Risk scores, add --CVAR to your command.
+
