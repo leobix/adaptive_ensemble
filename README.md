@@ -56,6 +56,9 @@ Note: currently working on documenting the code further, but it is ready for use
 
 Here are a few examples of jobs to execute (assuming you can use julia from your terminal, otherwise replace with something like ```/Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia``` depending on your OS and version):
 
+**Toy data**
+- ```julia src/main_hypertune.jl --data mydata --begin-id 1 --end-id -1 --val 5 --train_test_split 0.5 --num-past 100 --param_combo 1 --filename-X data/X_toy_test.csv --filename-y data/y_toy_test.csv```
+
 **Energy dataset**:
 - ```julia src/main.jl --data energy --end-id 8 --val 2000 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
 
