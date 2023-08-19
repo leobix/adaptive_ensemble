@@ -163,3 +163,43 @@ To compute the Conditional Value at Risk scores, add --CVAR to your command.
   - **Type:** Int
   - **Default:** `0`
 
+## Data Formatting Guidelines
+
+To ensure the smooth operation of the models and algorithms, it's crucial to format your data correctly. Below are the guidelines for the expected data formats:
+
+### 1. Model Predictions Data
+
+The predictions from each model should be structured in a tabular format, where:
+
+- Each **column** represents predictions from a different model.
+- Each **row** represents a separate prediction instance (typically for different time steps).
+
+**Example Format:**
+
+```
+,pred_model1, pred_model2, pred_model3, ..., pred_modelN
+0, 8.35541, 6.33678, 6.0217, ..., X.XXXXXX
+1, 8.13818, 6.27258, 6.02177, ..., X.XXXXXX
+```
+**Note:** The number of columns (models) and rows (predictions) does not matter. Just ensure that all predictions are in numeric format and are aligned properly.
+
+### 2. Ground Truth Data
+
+The ground truth data should be structured as a single column of real numbers, where:
+
+- Each **row** corresponds to the true value or label for a specific instance.
+
+**Example Format:**
+
+```
+6.175
+6.275
+6.15
+```
+
+**General Points to Remember:**
+
+- Check that there are no missing values. If there are, you might want to either drop those instances or impute the missing values using a suitable method.
+- The ground truth and predictions should be aligned. This means the `n-th` row of the predictions should correspond to the `n-th` row of the ground truth.
+
+
