@@ -57,7 +57,7 @@ Note: currently working on documenting the code further, but it is ready for use
 Here are a few examples of jobs to execute (assuming you can use julia from your terminal, otherwise replace with something like ```/Applications/Julia-1.6.app/Contents/Resources/julia/bin/julia``` depending on your OS and version):
 
 **Toy data**
-- ```julia src/main_hypertune.jl --data mydata --begin-id 1 --end-id -1 --val 5 --train_test_split 0.5 --num-past 100 --param_combo 1 --filename-X data/X_toy_test.csv --filename-y data/y_toy_test.csv```
+- ```julia src/main_hypertune.jl --data mydata --begin-id 1 --end-id -1 --val 5 --train_test_split 0.5 --num-past 100 --filename-X data/X_toy_test.csv --filename-y data/y_toy_test.csv```
 
 **Energy dataset**:
 - ```julia src/main.jl --data energy --end-id 8 --val 2000 --ridge --past 10 --num-past 500 --rho 0.1 --train_test_split 0.5```
@@ -86,6 +86,17 @@ R2 : 0.48378162107550793
 
 where MAE = Mean Absolute Error, MAPE = Mean Absolute Percentage Error, RMSE = Root Mean Squared Error, R2 = R2 score.
 To compute the Conditional Value at Risk scores, add --CVAR to your command.
+
+## Guidelines to launch a job
+
+You have two possibilities:
+- Launching your own set of hyperparameters using the command line arguments:
+  E.g., ```julia src/main_hypertune.jl --data mydata --begin-id 1 --end-id -1 --val 5 --train_test_split 0.5 --num-past 100 --filename-X data/X_toy_test.csv --filename-y data/y_toy_test.csv --past 2 --rho_beta 0.01 --rho 0.01 --rho_V 0.1```
+     
+- Launching a hyperparameter search by enabling:
+  E.g., ```julia src/main_hypertune.jl --data mydata --begin-id 1 --end-id -1 --val 5 --train_test_split 0.5 --num-past 100 --filename-X data/X_toy_test.csv --filename-y data/y_toy_test.csv --param_combo 1 --hypertune```
+
+Launching all param_combos will execute different sets of hyperparameters. Results will be saved in separate files and can be compared later (notebook for comparison not provided as of now).
 
 ## Important Arguments
 
@@ -161,7 +172,9 @@ To compute the Conditional Value at Risk scores, add --CVAR to your command.
 - `--param_combo`
   - **Description:** Specifies a combination of hyperparameters for testing.
   - **Type:** Int
-  - **Default:** `0`
+  - **Default:** `1`
+
+ This last argument should be used with `--hypertune` enabled in the command. E.g., `--param_combo 10 --hypertune`
 
 ## Data Formatting Guidelines
 
