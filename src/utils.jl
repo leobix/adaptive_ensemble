@@ -1,4 +1,4 @@
-function prepare_data_from_y(X, y, n0, n, m, uncertainty, last_yT = false)
+function prepare_data_from_y(X, y, n0, n, m, uncertainty)
 
 
 #     # Input:
@@ -17,10 +17,6 @@ function prepare_data_from_y(X, y, n0, n, m, uncertainty, last_yT = false)
     Xt = Matrix(X[n0+n+1:n0+n+m,:])
     Xt[:,1] = ones(m)
     yt = yt_true
-    if last_yT
-        yt_true[m] = mean(Xt[m])
-    end
-
     D_min = yt .- uncertainty.*abs.(yt)
     D_max = yt .+ uncertainty.*abs.(yt)
     return X0, y0, Xt, yt, yt_true, D_min, D_max
@@ -29,7 +25,7 @@ end
 
 
 
-function prepare_data_from_y_hurricane(X, Z, y, n0, n, m, uncertainty, last_yT = false)
+function prepare_data_from_y_hurricane(X, Z, y, n0, n, m, uncertainty)
 
     """ Nuance with previous: takes Z as input as well
     #     # Input:
@@ -48,9 +44,6 @@ function prepare_data_from_y_hurricane(X, Z, y, n0, n, m, uncertainty, last_yT =
     Xt = Matrix(X[n0+n+1:n0+n+m,:])
     Zt = Matrix(Z[n0+n+1:n0+n+m,:])
     yt = yt_true
-    if last_yT
-        yt_true[m] = mean(Xt[m])
-    end
 
     D_min = yt .- uncertainty.*abs.(yt)
     D_max = yt .+ uncertainty.*abs.(yt)
