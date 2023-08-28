@@ -22,7 +22,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     training_index_end = min(num_past*past, split_index) #last index of training data (included)
 
     # Prepare all data based on the desired splits
-    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, training_index_begin, training_index_end, val, args["uncertainty"], args["last_yT"])
+    X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, training_index_begin, training_index_end, val, args["uncertainty"])
 
     println("There are ", size(X)[1], " samples in total.")
     println("Number of samples in train set: ", size(y0))
@@ -98,7 +98,7 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
         #TODO check split_index with max(split index, 1) and CHECK the MIN
         #The min and max ensure we remain in bounds.
-        X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), min((num_past-1)*past,split_index-past+s), past-1, args["uncertainty"], args["last_yT"])
+        X0, y0, Xt, yt, yt_true, D_min, D_max = prepare_data_from_y(X, y, max(s+split_index-num_past*past+1, 1), min((num_past-1)*past,split_index-past+s), past-1, args["uncertainty"])
 
         #Line to get Z_{t+1}
         X_for_Z = X[split_index-past+s+1:split_index+s+1,:]
@@ -136,8 +136,8 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     println("Evaluation finished. Evaluation start.")
     #TODO Check if I can remove the second line since I always use y_true now
-    X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, args["uncertainty"], args["last_yT"])
-    _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, args["uncertainty"], args["last_yT"])
+    X0, y0, Xt, yt, _, D_min, D_max = prepare_data_from_y(X, y, 1, split_index, val, args["uncertainty"])
+    _, _, _, _, yt_true, _, _ = prepare_data_from_y(X, y_true, 1, split_index, val, args["uncertainty"])
 
     # Unstandardize target for computing metrics
     yt_true = yt_true.*std_y.+mean_y
@@ -231,7 +231,7 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         val = size(X)[1]
     end
 
-    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"], args["last_yT"])
+    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"])
     println("Training data X0 size ", size(X0))
     println("Testing data Xt size ", size(Xt))
     println("Z ", size(Z0))
