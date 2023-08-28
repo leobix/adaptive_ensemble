@@ -82,8 +82,8 @@ function parse_commandline()
             arg_type = Int
             default = 1
 
-        "--last_yT"
-            help = "last_yT"
+        "--hypertune"
+            help = "To overwrite default values and launch an array of jobs with different combos of hyperparams"
             action = :store_true
 
         "--more_data_for_beta0"
@@ -160,7 +160,7 @@ function parse_commandline()
         "--param_combo"
             help = "hyperparameters combo to be tested"
             arg_type = Int
-            default = 0
+            default = 1
 
 
     end
@@ -189,10 +189,14 @@ function main()
     end
 
     combo = hyperparam_combos[args["param_combo"],:]
-    args["rho_beta"] = combo[1]
-    args["rho"] = combo[2]
-    args["rho_V"] = combo[3]
-    args["past"] = Int(combo[4])
+
+    if args["hypertune"]
+        args["rho_beta"] = combo[1]
+        args["rho"] = combo[2]
+        args["rho_V"] = combo[3]
+        args["past"] = Int(combo[4])
+        println("Using combo of hyperparameters with index ", args["param_combo"], ".")
+    end
 
     println("Arguments:")
     for (arg,val) in args
@@ -298,23 +302,14 @@ function main()
     val = min(args["val"], n-split_index-1)
 
     #TODO: Clean with only args to be passed
-    try
-        if args["data"][1:end-3] == "hurricane" || args["lead_time"]>1
-            eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
-        else
-            eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
-        end
-        println("Results completed")
-    catch e
-        println(e)
-        println("Problem with Dataset ", args["data"])
-        #errors = DataFrame(Dataset = Int64[], Dataset2 = Int64[])
 
-        errors = DataFrame(CSV.File("errors.csv"))
-
-        push!(errors, (parse(Int,args["data"][4:end]), 0) )
-        CSV.write("errors.csv", errors)
+    if args["data"][1:end-3] == "hurricane" || args["lead_time"]>1
+        eval_method_hurricane(args, X, Z, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
+    else
+        eval_method(args, X, y, y, args["train_test_split"], args["past"], args["num-past"], val, mean_y, std_y)
     end
+    println("Results completed")
+
 end
 
 main()
