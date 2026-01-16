@@ -48,6 +48,25 @@ where the window size $t_0$ considered to determine the regularized leader is tu
 
 - **Ridge**: Consists in learning the best linear combination of ensemble members by solving a ridge problem on the forecasts $\mathbf{X}_{t}$.
 
+- **Hedge (Exponentially Weighted Average)**: full-information expert aggregation that assigns weight
+  to each model proportional to the exponential of its negative cumulative loss up to time t. We use
+  squared loss and the learning rate choice consistent with our bandits utility for comparability.
+  The update is w_{t+1,i} ∝ w_{t,i} exp(−η ℓ_{t,i}), with ŷ_t = Σ_i w_{t,i} ŷ_{t,i} and regret O(√(T log m)).
+  Optional: set `--hedge_eta` (default 0 uses η = sqrt(8 log m / n)).
+
+- **RLS (Recursive Least Squares) with forgetting**: online linear regression combining experts with
+  weights updated via RLS. Given forgetting factor λ ∈ (0,1], gain K_t = P_{t−1} x_t / (λ + x_t^⊤ P_{t−1} x_t),
+  prediction ŷ_t = w_{t−1}^⊤ x_t, error e_t = y_t − ŷ_t, then w_t = w_{t−1} + K_t e_t and
+  P_t = λ^{−1}(P_{t−1} − K_t x_t^⊤ P_{t−1}). Configure with `--rls_lambda` (default 0.99).
+
+- **Decision Tree Ensembler**: a small CART-style regression tree maps expert forecasts (features) to
+  the target. Trained incrementally on the growing window and predicts current timestep. Configurable
+  with `--tree_max_depth`, `--tree_min_leaf`, and `--tree_num_thresholds`.
+
+- **GBRT (Gradient Boosted Trees)**: gradient boosting of shallow regression trees on the expert
+  features to predict the target. Trains on all data available up to t and predicts at t. Configure
+  with `--gbrt_estimators`, `--gbrt_lr`, `--gbrt_max_depth`, `--gbrt_min_leaf`, `--gbrt_num_thresholds`.
+
 
 
 ## How to use the code:
@@ -157,6 +176,10 @@ Launching all param_combos will execute different sets of hyperparameters. Resul
   - **Description:** If set, fixes the value of beta0.
   - **Action:** store_true
 
+- `--results_dir`
+  - **Description:** Directory where result CSVs are saved (metrics and predictions). Defaults to `results`.
+  - **Type:** String
+
 ### 5. Optimization Parameters
 
 - `--epsilon-inf`, `--delta-inf`, `--epsilon-l2`, `--delta-l2`
@@ -214,5 +237,3 @@ The ground truth data should be structured as a single column of real numbers, w
 
 - Check that there are no missing values. If there are, you might want to either drop those instances or impute the missing values using a suitable method.
 - The ground truth and predictions should be aligned. This means the `n-th` row of the predictions should correspond to the `n-th` row of the ground truth.
-
-

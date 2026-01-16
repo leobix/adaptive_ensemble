@@ -1,11 +1,23 @@
 using Statistics, StatsBase, Distributions, Random
 
 #TODO Add drift on y as well!!!!!
-function create_y(T, period, bias, σ_pert, seed)
+"""
+    create_y(T, period, a, σ_pert, seed)
+
+Generate synthetic ground truth with trend + seasonality + noise:
+    Y_t = sin(2π a t / period) + t/4000 + ε_t
+
+Arguments
+- T::Int: base length; generates 2T samples (for longer horizon)
+- period::Int: seasonal period length (e.g., 500)
+- a::Float64: sine multiplier in sin(2π a t / period)
+- σ_pert::Float64: std of Gaussian noise ε_t ~ N(0, σ_pert)
+- seed::Int: RNG seed
+"""
+function create_y(T, period, a, σ_pert, seed)
     Random.seed!(seed)
     d = Normal(0, σ_pert)
-    y_base = [sin(2*pi*period*t/T) for t=1:2T]
-    y = y_base.+rand(d, size(y_base))
+    y = [sin(2*pi*a*t/period) + t/4000 + rand(d) for t in 1:2T]
     return y
 end
 

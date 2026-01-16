@@ -1,4 +1,8 @@
 include("algos/multi_armed_bandits.jl")
+include("algos/hedge.jl")
+include("algos/rls.jl")
+include("algos/decision_tree_ensembler.jl")
+include("algos/gradient_boosting.jl")
 include("algos/passive_agressive.jl")
 include("algos/benders.jl")
 include("algos/master_primal.jl")
@@ -87,12 +91,43 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     #Initialize the different benchmarks
     β_list_bandits_t = zeros(val, p-1)
     β_list_bandits_all = zeros(val, p-1)
+    β_list_hedge = zeros(val, p-1)
+    β_list_hedge_ewa = zeros(val, p-1)
+    β_list_rls = zeros(val, p-1)
     β_list_PA = zeros(val, p)
     #IMPORTANT: We initialize with equal weights but we could also initialize with l2 weights
     β_PA = ones(p)/(p)#β_l2_init[2:end]
     println("Optimization finished. Evaluation starts.")
 
     last_timesteps = zeros(val)
+    # Decision Tree predictions container
+    yhat_tree = zeros(val)
+    # GBRT predictions container
+    yhat_gbrt = zeros(val)
+    # Hedge learning rate (<=0 means auto)
+    hedge_eta = 0.0
+    try
+        hedge_eta = args["hedge_eta"]
+    catch e
+        hedge_eta = 0.0
+    end
+
+    # Initialize Hedge-EWA dynamic weights
+    w_ewa = ones(p-1)/(p-1)
+    # Initialize RLS
+    λ_rls = 0.99
+    try
+        λ_rls = args["rls_lambda"]
+    catch e
+        λ_rls = 0.99
+    end
+    w_rls, P_rls = rls_init(p-1; δ=1000.0)
+    # Warm start RLS with initial training window
+    for r in 1:size(X0,1)
+        x_r = vec(X0[r, 2:end])
+        y_r = y0[r]
+        w_rls, P_rls = rls_update(w_rls, P_rls, x_r, y_r, λ_rls)
+    end
 
     for s=1:val
 
@@ -114,7 +149,61 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         #BASELINES
         β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt))
         β_list_bandits_t[s,:] = compute_bandit_weights(Xt[:,2:end], yt)
+        if hedge_eta > 0
+            β_list_hedge[s,:] = compute_hedge_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt); η=hedge_eta)
+        else
+            β_list_hedge[s,:] = compute_hedge_weights(vcat(X0,Xt)[:,2:end], vcat(y0,yt))
+        end
+
+        # Decision Tree: train on all data available up to current test index and predict current test row
+        # Use global indexing to avoid window-size mismatches
+        try
+            X_tree = Matrix(X[1:split_index+s-1, 2:end])
+            y_tree = y[1:split_index+s-1]
+            tree = DecisionTreeEnsembler.fit_decision_tree(X_tree, y_tree; max_depth=Int(args["tree_max_depth"]), min_leaf=Int(args["tree_min_leaf"]), num_thresholds=Int(args["tree_num_thresholds"]))
+            yhat_tree[s] = DecisionTreeEnsembler.predict_decision_tree(tree, vec(Matrix(X)[split_index+s, 2:end]))
+        catch e
+            # Fallback: mean of training window if not enough samples
+            yhat_tree[s] = mean(y[1:split_index])
+        end
+
+        # GBRT: gradient boosted trees on all available data up to current test index
+        try
+            X_g = Matrix(X[1:split_index+s-1, 2:end])
+            y_g = y[1:split_index+s-1]
+            model = GradientBoosting.fit_gbrt(
+                X_g, y_g;
+                n_estimators=Int(args["gbrt_estimators"]),
+                learning_rate=Float64(args["gbrt_lr"]),
+                max_depth=Int(args["gbrt_max_depth"]),
+                min_leaf=Int(args["gbrt_min_leaf"]),
+                num_thresholds=Int(args["gbrt_num_thresholds"]))
+            yhat_gbrt[s] = GradientBoosting.predict(model, vec(Matrix(X)[split_index+s, 2:end]))
+        catch e
+            yhat_gbrt[s] = mean(y[1:split_index])
+        end
+
+        # Dynamic Hedge (EWA) one-step update at round s
+        m = p-1
+        η_s = hedge_eta > 0 ? hedge_eta : sqrt(8log(m)/max(s,1))
+        x_s = Matrix(Xt)[end, 2:end]
+        y_s = yt[end]
+        losses_s = abs2.(x_s .- y_s)
+        w_ewa .*= exp.(-η_s .* losses_s)
+        Zs = sum(w_ewa)
+        if Zs == 0 || !isfinite(Zs)
+            w_ewa .= 1/m
+        else
+            w_ewa ./= Zs
+        end
+        β_list_hedge_ewa[s,:] = w_ewa
         β_PA = compute_PA_weights(args["rho_beta"], β_PA, Matrix(Xt)[end,1:end], yt[end])
+
+        # RLS update with the most recent sample
+        x_s = vec(Matrix(Xt)[end, 2:end])
+        y_s = yt[end]
+        w_rls, P_rls = rls_update(w_rls, P_rls, x_s, y_s, λ_rls)
+        β_list_rls[s,:] = w_rls
         β_list_PA[s,:] = β_PA
 
         #A possibility is to retrain L2 at each time step with the new data but too expensive to compute
@@ -149,8 +238,13 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     err_best_model = get_best_model_errors(yt_true, Xt, mean_y, std_y)
     err_bandit_full = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_bandits_all[s,:]).*std_y.+mean_y)) for s=1:val]
     err_bandit_t = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_bandits_t[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_hedge = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_hedge[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_hedge_ewa = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_hedge_ewa[s,:]).*std_y.+mean_y)) for s=1:val]
     err_PA = [abs(yt_true[s]-(dot(Xt[s,1:end],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
     err_baseline = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init).*std_y.+mean_y)) for s=1:val]
+    err_rls = [abs(yt_true[s]-(dot(Xt[s,2:end],β_list_rls[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_tree = [abs(yt_true[s]-(yhat_tree[s].*std_y.+mean_y)) for s=1:val]
+    err_gbrt = [abs(yt_true[s]-(yhat_gbrt[s].*std_y.+mean_y)) for s=1:val]
 
 
     err_linear_adaptive_trained_one = [abs(yt_true[s]-(dot(Xt[s,:],β_list_linear_adaptive_trained_one[s,:]).*std_y.+mean_y)) for s=1:val]
@@ -174,7 +268,26 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
+
     save_array_as_csv(args, β_list_bandits_all,"results_beta/", "bandits_full")
+
+    println("\n### Hedge Baseline ###")
+    get_metrics(args, "hedge", err_hedge, yt_true)
+    save_array_as_csv(args, β_list_hedge,"results_beta/", "hedge")
+
+    println("\n### Hedge (EWA) Baseline ###")
+    get_metrics(args, "hedge-ewa", err_hedge_ewa, yt_true)
+    save_array_as_csv(args, β_list_hedge_ewa,"results_beta/", "hedge_ewa")
+
+    println("\n### RLS (Forgetting) Baseline ###")
+    get_metrics(args, "rls", err_rls, yt_true)
+    save_array_as_csv(args, β_list_rls, "results_beta/", "rls")
+
+    println("\n### Decision Tree Baseline ###")
+    get_metrics(args, "tree", err_tree, yt_true)
+
+    println("\n### GBRT Baseline ###")
+    get_metrics(args, "gbrt", err_gbrt, yt_true)
 
     println("\n### Bandits Only Last T Baseline ###")
     get_metrics(args, "bandits_recent", err_bandit_t, yt_true)
@@ -262,22 +375,72 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     β_list_bandits_t = zeros(val, p-1)
     β_list_bandits_all = zeros(val, p-1)
     β_list_PA = zeros(val, p)
+    β_list_hedge = zeros(val, p-1)
+    β_list_hedge_ewa = zeros(val, p-1)
+    β_list_rls = zeros(val, p-1)
     #IMPORTANT: We initialize with equal weights but we could also initialize with l2 weights
     β_PA = ones(p)/(p)#β_l2_init[2:end]
     println("Optimization finished. Evaluation starts.")
 
     #SOLVE PROBLEM WITH s=1
+    hedge_eta = 0.0
+    try
+        hedge_eta = args["hedge_eta"]
+    catch e
+        hedge_eta = 0.0
+    end
+    # Initialize EWA and RLS
+    w_ewa = ones(p-1)/(p-1)
+    λ_rls = 0.99
+    try
+        λ_rls = args["rls_lambda"]
+    catch e
+        λ_rls = 0.99
+    end
+    w_rls, P_rls = rls_init(p-1; δ=1000.0)
+    # Warm start RLS with initial training window
+    for r in 1:size(X0,1)
+        x_r = vec(X0[r, 1:end-1])
+        y_r = y0[r]
+        w_rls, P_rls = rls_update(w_rls, P_rls, x_r, y_r, λ_rls)
+    end
     for s=1:val
         #BASELINES
         #The reason why 5 in particular, is because the first 4 samples represent 4*6h of predictions and we are meant to predict 24h in advance so there is a lag to take into account.
         #Note that with hurricanes the samples are not necessarily contiguous, and that for a next hurricane we reuse the best weights obtained from the previous one.
         if s < 5
             β_list_bandits_all[s,:] = ones(p-1)/(p-1)
+            β_list_hedge[s,:] = ones(p-1)/(p-1)
+            β_list_hedge_ewa[s,:] = w_ewa
+            β_list_rls[s,:] = w_rls
         else
             β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]))
+            if hedge_eta > 0
+                β_list_hedge[s,:] = compute_hedge_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]); η=hedge_eta)
+            else
+                β_list_hedge[s,:] = compute_hedge_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]))
+            end
             #do not take the intercept term into account
             #β_list_bandits_t[s,:] = compute_bandit_weights(Xt[1:s,1:end-1], yt[s])
             β_PA = compute_PA_weights(args["rho_beta"], β_PA, Matrix(Xt)[s-4,:], yt[s-4])
+
+            # EWA one-step update
+            m = p-1
+            η_s = hedge_eta > 0 ? hedge_eta : sqrt(8log(m)/max(s,1))
+            x_s = Matrix(Xt)[s-4, 1:end-1]
+            y_s = yt[s-4]
+            w_ewa .*= exp.(-η_s .* abs2.(x_s .- y_s))
+            Zs = sum(w_ewa)
+            if Zs == 0 || !isfinite(Zs)
+                w_ewa .= 1/m
+            else
+                w_ewa ./= Zs
+            end
+            β_list_hedge_ewa[s,:] = w_ewa
+
+            # RLS update
+            w_rls, P_rls = rls_update(w_rls, P_rls, vec(x_s), y_s, λ_rls)
+            β_list_rls[s,:] = w_rls
         end
         β_list_PA[s,:] = β_PA
 
@@ -295,6 +458,9 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     err_mean = [abs(yt_true[s]-(mean(Xt[s,1:end-1]).*std_y.+mean_y)) for s=1:val]
     err_best_model = get_best_model_errors(yt_true, Xt, mean_y, std_y)
     err_bandit_full = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_bandits_all[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_hedge = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_hedge[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_hedge_ewa = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_hedge_ewa[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_rls = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_rls[s,:]).*std_y.+mean_y)) for s=1:val]
     err_last_timestep = [abs(yt_true[s]-(Zt[s,end].*std_y.+mean_y)) for s=2:val]
     err_PA = [abs(yt_true[s]-(dot(Xt[s,:],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
     err_baseline = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init).*std_y.+mean_y)) for s=1:val]
@@ -312,6 +478,12 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
 
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
+
+    println("\n### Hedge (EWA) Baseline ###")
+    get_metrics(args, "hedge-ewa", err_hedge_ewa, yt_true)
+
+    println("\n### RLS (Forgetting) Baseline ###")
+    get_metrics(args, "rls", err_rls, yt_true)
 
     println("\n### Last Timestep Baseline ###")
     get_metrics(args, "last_timestep", err_last_timestep, yt_true[2:end])

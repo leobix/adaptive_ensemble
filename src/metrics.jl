@@ -34,7 +34,17 @@ Determines the best model in hindsight, wrt MAPE
             best_MAPE = new_MAPE
         end
     end
-    CSV.write("results_beta/model_errors.csv", DataFrame(errors, :auto))
+    # Write errors without depending on DataFrames
+    try
+        # Create a NamedTuple-of-vectors table for CSV.write
+        cols = (; (Symbol("col" * string(i)) => errors[:, i] for i in 1:size(errors, 2))...)
+        if !ispath("results_beta")
+            mkpath("results_beta")
+        end
+        CSV.write("results_beta/model_errors.csv", cols)
+    catch e
+        @warn "Failed to write model_errors.csv" e
+    end
     return best_err
 end
 
@@ -98,49 +108,77 @@ end
 
 
 function add_Dataframe(args, method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, len_test, time)
-    filename = "results_11_12_id14_16/" #"results_11_11/"#
-    if !ispath(filename)
-        mkpath(filename)
+    # Resolve results directory from CLI args (defaults to "results")
+    results_dir = haskey(args, "results_dir") ? args["results_dir"] : "results"
+    if !ispath(results_dir)
+        mkpath(results_dir)
     end
     if args["data"] == "synthetic"
-        try
-            results = DataFrame(CSV.File(filename*"results_"*args["data"]*"_"*string(args["seed"])*".csv"))
-            push!(results, (args["data"], args["train_length"], len_test,
-                args["std_pert"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["y_bias_drift"], args["y_std_drift"], args["p_ber"], args["period"], args["N_models"], args["seed"], args["T"],
-                args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time))
-            CSV.write(filename*"results_"*args["data"]*"_"*string(args["seed"])*".csv", results)
-        catch e
-            results = DataFrame(Dataset = String[], Train_Length = Int64[], Test_Length = Int64[], Std_Pert_y = Float64[], Bias_Range = Float64[], Std_Range = Float64[], Bias_Drift_range = Float64[], Std_Drift_Range = Float64[],
-                y_Bias_Drift_range = Float64[], y_Std_Drift_Range = Float64[], p_Bernoulli_discrete = Float64[],
-                Period = Int64[], N_models = Int64[], Seed = Int64[], T = Int64[], End_id = Int64[],
-                Rho_beta = Float64[], Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
-                Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[], Time = Int64[])
-
-            push!(results, (args["data"], args["train_length"], len_test, args["std_pert"], args["bias_range"], args["std_range"], args["bias_drift"], args["std_drift"], args["y_bias_drift"], args["y_std_drift"], args["p_ber"],
-                args["period"], args["N_models"], args["seed"], args["T"],
-                args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time))
-            CSV.write(filename*"results_"*args["data"]*"_"*string(args["seed"])*".csv", results)
-        end
+        # Compose row for synthetic experiments
+        row = (
+            Dataset = String(args["data"]),
+            Train_Length = Int(args["train_length"]),
+            Test_Length = Int(len_test),
+            Std_Pert_y = Float64(args["std_pert"]),
+            Bias_Range = Float64(args["bias_range"]),
+            Std_Range = Float64(args["std_range"]),
+            Bias_Drift_range = Float64(args["bias_drift"]),
+            Std_Drift_Range = Float64(args["std_drift"]),
+            y_Bias_Drift_range = Float64(get(args, "y_bias_drift", 0.0)),
+            y_Std_Drift_Range = Float64(get(args, "y_std_drift", 0.0)),
+            p_Bernoulli_discrete = Float64(get(args, "p_ber", 1.0)),
+            Period = Int(args["period"]),
+            N_models = Int(args["N_models"]),
+            Seed = Int(args["seed"]),
+            T = Int(args["T"]),
+            End_id = Int(args["end-id"]),
+            Rho_beta = Float64(args["rho_beta"]),
+            Rho = Float64(args["rho"]),
+            Rho_V = Float64(args["rho_V"]),
+            Past = Int(args["past"]),
+            Num_past = Int(args["num-past"]),
+            Val = Int(args["val"]),
+            Train_test_split = Float64(args["train_test_split"]),
+            Method = String(method),
+            MAE = Float64(MAE),
+            MAPE = Float64(MAPE),
+            RMSE = Float64(RMSE),
+            R2 = Float64(R2),
+            CVAR_05 = Float64(CVAR_05),
+            CVAR_15 = Float64(CVAR_15),
+            Time = Int(time)
+        )
+        outfile = joinpath(results_dir, "results_" * args["data"] * "_" * string(args["seed"]) * ".csv")
+        CSV.write(outfile, [row]; append=ispath(outfile))
     else
         param_combo = "0"
         try
             param_combo = string(args["param_combo"])
         catch e
-
         end
-
-        try
-            results = DataFrame(CSV.File(filename*"results_"*args["data"]*"_"*param_combo*".csv"))
-            push!(results, (args["data"], args["train_length"], len_test, args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time), promote=true)
-            CSV.write(filename*"results_"*args["data"]*"_"*param_combo*".csv", results)
-        catch e
-            results = DataFrame(Dataset = String[], Train_Length = Int64[], Test_Length = Int64[], End_id = Int64[],
-                Rho_beta = Float64[], Rho = Float64[], Rho_V = Float64[], Past = Float64[], Num_past = Float64[], Val = Float64[],
-                Train_test_split = Float64[], Method = String[], MAE = Float64[], MAPE = Float64[], RMSE = Float64[], R2 = Float64[], CVAR_05 = Float64[], CVAR_15 = Float64[], Time = Int64[])
-
-            push!(results, (args["data"], args["train_length"], len_test, args["end-id"], args["rho_beta"], args["rho"], args["rho_V"], args["past"], args["num-past"], args["val"], args["train_test_split"], method, MAE, MAPE, RMSE, R2, CVAR_05, CVAR_15, time))
-            CSV.write(filename*"results_"*args["data"]*"_"*param_combo*".csv", results)
-        end
+        row = (
+            Dataset = String(args["data"]),
+            Train_Length = Int(args["train_length"]),
+            Test_Length = Int(len_test),
+            End_id = Int(args["end-id"]),
+            Rho_beta = Float64(args["rho_beta"]),
+            Rho = Float64(args["rho"]),
+            Rho_V = Float64(args["rho_V"]),
+            Past = Int(args["past"]),
+            Num_past = Int(args["num-past"]),
+            Val = Int(args["val"]),
+            Train_test_split = Float64(args["train_test_split"]),
+            Method = String(method),
+            MAE = Float64(MAE),
+            MAPE = Float64(MAPE),
+            RMSE = Float64(RMSE),
+            R2 = Float64(R2),
+            CVAR_05 = Float64(CVAR_05),
+            CVAR_15 = Float64(CVAR_15),
+            Time = Int(time)
+        )
+        outfile = joinpath(results_dir, "results_" * args["data"] * "_" * param_combo * ".csv")
+        CSV.write(outfile, [row]; append=ispath(outfile))
     end
 
 end

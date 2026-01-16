@@ -1,0 +1,10 @@
+[deps]
+ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Gurobi = "2e9cd046-0924-5485-92f1-d5272153d98b"
+JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+
+[compat]
+julia = "1"

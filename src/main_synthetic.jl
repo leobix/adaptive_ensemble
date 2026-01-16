@@ -7,7 +7,6 @@ using JuMP
 using LinearAlgebra
 using Statistics
 using StatsBase
-using DataFrames
 using Gurobi
 using ArgParse
 using CSV
@@ -28,6 +27,11 @@ function parse_commandline()
         "--filename-results"
             help = "filename to save results file"
             default = "results.csv"
+            arg_type = String
+
+        "--results_dir"
+            help = "directory to save results CSV files"
+            default = "results"
             arg_type = String
 
         "--train_test_split"
@@ -86,6 +90,16 @@ function parse_commandline()
             help = "uncertainty percentage parameter"
             arg_type = Float64
             default = 0.0
+
+        "--hedge_eta"
+            help = "Hedge (EWA) learning rate; if <= 0 uses default sqrt(8*log(m)/n)"
+            arg_type = Float64
+            default = 0.0
+
+        "--rls_lambda"
+            help = "RLS forgetting factor in (0,1], e.g., 0.99"
+            arg_type = Float64
+            default = 0.99
 
         "--epsilon-inf"
             help = "epsilon inf"
@@ -149,6 +163,46 @@ function parse_commandline()
             help = "Number of models in the ensemble"
             arg_type = Int
             default = 10
+
+        "--tree_max_depth"
+            help = "Decision tree ensembler max depth"
+            arg_type = Int
+            default = 2
+
+        "--tree_min_leaf"
+            help = "Decision tree ensembler minimum samples per leaf"
+            arg_type = Int
+            default = 5
+
+        "--tree_num_thresholds"
+            help = "Number of candidate thresholds per feature for tree splits"
+            arg_type = Int
+            default = 25
+
+        "--gbrt_estimators"
+            help = "GBRT number of boosting stages"
+            arg_type = Int
+            default = 30
+
+        "--gbrt_lr"
+            help = "GBRT learning rate"
+            arg_type = Float64
+            default = 0.1
+
+        "--gbrt_max_depth"
+            help = "GBRT base tree max depth"
+            arg_type = Int
+            default = 2
+
+        "--gbrt_min_leaf"
+            help = "GBRT base tree minimum samples per leaf"
+            arg_type = Int
+            default = 5
+
+        "--gbrt_num_thresholds"
+            help = "GBRT base tree number of thresholds per feature"
+            arg_type = Int
+            default = 25
 
         "--T"
             help = "Number of total timesteps available in the train data"
