@@ -6,6 +6,7 @@ include("algos/benders.jl")
 include("algos/master_primal.jl")
 include("algos/OLS.jl")
 include("algos/adaptive_linear_decision_rule.jl")
+include("algos/fedformer.jl")
 include("metrics.jl")
 
 using Dates
@@ -99,6 +100,14 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     println("Optimization finished. Evaluation starts.")
 
     last_timesteps = zeros(val)
+
+    # FEDformer (train once on the training window)
+    fedformer_pred = nothing
+    if haskey(args, "fedformer") && args["fedformer"]
+        train_start = training_index_begin
+        train_end = min(training_index_begin + training_index_end - 1, split_index)
+        fedformer_pred = fedformer_train_predict(args, X, y, train_start, train_end, split_index, val)
+    end
 
     for s=1:val
 
@@ -199,6 +208,15 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true, arole_beta0andV_regression_time)
 
+    if fedformer_pred !== nothing
+        err_fedformer = [abs(yt_true[s]-(fedformer_pred[s].*std_y.+mean_y)) for s=1:val]
+        println("\n### FEDformer ###")
+        get_metrics(args, "fedformer", err_fedformer, yt_true)
+        if haskey(args, "fedformer_save_preds") && args["fedformer_save_preds"]
+            save_array_as_csv(args, reshape(fedformer_pred, :, 1), "results_beta/", "fedformer_preds")
+        end
+    end
+
     #SAME AS LAST 2, BUT WITH ERROR RULES i.e., instead of forecast values we use the previous errors of the models
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE + ERROR RULE for Z ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
@@ -229,7 +247,9 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         val = size(X)[1]
     end
 
-    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"], args["last_yT"])
+    training_index_begin = max(split_index-num_past*past+1, 1)
+    training_index_end = min(num_past*past, split_index)
+    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, training_index_begin, training_index_end, val, args["uncertainty"], args["last_yT"])
     println("Training data X0 size ", size(X0))
     println("Testing data Xt size ", size(Xt))
     println("Z ", size(Z0))
@@ -286,6 +306,14 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         x_r = vec(X0[r, 1:end-1])
         y_r = y0[r]
         w_rls, P_rls = rls_update(w_rls, P_rls, x_r, y_r, λ_rls)
+    end
+
+    # FEDformer (train once on the training window)
+    fedformer_pred = nothing
+    if haskey(args, "fedformer") && args["fedformer"]
+        train_start = training_index_begin
+        train_end = min(training_index_begin + training_index_end - 1, split_index)
+        fedformer_pred = fedformer_train_predict(args, X, y, train_start, train_end, split_index, val)
     end
     for s=1:val
         #BASELINES
@@ -410,5 +438,14 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true)
+
+    if fedformer_pred !== nothing
+        err_fedformer = [abs(yt_true[s]-(fedformer_pred[s].*std_y.+mean_y)) for s=1:val]
+        println("\n### FEDformer ###")
+        get_metrics(args, "fedformer", err_fedformer, yt_true)
+        if haskey(args, "fedformer_save_preds") && args["fedformer_save_preds"]
+            save_array_as_csv(args, reshape(fedformer_pred, :, 1), "results_beta/", "fedformer_preds")
+        end
+    end
 
 end

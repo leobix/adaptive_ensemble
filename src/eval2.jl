@@ -8,6 +8,7 @@ include("algos/benders.jl")
 include("algos/master_primal.jl")
 include("algos/OLS.jl")
 include("algos/adaptive_linear_decision_rule.jl")
+include("algos/fedformer.jl")
 include("metrics.jl")
 
 using Dates
@@ -127,6 +128,14 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
         x_r = vec(X0[r, 2:end])
         y_r = y0[r]
         w_rls, P_rls = rls_update(w_rls, P_rls, x_r, y_r, λ_rls)
+    end
+
+    # FEDformer (train once on the training window)
+    fedformer_pred = nothing
+    if haskey(args, "fedformer") && args["fedformer"]
+        train_start = training_index_begin
+        train_end = min(training_index_begin + training_index_end - 1, split_index)
+        fedformer_pred = fedformer_train_predict(args, X, y, train_start, train_end, split_index, val)
     end
 
     for s=1:val
@@ -289,6 +298,15 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     println("\n### GBRT Baseline ###")
     get_metrics(args, "gbrt", err_gbrt, yt_true)
 
+    if fedformer_pred !== nothing
+        err_fedformer = [abs(yt_true[s]-(fedformer_pred[s].*std_y.+mean_y)) for s=1:val]
+        println("\n### FEDformer ###")
+        get_metrics(args, "fedformer", err_fedformer, yt_true)
+        if haskey(args, "fedformer_save_preds") && args["fedformer_save_preds"]
+            save_array_as_csv(args, reshape(fedformer_pred, :, 1), "results_beta/", "fedformer_preds")
+        end
+    end
+
     println("\n### Bandits Only Last T Baseline ###")
     get_metrics(args, "bandits_recent", err_bandit_t, yt_true)
     save_array_as_csv(args, β_list_bandits_t,"results_beta/", "bandits_last")
@@ -344,7 +362,9 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         val = size(X)[1]
     end
 
-    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"])
+    training_index_begin = max(split_index-num_past*past+1, 1)
+    training_index_end = min(num_past*past, split_index)
+    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, training_index_begin, training_index_end, val, args["uncertainty"])
     println("Training data X0 size ", size(X0))
     println("Testing data Xt size ", size(Xt))
     println("Z ", size(Z0))
@@ -403,6 +423,14 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         x_r = vec(X0[r, 1:end-1])
         y_r = y0[r]
         w_rls, P_rls = rls_update(w_rls, P_rls, x_r, y_r, λ_rls)
+    end
+
+    # FEDformer (train once on the training window)
+    fedformer_pred = nothing
+    if haskey(args, "fedformer") && args["fedformer"]
+        train_start = training_index_begin
+        train_end = min(training_index_begin + training_index_end - 1, split_index)
+        fedformer_pred = fedformer_train_predict(args, X, y, train_start, train_end, split_index, val)
     end
     for s=1:val
         #BASELINES
@@ -494,6 +522,15 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
 
     println("\n### Ridge Baseline ###")
     get_metrics(args, "ridge", err_baseline, yt_true)
+
+    if fedformer_pred !== nothing
+        err_fedformer = [abs(yt_true[s]-(fedformer_pred[s].*std_y.+mean_y)) for s=1:val]
+        println("\n### FEDformer ###")
+        get_metrics(args, "fedformer", err_fedformer, yt_true)
+        if haskey(args, "fedformer_save_preds") && args["fedformer_save_preds"]
+            save_array_as_csv(args, reshape(fedformer_pred, :, 1), "results_beta/", "fedformer_preds")
+        end
+    end
 
 #     println("\n### Ridge + Stat Baseline ###")
 #     get_metrics(args, "ridge_stat", err_baseline_stat, yt_true)

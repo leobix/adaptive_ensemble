@@ -238,6 +238,94 @@ function parse_commandline()
             arg_type = Int
             default = 25
 
+        "--fedformer"
+            help = "Enable FEDformer baseline"
+            action = :store_true
+
+        "--fedformer_seq_len"
+            help = "FEDformer encoder sequence length"
+            arg_type = Int
+            default = 24
+
+        "--fedformer_label_len"
+            help = "FEDformer decoder label length"
+            arg_type = Int
+            default = 12
+
+        "--fedformer_pred_len"
+            help = "FEDformer prediction length"
+            arg_type = Int
+            default = 1
+
+        "--fedformer_d_model"
+            help = "FEDformer model dimension"
+            arg_type = Int
+            default = 64
+
+        "--fedformer_n_heads"
+            help = "FEDformer attention heads"
+            arg_type = Int
+            default = 4
+
+        "--fedformer_e_layers"
+            help = "FEDformer encoder layers"
+            arg_type = Int
+            default = 2
+
+        "--fedformer_d_layers"
+            help = "FEDformer decoder layers"
+            arg_type = Int
+            default = 1
+
+        "--fedformer_d_ff"
+            help = "FEDformer feed-forward dimension"
+            arg_type = Int
+            default = 128
+
+        "--fedformer_dropout"
+            help = "FEDformer dropout"
+            arg_type = Float64
+            default = 0.1
+
+        "--fedformer_activation"
+            help = "FEDformer activation (gelu|relu|linear)"
+            arg_type = String
+            default = "gelu"
+
+        "--fedformer_moving_avg"
+            help = "FEDformer moving average window"
+            arg_type = Int
+            default = 5
+
+        "--fedformer_freq_mode"
+            help = "FEDformer frequency mode (fourier|wavelet)"
+            arg_type = String
+            default = "fourier"
+
+        "--fedformer_modes"
+            help = "FEDformer number of frequency modes / wavelet levels"
+            arg_type = Int
+            default = 16
+
+        "--fedformer_epochs"
+            help = "FEDformer training epochs"
+            arg_type = Int
+            default = 5
+
+        "--fedformer_batch_size"
+            help = "FEDformer batch size"
+            arg_type = Int
+            default = 16
+
+        "--fedformer_lr"
+            help = "FEDformer learning rate"
+            arg_type = Float64
+            default = 0.001
+
+        "--fedformer_save_preds"
+            help = "Save FEDformer predictions to results_beta/"
+            action = :store_true
+
 
     end
     return parse_args(s)
