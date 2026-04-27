@@ -1,0 +1,255 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1098" height="954" viewBox="0 0 1098 954">
+<rect width="100%" height="100%" fill="#f7f7f7"/>
+<text x="20" y="32" font-size="22" font-weight="700" fill="#222222">Transformer comparison: Energy Forecasting</text>
+<text x="20" y="54" font-size="12" fill="#666666">FEDFormer and Informer use the same train/test split and matched transformer dimensions.</text>
+<rect x="20" y="76" width="520" height="280" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="34" y="99" font-size="15" font-weight="600" fill="#222222">MAE</text>
+<line x1="78" x2="528" y1="280.0" y2="280.0" stroke="#e8e8e8"/>
+<text x="70" y="284.0" text-anchor="end" font-size="10" fill="#666666">-9.33</text>
+<line x1="78" x2="528" y1="238.5" y2="238.5" stroke="#e8e8e8"/>
+<text x="70" y="242.5" text-anchor="end" font-size="10" fill="#666666">24.5</text>
+<line x1="78" x2="528" y1="197.0" y2="197.0" stroke="#e8e8e8"/>
+<text x="70" y="201.0" text-anchor="end" font-size="10" fill="#666666">58.3</text>
+<line x1="78" x2="528" y1="155.5" y2="155.5" stroke="#e8e8e8"/>
+<text x="70" y="159.5" text-anchor="end" font-size="10" fill="#666666">92.1</text>
+<line x1="78" x2="528" y1="114.0" y2="114.0" stroke="#e8e8e8"/>
+<text x="70" y="118.0" text-anchor="end" font-size="10" fill="#666666">126</text>
+<line x1="78" x2="528" y1="268.55172413793105" y2="268.55172413793105" stroke="#9a9a9a"/>
+<rect x="84.0" y="228.38392420434388" width="28.153846153846153" height="40.16779993358716" rx="2" fill="#1b9e77"/>
+<text x="98.07692307692308" y="223.38392420434388" text-anchor="middle" font-size="9" fill="#333333">32.7</text>
+<text x="98.07692307692308" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 98.07692307692308 298)">Best model</text>
+<rect x="118.15384615384616" y="223.9489333503577" width="28.153846153846153" height="44.602790787573355" rx="2" fill="#999999"/>
+<text x="132.23076923076923" y="218.9489333503577" text-anchor="middle" font-size="9" fill="#333333">36.4</text>
+<text x="132.23076923076923" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 132.23076923076923 298)">Mean</text>
+<rect x="152.30769230769232" y="191.29243421016744" width="28.153846153846153" height="77.2592899277636" rx="2" fill="#7570b3"/>
+<text x="166.3846153846154" y="186.29243421016744" text-anchor="middle" font-size="9" fill="#333333">63.0</text>
+<text x="166.3846153846154" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 166.3846153846154 298)">Ridge</text>
+<rect x="186.46153846153845" y="188.96563789102012" width="28.153846153846153" height="79.58608624691092" rx="2" fill="#2f6f9f"/>
+<text x="200.53846153846152" y="183.96563789102012" text-anchor="middle" font-size="9" fill="#333333">64.9</text>
+<text x="200.53846153846152" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 200.53846153846152 298)">Adaptive exact</text>
+<rect x="220.6153846153846" y="185.1137104539951" width="28.153846153846153" height="83.43801368393594" rx="2" fill="#75aadb"/>
+<text x="234.69230769230768" y="180.1137104539951" text-anchor="middle" font-size="9" fill="#333333">68.0</text>
+<text x="234.69230769230768" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 234.69230769230768 298)">Adaptive std.</text>
+<rect x="254.76923076923077" y="203.64816197652755" width="28.153846153846153" height="64.9035621614035" rx="2" fill="#4c9f70"/>
+<text x="268.84615384615387" y="198.64816197652755" text-anchor="middle" font-size="9" fill="#333333">52.9</text>
+<text x="268.84615384615387" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 268.84615384615387 298)">Adaptive exact err</text>
+<rect x="288.9230769230769" y="200.2906552969195" width="28.153846153846153" height="68.26106884101154" rx="2" fill="#78c6a3"/>
+<text x="303.0" y="195.2906552969195" text-anchor="middle" font-size="9" fill="#333333">55.6</text>
+<text x="303.0" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 303.0 298)">Adaptive std. err</text>
+<rect x="323.0769230769231" y="221.068984173693" width="28.153846153846153" height="47.48273996423805" rx="2" fill="#a6761d"/>
+<text x="337.1538461538462" y="216.068984173693" text-anchor="middle" font-size="9" fill="#333333">38.7</text>
+<text x="337.1538461538462" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 337.1538461538462 298)">Bandits full</text>
+<rect x="357.2307692307692" y="224.76562511386743" width="28.153846153846153" height="43.78609902406362" rx="2" fill="#e7298a"/>
+<text x="371.3076923076923" y="219.76562511386743" text-anchor="middle" font-size="9" fill="#333333">35.7</text>
+<text x="371.3076923076923" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 371.3076923076923 298)">Bandits recent</text>
+<rect x="391.38461538461536" y="222.31280701307733" width="28.153846153846153" height="46.238917124853714" rx="2" fill="#d95f02"/>
+<text x="405.46153846153845" y="217.31280701307733" text-anchor="middle" font-size="9" fill="#333333">37.7</text>
+<text x="405.46153846153845" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 405.46153846153845 298)">Passive Agg.</text>
+<rect x="425.53846153846155" y="191.94958713548624" width="28.153846153846153" height="76.6021370024448" rx="2" fill="#5b3f8c"/>
+<text x="439.61538461538464" y="186.94958713548624" text-anchor="middle" font-size="9" fill="#333333">62.4</text>
+<text x="439.61538461538464" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 439.61538461538464 298)">FEDFormer</text>
+<rect x="459.6923076923077" y="125.44827586206898" width="28.153846153846153" height="143.10344827586206" rx="2" fill="#c43b4d"/>
+<text x="473.7692307692308" y="120.44827586206898" text-anchor="middle" font-size="9" fill="#333333">117</text>
+<text x="473.7692307692308" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 473.7692307692308 298)">Informer</text>
+<rect x="493.8461538461538" y="240.27798773001064" width="28.153846153846153" height="28.27373640792041" rx="2" fill="#555555"/>
+<text x="507.9230769230769" y="235.27798773001064" text-anchor="middle" font-size="9" fill="#333333">23.0</text>
+<text x="507.9230769230769" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 507.9230769230769 298)">last_timestep</text>
+<text x="526" y="346" text-anchor="end" font-size="10" fill="#777777">Energy Forecasting</text>
+
+<rect x="558" y="76" width="520" height="280" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="572" y="99" font-size="15" font-weight="600" fill="#222222">RMSE</text>
+<line x1="616" x2="1066" y1="280.0" y2="280.0" stroke="#e8e8e8"/>
+<text x="608" y="284.0" text-anchor="end" font-size="10" fill="#666666">-9.76</text>
+<line x1="616" x2="1066" y1="238.5" y2="238.5" stroke="#e8e8e8"/>
+<text x="608" y="242.5" text-anchor="end" font-size="10" fill="#666666">25.6</text>
+<line x1="616" x2="1066" y1="197.0" y2="197.0" stroke="#e8e8e8"/>
+<text x="608" y="201.0" text-anchor="end" font-size="10" fill="#666666">61.0</text>
+<line x1="616" x2="1066" y1="155.5" y2="155.5" stroke="#e8e8e8"/>
+<text x="608" y="159.5" text-anchor="end" font-size="10" fill="#666666">96.4</text>
+<line x1="616" x2="1066" y1="114.0" y2="114.0" stroke="#e8e8e8"/>
+<text x="608" y="118.0" text-anchor="end" font-size="10" fill="#666666">132</text>
+<line x1="616" x2="1066" y1="268.55172413793105" y2="268.55172413793105" stroke="#9a9a9a"/>
+<rect x="622.0" y="197.8326914706873" width="28.153846153846153" height="70.71903266724374" rx="2" fill="#1b9e77"/>
+<text x="636.0769230769231" y="192.8326914706873" text-anchor="middle" font-size="9" fill="#333333">60.3</text>
+<text x="636.0769230769231" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 636.0769230769231 298)">Best model</text>
+<rect x="656.1538461538462" y="196.27722662227248" width="28.153846153846153" height="72.27449751565857" rx="2" fill="#999999"/>
+<text x="670.2307692307693" y="191.27722662227248" text-anchor="middle" font-size="9" fill="#333333">61.6</text>
+<text x="670.2307692307693" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 670.2307692307693 298)">Mean</text>
+<rect x="690.3076923076923" y="178.9897703551004" width="28.153846153846153" height="89.56195378283064" rx="2" fill="#7570b3"/>
+<text x="704.3846153846154" y="173.9897703551004" text-anchor="middle" font-size="9" fill="#333333">76.4</text>
+<text x="704.3846153846154" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 704.3846153846154 298)">Ridge</text>
+<rect x="724.4615384615385" y="183.59372765834632" width="28.153846153846153" height="84.95799647958472" rx="2" fill="#2f6f9f"/>
+<text x="738.5384615384615" y="178.59372765834632" text-anchor="middle" font-size="9" fill="#333333">72.4</text>
+<text x="738.5384615384615" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 738.5384615384615 298)">Adaptive exact</text>
+<rect x="758.6153846153846" y="180.3304803894011" width="28.153846153846153" height="88.22124374852996" rx="2" fill="#75aadb"/>
+<text x="772.6923076923077" y="175.3304803894011" text-anchor="middle" font-size="9" fill="#333333">75.2</text>
+<text x="772.6923076923077" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 772.6923076923077 298)">Adaptive std.</text>
+<rect x="792.7692307692307" y="191.56566224056186" width="28.153846153846153" height="76.98606189736918" rx="2" fill="#4c9f70"/>
+<text x="806.8461538461538" y="186.56566224056186" text-anchor="middle" font-size="9" fill="#333333">65.6</text>
+<text x="806.8461538461538" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 806.8461538461538 298)">Adaptive exact err</text>
+<rect x="826.9230769230769" y="189.22162679102405" width="28.153846153846153" height="79.330097346907" rx="2" fill="#78c6a3"/>
+<text x="841.0" y="184.22162679102405" text-anchor="middle" font-size="9" fill="#333333">67.6</text>
+<text x="841.0" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 841.0 298)">Adaptive std. err</text>
+<rect x="861.0769230769231" y="195.64642973131777" width="28.153846153846153" height="72.90529440661328" rx="2" fill="#a6761d"/>
+<text x="875.1538461538462" y="190.64642973131777" text-anchor="middle" font-size="9" fill="#333333">62.2</text>
+<text x="875.1538461538462" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 875.1538461538462 298)">Bandits full</text>
+<rect x="895.2307692307693" y="196.10117881098785" width="28.153846153846153" height="72.4505453269432" rx="2" fill="#e7298a"/>
+<text x="909.3076923076924" y="191.10117881098785" text-anchor="middle" font-size="9" fill="#333333">61.8</text>
+<text x="909.3076923076924" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 909.3076923076924 298)">Bandits recent</text>
+<rect x="929.3846153846154" y="188.13570235043898" width="28.153846153846153" height="80.41602178749207" rx="2" fill="#d95f02"/>
+<text x="943.4615384615385" y="183.13570235043898" text-anchor="middle" font-size="9" fill="#333333">68.6</text>
+<text x="943.4615384615385" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 943.4615384615385 298)">Passive Agg.</text>
+<rect x="963.5384615384615" y="156.16065758457864" width="28.153846153846153" height="112.3910665533524" rx="2" fill="#5b3f8c"/>
+<text x="977.6153846153846" y="151.16065758457864" text-anchor="middle" font-size="9" fill="#333333">95.8</text>
+<text x="977.6153846153846" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 977.6153846153846 298)">FEDFormer</text>
+<rect x="997.6923076923076" y="125.44827586206898" width="28.153846153846153" height="143.10344827586206" rx="2" fill="#c43b4d"/>
+<text x="1011.7692307692307" y="120.44827586206898" text-anchor="middle" font-size="9" fill="#333333">122</text>
+<text x="1011.7692307692307" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 1011.7692307692307 298)">Informer</text>
+<rect x="1031.8461538461538" y="210.52146665069512" width="28.153846153846153" height="58.03025748723593" rx="2" fill="#555555"/>
+<text x="1045.923076923077" y="205.52146665069512" text-anchor="middle" font-size="9" fill="#333333">49.5</text>
+<text x="1045.923076923077" y="298" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 1045.923076923077 298)">last_timestep</text>
+<text x="1064" y="346" text-anchor="end" font-size="10" fill="#777777">Energy Forecasting</text>
+
+<rect x="20" y="374" width="520" height="280" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="34" y="397" font-size="15" font-weight="600" fill="#222222">MAPE (%)</text>
+<line x1="78" x2="528" y1="578.0" y2="578.0" stroke="#e8e8e8"/>
+<text x="70" y="582.0" text-anchor="end" font-size="10" fill="#666666">-9.79</text>
+<line x1="78" x2="528" y1="536.5" y2="536.5" stroke="#e8e8e8"/>
+<text x="70" y="540.5" text-anchor="end" font-size="10" fill="#666666">25.7</text>
+<line x1="78" x2="528" y1="495.0" y2="495.0" stroke="#e8e8e8"/>
+<text x="70" y="499.0" text-anchor="end" font-size="10" fill="#666666">61.2</text>
+<line x1="78" x2="528" y1="453.5" y2="453.5" stroke="#e8e8e8"/>
+<text x="70" y="457.5" text-anchor="end" font-size="10" fill="#666666">96.6</text>
+<line x1="78" x2="528" y1="412.0" y2="412.0" stroke="#e8e8e8"/>
+<text x="70" y="416.0" text-anchor="end" font-size="10" fill="#666666">132</text>
+<line x1="78" x2="528" y1="566.551724137931" y2="566.551724137931" stroke="#9a9a9a"/>
+<rect x="84.0" y="533.5913328394146" width="28.153846153846153" height="32.96039129851647" rx="2" fill="#1b9e77"/>
+<text x="98.07692307692308" y="528.5913328394146" text-anchor="middle" font-size="9" fill="#333333">28.2</text>
+<text x="98.07692307692308" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 98.07692307692308 596)">Best model</text>
+<rect x="118.15384615384616" y="527.9951081028369" width="28.153846153846153" height="38.55661603509418" rx="2" fill="#999999"/>
+<text x="132.23076923076923" y="522.9951081028369" text-anchor="middle" font-size="9" fill="#333333">33.0</text>
+<text x="132.23076923076923" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 132.23076923076923 596)">Mean</text>
+<rect x="152.30769230769232" y="494.5096975994291" width="28.153846153846153" height="72.04202653850194" rx="2" fill="#7570b3"/>
+<text x="166.3846153846154" y="489.5096975994291" text-anchor="middle" font-size="9" fill="#333333">61.6</text>
+<text x="166.3846153846154" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 166.3846153846154 596)">Ridge</text>
+<rect x="186.46153846153845" y="493.9590985296992" width="28.153846153846153" height="72.59262560823186" rx="2" fill="#2f6f9f"/>
+<text x="200.53846153846152" y="488.9590985296992" text-anchor="middle" font-size="9" fill="#333333">62.1</text>
+<text x="200.53846153846152" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 200.53846153846152 596)">Adaptive exact</text>
+<rect x="220.6153846153846" y="490.12772530871405" width="28.153846153846153" height="76.423998829217" rx="2" fill="#75aadb"/>
+<text x="234.69230769230768" y="485.12772530871405" text-anchor="middle" font-size="9" fill="#333333">65.3</text>
+<text x="234.69230769230768" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 234.69230769230768 596)">Adaptive std.</text>
+<rect x="254.76923076923077" y="508.4549458274665" width="28.153846153846153" height="58.09677831046457" rx="2" fill="#4c9f70"/>
+<text x="268.84615384615387" y="503.4549458274665" text-anchor="middle" font-size="9" fill="#333333">49.7</text>
+<text x="268.84615384615387" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 268.84615384615387 596)">Adaptive exact err</text>
+<rect x="288.9230769230769" y="505.12797572874695" width="28.153846153846153" height="61.4237484091841" rx="2" fill="#78c6a3"/>
+<text x="303.0" y="500.12797572874695" text-anchor="middle" font-size="9" fill="#333333">52.5</text>
+<text x="303.0" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 303.0 596)">Adaptive std. err</text>
+<rect x="323.0769230769231" y="524.9078461134935" width="28.153846153846153" height="41.64387802443753" rx="2" fill="#a6761d"/>
+<text x="337.1538461538462" y="519.9078461134935" text-anchor="middle" font-size="9" fill="#333333">35.6</text>
+<text x="337.1538461538462" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 337.1538461538462 596)">Bandits full</text>
+<rect x="357.2307692307692" y="528.9757089147622" width="28.153846153846153" height="37.57601522316884" rx="2" fill="#e7298a"/>
+<text x="371.3076923076923" y="523.9757089147622" text-anchor="middle" font-size="9" fill="#333333">32.1</text>
+<text x="371.3076923076923" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 371.3076923076923 596)">Bandits recent</text>
+<rect x="391.38461538461536" y="531.071575477497" width="28.153846153846153" height="35.480148660434" rx="2" fill="#d95f02"/>
+<text x="405.46153846153845" y="526.071575477497" text-anchor="middle" font-size="9" fill="#333333">30.3</text>
+<text x="405.46153846153845" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 405.46153846153845 596)">Passive Agg.</text>
+<rect x="425.53846153846155" y="502.0002037773028" width="28.153846153846153" height="64.55152036062827" rx="2" fill="#5b3f8c"/>
+<text x="439.61538461538464" y="497.0002037773028" text-anchor="middle" font-size="9" fill="#333333">55.2</text>
+<text x="439.61538461538464" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 439.61538461538464 596)">FEDFormer</text>
+<rect x="459.6923076923077" y="423.44827586206895" width="28.153846153846153" height="143.1034482758621" rx="2" fill="#c43b4d"/>
+<text x="473.7692307692308" y="418.44827586206895" text-anchor="middle" font-size="9" fill="#333333">122</text>
+<text x="473.7692307692308" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 473.7692307692308 596)">Informer</text>
+<rect x="493.8461538461538" y="543.0658453431537" width="28.153846153846153" height="23.485878794777364" rx="2" fill="#555555"/>
+<text x="507.9230769230769" y="538.0658453431537" text-anchor="middle" font-size="9" fill="#333333">20.1</text>
+<text x="507.9230769230769" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 507.9230769230769 596)">last_timestep</text>
+<text x="526" y="644" text-anchor="end" font-size="10" fill="#777777">Energy Forecasting</text>
+
+<rect x="558" y="374" width="520" height="280" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="572" y="397" font-size="15" font-weight="600" fill="#222222">R2</text>
+<line x1="616" x2="1066" y1="578.0" y2="578.0" stroke="#e8e8e8"/>
+<text x="608" y="582.0" text-anchor="end" font-size="10" fill="#666666">-8.47</text>
+<line x1="616" x2="1066" y1="536.5" y2="536.5" stroke="#e8e8e8"/>
+<text x="608" y="540.5" text-anchor="end" font-size="10" fill="#666666">-6.44</text>
+<line x1="616" x2="1066" y1="495.0" y2="495.0" stroke="#e8e8e8"/>
+<text x="608" y="499.0" text-anchor="end" font-size="10" fill="#666666">-4.41</text>
+<line x1="616" x2="1066" y1="453.5" y2="453.5" stroke="#e8e8e8"/>
+<text x="608" y="457.5" text-anchor="end" font-size="10" fill="#666666">-2.38</text>
+<line x1="616" x2="1066" y1="412.0" y2="412.0" stroke="#e8e8e8"/>
+<text x="608" y="416.0" text-anchor="end" font-size="10" fill="#666666">-0.343</text>
+<rect x="622.0" y="404.9904496718806" width="28.153846153846153" height="24.019075099228985" rx="2" fill="#1b9e77"/>
+<text x="636.0769230769231" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-1.18</text>
+<text x="636.0769230769231" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 636.0769230769231 596)">Best model</text>
+<rect x="656.1538461538462" y="404.9904496718806" width="28.153846153846153" height="25.99565382615947" rx="2" fill="#999999"/>
+<text x="670.2307692307693" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-1.27</text>
+<text x="670.2307692307693" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 670.2307692307693 596)">Mean</text>
+<rect x="690.3076923076923" y="404.9904496718806" width="28.153846153846153" height="50.85816372912268" rx="2" fill="#7570b3"/>
+<text x="704.3846153846154" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-2.49</text>
+<text x="704.3846153846154" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 704.3846153846154 596)">Ridge</text>
+<rect x="724.4615384615385" y="404.9904496718806" width="28.153846153846153" height="43.71790587246272" rx="2" fill="#2f6f9f"/>
+<text x="738.5384615384615" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-2.14</text>
+<text x="738.5384615384615" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 738.5384615384615 596)">Adaptive exact</text>
+<rect x="758.6153846153846" y="404.9904496718806" width="28.153846153846153" height="48.73998257058457" rx="2" fill="#75aadb"/>
+<text x="772.6923076923077" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-2.39</text>
+<text x="772.6923076923077" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 772.6923076923077 596)">Adaptive std.</text>
+<rect x="792.7692307692307" y="404.9904496718806" width="28.153846153846153" height="32.24518908763315" rx="2" fill="#4c9f70"/>
+<text x="806.8461538461538" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-1.58</text>
+<text x="806.8461538461538" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 806.8461538461538 596)">Adaptive exact err</text>
+<rect x="826.9230769230769" y="404.9904496718806" width="28.153846153846153" height="35.50134790286455" rx="2" fill="#78c6a3"/>
+<text x="841.0" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-1.74</text>
+<text x="841.0" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 841.0 596)">Adaptive std. err</text>
+<rect x="861.0769230769231" y="404.9904496718806" width="28.153846153846153" height="26.809482976372692" rx="2" fill="#a6761d"/>
+<text x="875.1538461538462" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-1.31</text>
+<text x="875.1538461538462" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 875.1538461538462 596)">Bandits full</text>
+<rect x="895.2307692307693" y="404.9904496718806" width="28.153846153846153" height="26.222072292702705" rx="2" fill="#e7298a"/>
+<text x="909.3076923076924" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-1.28</text>
+<text x="909.3076923076924" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 909.3076923076924 596)">Bandits recent</text>
+<rect x="929.3846153846154" y="404.9904496718806" width="28.153846153846153" height="37.04293281764194" rx="2" fill="#d95f02"/>
+<text x="943.4615384615385" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-1.81</text>
+<text x="943.4615384615385" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 943.4615384615385 596)">Passive Agg.</text>
+<rect x="963.5384615384615" y="404.9904496718806" width="28.153846153846153" height="91.82919673467802" rx="2" fill="#5b3f8c"/>
+<text x="977.6153846153846" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-4.50</text>
+<text x="977.6153846153846" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 977.6153846153846 596)">FEDFormer</text>
+<rect x="997.6923076923076" y="404.9904496718806" width="28.153846153846153" height="161.56127446605046" rx="2" fill="#c43b4d"/>
+<text x="1011.7692307692307" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-7.91</text>
+<text x="1011.7692307692307" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 1011.7692307692307 596)">Informer</text>
+<rect x="1031.8461538461538" y="404.9904496718806" width="28.153846153846153" height="18.45782619018837" rx="2" fill="#555555"/>
+<text x="1045.923076923077" y="399.9904496718806" text-anchor="middle" font-size="9" fill="#333333">-0.904</text>
+<text x="1045.923076923077" y="596" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 1045.923076923077 596)">last_timestep</text>
+<text x="1064" y="644" text-anchor="end" font-size="10" fill="#777777">Energy Forecasting</text>
+
+<rect x="20" y="672" width="520" height="280" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="34" y="695" font-size="15" font-weight="600" fill="#222222">Time (ms) (log)</text>
+<line x1="78" x2="528" y1="876.0" y2="876.0" stroke="#e8e8e8"/>
+<text x="70" y="880.0" text-anchor="end" font-size="10" fill="#666666">17.7</text>
+<line x1="78" x2="528" y1="834.5" y2="834.5" stroke="#e8e8e8"/>
+<text x="70" y="838.5" text-anchor="end" font-size="10" fill="#666666">151</text>
+<line x1="78" x2="528" y1="793.0" y2="793.0" stroke="#e8e8e8"/>
+<text x="70" y="797.0" text-anchor="end" font-size="10" fill="#666666">1.29e+03</text>
+<line x1="78" x2="528" y1="751.5" y2="751.5" stroke="#e8e8e8"/>
+<text x="70" y="755.5" text-anchor="end" font-size="10" fill="#666666">1.09e+04</text>
+<line x1="78" x2="528" y1="710.0" y2="710.0" stroke="#e8e8e8"/>
+<text x="70" y="714.0" text-anchor="end" font-size="10" fill="#666666">9.32e+04</text>
+<rect x="152.30769230769232" y="781.975057428032" width="28.153846153846153" height="94.02494257196804" rx="2" fill="#7570b3"/>
+<text x="166.3846153846154" y="776.975057428032" text-anchor="middle" font-size="9" fill="#333333">2.27e+03</text>
+<text x="166.3846153846154" y="894" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 166.3846153846154 894)">Ridge</text>
+<rect x="186.46153846153845" y="798.771567637136" width="28.153846153846153" height="77.22843236286405" rx="2" fill="#2f6f9f"/>
+<text x="200.53846153846152" y="793.771567637136" text-anchor="middle" font-size="9" fill="#333333">954</text>
+<text x="200.53846153846152" y="894" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 200.53846153846152 894)">Adaptive exact</text>
+<rect x="220.6153846153846" y="828.3770438241803" width="28.153846153846153" height="47.622956175819695" rx="2" fill="#75aadb"/>
+<text x="234.69230769230768" y="823.3770438241803" text-anchor="middle" font-size="9" fill="#333333">207</text>
+<text x="234.69230769230768" y="894" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 234.69230769230768 894)">Adaptive std.</text>
+<rect x="254.76923076923077" y="845.3963792789309" width="28.153846153846153" height="30.603620721069092" rx="2" fill="#4c9f70"/>
+<text x="268.84615384615387" y="840.3963792789309" text-anchor="middle" font-size="9" fill="#333333">86.0</text>
+<text x="268.84615384615387" y="894" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 268.84615384615387 894)">Adaptive exact err</text>
+<rect x="288.9230769230769" y="864.551724137931" width="28.153846153846153" height="11.448275862068954" rx="2" fill="#78c6a3"/>
+<text x="303.0" y="859.551724137931" text-anchor="middle" font-size="9" fill="#333333">32.0</text>
+<text x="303.0" y="894" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 303.0 894)">Adaptive std. err</text>
+<rect x="425.53846153846155" y="721.448275862069" width="28.153846153846153" height="154.55172413793105" rx="2" fill="#5b3f8c"/>
+<text x="439.61538461538464" y="716.448275862069" text-anchor="middle" font-size="9" fill="#333333">5.16e+04</text>
+<text x="439.61538461538464" y="894" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 439.61538461538464 894)">FEDFormer</text>
+<rect x="459.6923076923077" y="733.7855580443255" width="28.153846153846153" height="142.2144419556745" rx="2" fill="#c43b4d"/>
+<text x="473.7692307692308" y="728.7855580443255" text-anchor="middle" font-size="9" fill="#333333">2.73e+04</text>
+<text x="473.7692307692308" y="894" text-anchor="middle" font-size="8" fill="#333333" transform="rotate(45 473.7692307692308 894)">Informer</text>
+<text x="526" y="942" text-anchor="end" font-size="10" fill="#777777">Energy Forecasting</text>
+
+</svg>

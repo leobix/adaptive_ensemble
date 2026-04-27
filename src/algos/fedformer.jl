@@ -13,8 +13,10 @@ function all_finite(x)
         return true
     elseif x isa Number
         return isfinite(x)
-    elseif x isa AbstractArray
+    elseif x isa AbstractArray{<:Number}
         return all(isfinite, x)
+    elseif x isa AbstractArray
+        return all(all_finite, x)
     elseif x isa Tuple
         return all(all_finite, x)
     elseif x isa NamedTuple
@@ -22,6 +24,14 @@ function all_finite(x)
     else
         return true
     end
+end
+
+function fedformer_normalize_features(X::Array{Float32, 2}, train_start::Int, train_end::Int)
+    train_view = view(X, train_start:train_end, :)
+    mu = Float32.(mean(train_view; dims=1))
+    sigma = Float32.(std(train_view; dims=1))
+    sigma = map(s -> isfinite(s) && s > FEDFORMER_EPS ? s : 1.0f0, sigma)
+    return (X .- mu) ./ sigma
 end
 
 function fedformer_gelu(x)
@@ -640,6 +650,8 @@ function fedformer_train_predict(args, X, y, train_start, train_end, split_index
     if train_end - train_start + 1 < seq_len + pred_len
         return nothing
     end
+
+    X = fedformer_normalize_features(X, train_start, train_end)
 
     model = build_fedformer(input_dim;
         seq_len=seq_len,

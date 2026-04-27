@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="716" height="740" viewBox="0 0 716 740">
+<rect width="100%" height="100%" fill="#f7f7f7"/>
+<text x="20" y="32" font-size="22" font-weight="700" fill="#222222">Smoke-run coefficient trajectories: mydata</text>
+<text x="20" y="54" font-size="12" fill="#666666">Each line is one coefficient/ensemble-member weight over the held-out evaluation steps.</text>
+<rect x="20" y="76" width="330" height="210" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="32" y="97" font-size="13" font-weight="600" fill="#222222">Adaptive Ridge
+error rule</text>
+<line x1="64" x2="338" y1="252.0" y2="252.0" stroke="#e8e8e8"/>
+<text x="57" y="255.0" text-anchor="end" font-size="9" fill="#666666">-0.863</text>
+<line x1="64" x2="338" y1="204.66666666666669" y2="204.66666666666669" stroke="#e8e8e8"/>
+<text x="57" y="207.66666666666669" text-anchor="end" font-size="9" fill="#666666">-0.468</text>
+<line x1="64" x2="338" y1="157.33333333333334" y2="157.33333333333334" stroke="#e8e8e8"/>
+<text x="57" y="160.33333333333334" text-anchor="end" font-size="9" fill="#666666">-0.074</text>
+<line x1="64" x2="338" y1="110.0" y2="110.0" stroke="#e8e8e8"/>
+<text x="57" y="113.0" text-anchor="end" font-size="9" fill="#666666">0.320</text>
+<polyline points="64.00,242.21 132.50,235.08 201.00,224.52 269.50,184.95 338.00,165.04" fill="none" stroke="#2f6f9f" stroke-width="1.8"/>
+<polyline points="64.00,119.79 132.50,121.70 201.00,124.73 269.50,136.36 338.00,141.96" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<polyline points="64.00,132.83 132.50,133.33 201.00,134.61 269.50,140.23 338.00,142.13" fill="none" stroke="#4c9f70" stroke-width="1.8"/>
+<polyline points="64.00,124.75 132.50,125.89 201.00,128.07 269.50,136.90 338.00,140.78" fill="none" stroke="#7570b3" stroke-width="1.8"/>
+<polyline points="64.00,131.64 132.50,132.30 201.00,133.77 269.50,140.15 338.00,142.30" fill="none" stroke="#e7298a" stroke-width="1.8"/>
+<polyline points="64.00,136.10 132.50,136.41 201.00,137.35 269.50,141.57 338.00,143.01" fill="none" stroke="#a6761d" stroke-width="1.8"/>
+<polyline points="64.00,144.31 132.50,143.86 201.00,143.78 269.50,144.24 338.00,143.75" fill="none" stroke="#666666" stroke-width="1.8"/>
+<text x="338" y="272" text-anchor="end" font-size="10" fill="#777777">test step</text>
+
+<rect x="366" y="76" width="330" height="210" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="378" y="97" font-size="13" font-weight="600" fill="#222222">Adaptive Ridge std.
+error rule</text>
+<line x1="410" x2="684" y1="252.0" y2="252.0" stroke="#e8e8e8"/>
+<text x="403" y="255.0" text-anchor="end" font-size="9" fill="#666666">-1.24</text>
+<line x1="410" x2="684" y1="204.66666666666669" y2="204.66666666666669" stroke="#e8e8e8"/>
+<text x="403" y="207.66666666666669" text-anchor="end" font-size="9" fill="#666666">-0.689</text>
+<line x1="410" x2="684" y1="157.33333333333334" y2="157.33333333333334" stroke="#e8e8e8"/>
+<text x="403" y="160.33333333333334" text-anchor="end" font-size="9" fill="#666666">-0.138</text>
+<line x1="410" x2="684" y1="110.0" y2="110.0" stroke="#e8e8e8"/>
+<text x="403" y="113.0" text-anchor="end" font-size="9" fill="#666666">0.413</text>
+<polyline points="410.00,242.21 478.50,234.98 547.00,224.96 615.50,195.32 684.00,164.24" fill="none" stroke="#2f6f9f" stroke-width="1.8"/>
+<polyline points="410.00,119.79 478.50,121.59 547.00,124.18 615.50,132.01 684.00,139.87" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<polyline points="410.00,139.90 478.50,140.01 547.00,140.40 615.50,142.09 684.00,142.83" fill="none" stroke="#4c9f70" stroke-width="1.8"/>
+<polyline points="410.00,130.40 478.50,131.23 547.00,132.61 615.50,137.13 684.00,141.06" fill="none" stroke="#7570b3" stroke-width="1.8"/>
+<polyline points="410.00,138.19 478.50,138.45 547.00,139.04 615.50,141.32 684.00,142.64" fill="none" stroke="#e7298a" stroke-width="1.8"/>
+<polyline points="410.00,141.94 478.50,141.92 547.00,142.12 615.50,143.15 684.00,143.38" fill="none" stroke="#a6761d" stroke-width="1.8"/>
+<polyline points="410.00,152.15 478.50,151.31 547.00,150.41 615.50,148.27 684.00,145.06" fill="none" stroke="#666666" stroke-width="1.8"/>
+<text x="684" y="272" text-anchor="end" font-size="10" fill="#777777">test step</text>
+
+<rect x="20" y="302" width="330" height="210" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="32" y="323" font-size="13" font-weight="600" fill="#222222">Adaptive Ridge
+exact</text>
+<line x1="64" x2="338" y1="478.0" y2="478.0" stroke="#e8e8e8"/>
+<text x="57" y="481.0" text-anchor="end" font-size="9" fill="#666666">-0.241</text>
+<line x1="64" x2="338" y1="430.6666666666667" y2="430.6666666666667" stroke="#e8e8e8"/>
+<text x="57" y="433.6666666666667" text-anchor="end" font-size="9" fill="#666666">-0.078</text>
+<line x1="64" x2="338" y1="383.33333333333337" y2="383.33333333333337" stroke="#e8e8e8"/>
+<text x="57" y="386.33333333333337" text-anchor="end" font-size="9" fill="#666666">0.084</text>
+<line x1="64" x2="338" y1="336.0" y2="336.0" stroke="#e8e8e8"/>
+<text x="57" y="339.0" text-anchor="end" font-size="9" fill="#666666">0.246</text>
+<polyline points="64.00,468.21 132.50,432.06 201.00,410.25 269.50,407.72 338.00,444.00" fill="none" stroke="#2f6f9f" stroke-width="1.8"/>
+<polyline points="64.00,370.87 132.50,379.04 201.00,385.19 269.50,387.76 338.00,380.92" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<polyline points="64.00,355.31 132.50,354.80 201.00,357.32 269.50,361.81 338.00,365.10" fill="none" stroke="#4c9f70" stroke-width="1.8"/>
+<polyline points="64.00,345.79 132.50,347.65 201.00,351.83 269.50,357.05 338.00,358.70" fill="none" stroke="#7570b3" stroke-width="1.8"/>
+<polyline points="64.00,362.55 132.50,363.78 201.00,366.85 269.50,370.54 338.00,371.26" fill="none" stroke="#e7298a" stroke-width="1.8"/>
+<polyline points="64.00,358.62 132.50,357.00 201.00,358.75 269.50,363.08 338.00,367.61" fill="none" stroke="#a6761d" stroke-width="1.8"/>
+<polyline points="64.00,352.90 132.50,346.38 201.00,345.88 269.50,351.09 338.00,361.46" fill="none" stroke="#666666" stroke-width="1.8"/>
+<text x="338" y="498" text-anchor="end" font-size="10" fill="#777777">test step</text>
+
+<rect x="366" y="302" width="330" height="210" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="378" y="323" font-size="13" font-weight="600" fill="#222222">Adaptive Ridge
+standard</text>
+<line x1="410" x2="684" y1="478.0" y2="478.0" stroke="#e8e8e8"/>
+<text x="403" y="481.0" text-anchor="end" font-size="9" fill="#666666">-0.667</text>
+<line x1="410" x2="684" y1="430.6666666666667" y2="430.6666666666667" stroke="#e8e8e8"/>
+<text x="403" y="433.6666666666667" text-anchor="end" font-size="9" fill="#666666">-0.357</text>
+<line x1="410" x2="684" y1="383.3333333333333" y2="383.3333333333333" stroke="#e8e8e8"/>
+<text x="403" y="386.3333333333333" text-anchor="end" font-size="9" fill="#666666">-0.048</text>
+<line x1="410" x2="684" y1="336.0" y2="336.0" stroke="#e8e8e8"/>
+<text x="403" y="339.0" text-anchor="end" font-size="9" fill="#666666">0.262</text>
+<polyline points="410.00,468.21 478.50,455.62 547.00,445.12 615.50,436.94 684.00,439.50" fill="none" stroke="#2f6f9f" stroke-width="1.8"/>
+<polyline points="410.00,345.79 478.50,348.89 547.00,351.85 615.50,354.53 684.00,354.43" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<polyline points="410.00,357.28 478.50,357.70 547.00,358.88 615.50,360.49 684.00,361.27" fill="none" stroke="#4c9f70" stroke-width="1.8"/>
+<polyline points="410.00,347.15 478.50,348.43 547.00,350.47 615.50,353.03 684.00,354.19" fill="none" stroke="#7570b3" stroke-width="1.8"/>
+<polyline points="410.00,357.99 478.50,358.93 547.00,360.33 615.50,361.85 684.00,362.05" fill="none" stroke="#e7298a" stroke-width="1.8"/>
+<polyline points="410.00,359.74 478.50,359.74 547.00,360.58 615.50,362.00 684.00,363.06" fill="none" stroke="#a6761d" stroke-width="1.8"/>
+<polyline points="410.00,366.11 478.50,364.55 547.00,364.33 615.50,365.20 684.00,367.00" fill="none" stroke="#666666" stroke-width="1.8"/>
+<text x="684" y="498" text-anchor="end" font-size="10" fill="#777777">test step</text>
+
+<rect x="20" y="528" width="330" height="210" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="32" y="549" font-size="13" font-weight="600" fill="#222222">Passive-
+Aggressive</text>
+<line x1="64" x2="338" y1="704.0" y2="704.0" stroke="#e8e8e8"/>
+<text x="57" y="707.0" text-anchor="end" font-size="9" fill="#666666">-0.049</text>
+<line x1="64" x2="338" y1="656.6666666666666" y2="656.6666666666666" stroke="#e8e8e8"/>
+<text x="57" y="659.6666666666666" text-anchor="end" font-size="9" fill="#666666">0.069</text>
+<line x1="64" x2="338" y1="609.3333333333334" y2="609.3333333333334" stroke="#e8e8e8"/>
+<text x="57" y="612.3333333333334" text-anchor="end" font-size="9" fill="#666666">0.188</text>
+<line x1="64" x2="338" y1="562.0" y2="562.0" stroke="#e8e8e8"/>
+<text x="57" y="565.0" text-anchor="end" font-size="9" fill="#666666">0.306</text>
+<polyline points="64.00,666.99 132.50,657.27 201.00,650.10 269.50,625.46 338.00,592.46" fill="none" stroke="#2f6f9f" stroke-width="1.8"/>
+<polyline points="64.00,596.88 132.50,604.02 201.00,608.56 269.50,614.82 338.00,609.12" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<polyline points="64.00,576.99 132.50,592.28 201.00,603.39 269.50,637.42 338.00,667.78" fill="none" stroke="#4c9f70" stroke-width="1.8"/>
+<polyline points="64.00,571.79 132.50,587.53 201.00,599.14 269.50,628.97 338.00,668.93" fill="none" stroke="#7570b3" stroke-width="1.8"/>
+<polyline points="64.00,582.92 132.50,597.57 201.00,608.48 269.50,642.63 338.00,677.52" fill="none" stroke="#e7298a" stroke-width="1.8"/>
+<polyline points="64.00,580.84 132.50,595.15 201.00,605.84 269.50,640.00 338.00,675.51" fill="none" stroke="#a6761d" stroke-width="1.8"/>
+<polyline points="64.00,574.22 132.50,588.47 201.00,598.98 269.50,645.81 338.00,694.21" fill="none" stroke="#666666" stroke-width="1.8"/>
+<text x="338" y="724" text-anchor="end" font-size="10" fill="#777777">test step</text>
+
+<rect x="366" y="528" width="330" height="210" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="378" y="549" font-size="13" font-weight="600" fill="#222222">Exp3
+full</text>
+<line x1="410" x2="684" y1="704.0" y2="704.0" stroke="#e8e8e8"/>
+<text x="403" y="707.0" text-anchor="end" font-size="9" fill="#666666">-0.035</text>
+<line x1="410" x2="684" y1="656.6666666666666" y2="656.6666666666666" stroke="#e8e8e8"/>
+<text x="403" y="659.6666666666666" text-anchor="end" font-size="9" fill="#666666">0.134</text>
+<line x1="410" x2="684" y1="609.3333333333334" y2="609.3333333333334" stroke="#e8e8e8"/>
+<text x="403" y="612.3333333333334" text-anchor="end" font-size="9" fill="#666666">0.304</text>
+<line x1="410" x2="684" y1="562.0" y2="562.0" stroke="#e8e8e8"/>
+<text x="403" y="565.0" text-anchor="end" font-size="9" fill="#666666">0.473</text>
+<polyline points="410.00,686.63 478.50,693.53 547.00,694.13 615.50,693.71 684.00,656.81" fill="none" stroke="#2f6f9f" stroke-width="1.8"/>
+<polyline points="410.00,617.58 478.50,628.54 547.00,626.49 615.50,631.35 684.00,590.00" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<polyline points="410.00,579.22 478.50,576.85 547.00,605.53 615.50,571.79 684.00,653.85" fill="none" stroke="#4c9f70" stroke-width="1.8"/>
+<polyline points="410.00,642.33 478.50,651.30 547.00,653.74 615.50,653.87 684.00,642.37" fill="none" stroke="#7570b3" stroke-width="1.8"/>
+<polyline points="410.00,672.07 478.50,669.10 547.00,663.34 615.50,650.52 684.00,649.31" fill="none" stroke="#e7298a" stroke-width="1.8"/>
+<polyline points="410.00,687.90 478.50,666.42 547.00,642.51 615.50,684.48 684.00,693.39" fill="none" stroke="#a6761d" stroke-width="1.8"/>
+<text x="684" y="724" text-anchor="end" font-size="10" fill="#777777">test step</text>
+
+</svg>

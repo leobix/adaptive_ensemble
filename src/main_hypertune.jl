@@ -15,6 +15,7 @@ using Random
 
 #NOTE: IMPORTANT Change from eval2.jl to eval_hurricane.jl for the specific hurricane dataset that requires adjustment in building the Z matrix
 # (since we skip 4 timesteps ahead instead of 1 and want to avoid cheating in hindsight, see paper if interested)
+include("transformer_args.jl")
 include("eval2.jl")
 include("utils.jl")
 include("utils_hurricane.jl")
@@ -30,11 +31,6 @@ function parse_commandline()
         "--filename-results"
             help = "filename to save results file"
             default = "results.csv"
-            arg_type = String
-
-        "--results_dir"
-            help = "directory to save results CSV files"
-            default = "results"
             arg_type = String
 
         "--filename-X"
@@ -112,16 +108,6 @@ function parse_commandline()
             arg_type = Float64
             default = 0.0
 
-        "--hedge_eta"
-            help = "Hedge (EWA) learning rate; if <= 0 uses default sqrt(8*log(m)/n)"
-            arg_type = Float64
-            default = 0.0
-
-        "--rls_lambda"
-            help = "RLS forgetting factor in (0,1], e.g., 0.99"
-            arg_type = Float64
-            default = 0.99
-
         "--epsilon-inf"
             help = "epsilon inf"
             arg_type = Float64
@@ -177,136 +163,8 @@ function parse_commandline()
             arg_type = Int
             default = 1
 
-        "--tree_max_depth"
-            help = "Decision tree ensembler max depth"
-            arg_type = Int
-            default = 2
-
-        "--tree_min_leaf"
-            help = "Decision tree ensembler minimum samples per leaf"
-            arg_type = Int
-            default = 5
-
-        "--tree_num_thresholds"
-            help = "Number of candidate thresholds per feature for tree splits"
-            arg_type = Int
-            default = 25
-
-        "--gbrt_estimators"
-            help = "GBRT number of boosting stages"
-            arg_type = Int
-            default = 30
-
-        "--gbrt_lr"
-            help = "GBRT learning rate"
-            arg_type = Float64
-            default = 0.1
-
-        "--gbrt_max_depth"
-            help = "GBRT base tree max depth"
-            arg_type = Int
-            default = 2
-
-        "--gbrt_min_leaf"
-            help = "GBRT base tree minimum samples per leaf"
-            arg_type = Int
-            default = 5
-
-        "--gbrt_num_thresholds"
-            help = "GBRT base tree number of thresholds per feature"
-            arg_type = Int
-            default = 25
-
-        "--fedformer"
-            help = "Enable FEDformer baseline"
-            action = :store_true
-
-        "--fedformer_seq_len"
-            help = "FEDformer encoder sequence length"
-            arg_type = Int
-            default = 24
-
-        "--fedformer_label_len"
-            help = "FEDformer decoder label length"
-            arg_type = Int
-            default = 12
-
-        "--fedformer_pred_len"
-            help = "FEDformer prediction length"
-            arg_type = Int
-            default = 1
-
-        "--fedformer_d_model"
-            help = "FEDformer model dimension"
-            arg_type = Int
-            default = 64
-
-        "--fedformer_n_heads"
-            help = "FEDformer attention heads"
-            arg_type = Int
-            default = 4
-
-        "--fedformer_e_layers"
-            help = "FEDformer encoder layers"
-            arg_type = Int
-            default = 2
-
-        "--fedformer_d_layers"
-            help = "FEDformer decoder layers"
-            arg_type = Int
-            default = 1
-
-        "--fedformer_d_ff"
-            help = "FEDformer feed-forward dimension"
-            arg_type = Int
-            default = 128
-
-        "--fedformer_dropout"
-            help = "FEDformer dropout"
-            arg_type = Float64
-            default = 0.1
-
-        "--fedformer_activation"
-            help = "FEDformer activation (gelu|relu|linear)"
-            arg_type = String
-            default = "gelu"
-
-        "--fedformer_moving_avg"
-            help = "FEDformer moving average window"
-            arg_type = Int
-            default = 5
-
-        "--fedformer_freq_mode"
-            help = "FEDformer frequency mode (fourier|wavelet)"
-            arg_type = String
-            default = "fourier"
-
-        "--fedformer_modes"
-            help = "FEDformer number of frequency modes / wavelet levels"
-            arg_type = Int
-            default = 16
-
-        "--fedformer_epochs"
-            help = "FEDformer training epochs"
-            arg_type = Int
-            default = 5
-
-        "--fedformer_batch_size"
-            help = "FEDformer batch size"
-            arg_type = Int
-            default = 16
-
-        "--fedformer_lr"
-            help = "FEDformer learning rate"
-            arg_type = Float64
-            default = 0.001
-
-        "--fedformer_save_preds"
-            help = "Save FEDformer predictions to results_beta/"
-            action = :store_true
-
-
     end
+    add_transformer_args!(s)
     return parse_args(s)
 end
 

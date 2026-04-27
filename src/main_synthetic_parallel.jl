@@ -12,6 +12,7 @@ using ArgParse
 using CSV
 using Random
 
+include("transformer_args.jl")
 include("eval2.jl")
 include("utils.jl")
 include("synthetic_experiments/utils_synthetic_experiments.jl")
@@ -362,6 +363,7 @@ function parse_commandline()
             action = :store_true
 
     end
+    add_transformer_args!(s)
     return parse_args(s)
 end
 

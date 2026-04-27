@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420">
+<rect width="100%" height="100%" fill="#f7f7f7"/>
+<rect x="20" y="20" width="940" height="380" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="40" y="48" font-size="22" font-weight="700" fill="#222222">Transformer predictions: Wind Speed Forecasting</text>
+<text x="40" y="68" font-size="12" fill="#666666">Held-out steps 4248-4271, unstandardized to the target scale.</text>
+<line x1="72" x2="950" y1="360.0" y2="360.0" stroke="#e8e8e8"/>
+<text x="62" y="364.0" text-anchor="end" font-size="11" fill="#666666">-1.99e+06</text>
+<line x1="72" x2="950" y1="289.0" y2="289.0" stroke="#e8e8e8"/>
+<text x="62" y="293.0" text-anchor="end" font-size="11" fill="#666666">-1.43e+06</text>
+<line x1="72" x2="950" y1="218.0" y2="218.0" stroke="#e8e8e8"/>
+<text x="62" y="222.0" text-anchor="end" font-size="11" fill="#666666">-8.69e+05</text>
+<line x1="72" x2="950" y1="147.0" y2="147.0" stroke="#e8e8e8"/>
+<text x="62" y="151.0" text-anchor="end" font-size="11" fill="#666666">-3.07e+05</text>
+<line x1="72" x2="950" y1="76.0" y2="76.0" stroke="#e8e8e8"/>
+<text x="62" y="80.0" text-anchor="end" font-size="11" fill="#666666">2.56e+05</text>
+<polyline points="72.00,103.49 110.17,103.49 148.35,103.49 186.52,103.49 224.70,103.49 262.87,103.49 301.04,103.49 339.22,103.49 377.39,103.49 415.57,103.49 453.74,103.49 491.91,103.49 530.09,103.49 568.26,103.49 606.43,103.49 644.61,103.48 682.78,103.48 720.96,103.48 759.13,103.48 797.30,103.48 835.48,103.48 873.65,103.48 911.83,103.48 950.00,103.48" fill="none" stroke="#222222" stroke-width="2.4"/>
+<polyline points="72.00,331.35 110.17,331.44 148.35,331.55 186.52,331.41 224.70,331.50 262.87,331.51 301.04,331.57 339.22,331.76 377.39,331.81 415.57,331.68 453.74,331.96 491.91,331.85 530.09,332.08 568.26,331.98 606.43,332.03 644.61,332.11 682.78,332.31 720.96,332.21 759.13,332.40 797.30,332.37 835.48,332.43 873.65,332.44 911.83,332.47 950.00,332.52" fill="none" stroke="#5b3f8c" stroke-width="2.0"/>
+<polyline points="72.00,103.59 110.17,103.59 148.35,103.59 186.52,103.59 224.70,103.59 262.87,103.59 301.04,103.59 339.22,103.59 377.39,103.59 415.57,103.59 453.74,103.59 491.91,103.59 530.09,103.59 568.26,103.59 606.43,103.59 644.61,103.59 682.78,103.59 720.96,103.59 759.13,103.59 797.30,103.59 835.48,103.59 873.65,103.59 911.83,103.59 950.00,103.59" fill="none" stroke="#c43b4d" stroke-width="2.0"/>
+<line x1="690" x2="712" y1="92" y2="92" stroke="#222222" stroke-width="3"/>
+<text x="718" y="96" font-size="12" fill="#333333">Actual</text>
+<line x1="782" x2="804" y1="92" y2="92" stroke="#5b3f8c" stroke-width="3"/>
+<text x="810" y="96" font-size="12" fill="#333333">FEDFormer</text>
+<line x1="874" x2="896" y1="92" y2="92" stroke="#c43b4d" stroke-width="3"/>
+<text x="902" y="96" font-size="12" fill="#333333">Informer</text>
+<text x="950" y="394" text-anchor="end" font-size="11" fill="#777777">held-out step</text>
+</svg>
