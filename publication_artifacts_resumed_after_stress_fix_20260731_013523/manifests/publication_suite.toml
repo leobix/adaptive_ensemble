@@ -1,0 +1,158 @@
+[run]
+name = "publication_suite"
+root = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523"
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+
+[config.adaptive]
+primary_objective = "quadratic_stacked"
+irls_rtol = 1.0e-8
+gurobi_optimality_tolerance = 1.0e-8
+irls_stationarity_rtol = 1.0e-8
+gurobi_time_limit = 1800.0
+gurobi_output_flag = 0
+irls_fallback_solver = "none"
+irls_smoothing = 1.0e-8
+dual_max_rows = 3500
+irls_min_iterations = 2
+irls_practical_stationarity_rtol = 1.0e-7
+irls_objective_rtol = 1.0e-8
+cg_rtol = 1.0e-9
+irls_maxiter = 1000
+direct_max_parameters = 3500
+cg_maxiter = 0
+gurobi_threads = 1
+max_dense_bytes = 750000000
+cg_atol = 1.0e-12
+
+[config.synthetic]
+methods = ["adaptive_ridge", "static_ridge", "rolling_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "dma", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+m = 10
+regimes = ["stationary", "gradual", "abrupt", "periodic", "persistent_bias", "member_degradation", "recurring", "variance_burst", "discrete_gaussian"]
+save_all_tuning = true
+seeds = 30
+save_seed_predictions = [1]
+n = 4000
+
+[config.scope]
+label = "synthetic_safi"
+included = ["expanded_synthetic", "manuscript_sweeps", "synthetic_meta", "safi", "safi_sensitivity", "synthetic_stress", "solver_verification", "runtime"]
+excluded = ["energy_historical_selected_10", "energy_all_available", "hurricane_north_atlantic", "hurricane_eastern_pacific"]
+paper_application_scope_complete = false
+reason = "Energy robust-norm candidates are numerically unstable in the supplied matrix and the hurricane matrices are absent. The active profile reports only the completed synthetic and Safi empirical scope."
+
+[config.experiment]
+standardize_real_world = true
+selection_metric = "rmse"
+
+[config.grids]
+exp3_gamma = [0.01, 0.05, 0.1, 0.2, 0.4]
+pa_C = [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]
+pa_epsilon = [0.0, 0.01, 0.05, 0.1]
+dma_forgetting = [0.9, 0.95, 0.98, 0.99, 0.995]
+tau = [1, 2, 3, 5, 7, 10]
+rls_ridge = [1.0e-6, 0.0001, 0.01, 0.1]
+lambda = [0.0, 1.0e-6, 0.0001, 0.001, 0.01, 0.1, 1.0, 2.0]
+hedge_eta = [0.01, 0.05, 0.1, 0.25, 0.5, 1.0]
+dma_variance_forgetting = [0.9, 0.95, 0.98, 0.995]
+ridge_lambda = [0.0, 1.0e-8, 1.0e-6, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]
+hedge_window = [0, 24, 72, 168, 336]
+rolling_window = [24, 72, 168, 336]
+forgetting = [0.9, 0.95, 0.98, 0.99, 0.995]
+fixed_share = [0.005, 0.01, 0.02, 0.05, 0.1]
+
+[config.manuscript_sweeps]
+fixed_tau = 5
+discrete_probabilities = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+seeds = 30
+reproduction_grid = [0.0001, 0.001, 0.01, 0.1, 1.0]
+methods = ["adaptive_ridge", "static_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+selection_metric = "mae"
+window_sizes = [1, 2, 3, 4, 5, 8, 10, 15, 20, 25]
+drift_levels = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+member_sizes = [3, 6, 10, 15, 25, 50]
+enabled = true
+history_sizes = [100, 200, 400, 750, 1500, 3000]
+
+[config.boundary]
+online_event_policy = "reset"
+
+[config.meta]
+neural_tau = [1, 3, 5]
+neural_learning_rate = [0.001, 0.003]
+boosted_tau = [1, 5]
+neural_epochs = 250
+boosted_depth = [1, 2]
+boosted_learning_rate = [0.05]
+boosted_trees = [100]
+neural_weight_decay = [0.0, 0.0001]
+neural_hidden = [8, 16]
+neural_batch_size = 128
+boosted_min_leaf = [20, 50]
+
+[config.real_world]
+bootstrap_reps = 2000
+methods = ["adaptive_ridge", "adaptive_robust_norm", "static_ridge", "rolling_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "dma", "neural_gate", "boosted_meta", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+bootstrap_block_length = 0
+datasets = ["safi"]
+
+[config.run]
+profile = "synthetic_safi"
+name = "reviewer_response_synthetic_safi"
+required_julia_threads = 4
+
+[config.synthetic_meta]
+methods = ["adaptive_ridge", "rolling_ridge", "rls", "neural_gate", "boosted_meta"]
+m = 10
+regimes = ["gradual", "abrupt", "member_degradation", "recurring"]
+seeds = 30
+enabled = true
+n = 4000
+
+[config.sensitivity]
+near_optimal_fraction = 0.01
+lambda = [0.0, 1.0e-6, 0.0001, 0.001, 0.01, 0.1, 1.0, 2.0]
+datasets = ["safi"]
+tau = [1, 2, 3, 4, 5, 7, 10, 15, 25]
+objective_variants = ["quadratic_stacked"]
+
+[config.stress]
+methods = ["adaptive_ridge", "static_ridge", "rolling_ridge", "rls", "exp3", "passive_aggressive", "ensemble_mean"]
+correlation_pruning_thresholds = [0.8, 0.9, 0.95, 0.99, 1.0]
+cold_start_points = 10
+seeds = 30
+correlations = [0.0, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99]
+history_sizes = [100, 200, 400, 750, 1500, 3000]
+event_length = 500
+
+[config.runtime]
+window_sizes = [2, 3, 5, 10, 15, 25]
+run_gurobi_verification = true
+reps = 11
+member_sizes = [3, 6, 10, 15, 25, 50]
+sample_sizes = [100, 200, 400, 750, 1500, 3000]
+regularization_path = [0.0, 1.0e-6, 0.0001, 0.001, 0.01, 0.1, 1.0]
+warmup = 3
+
+[config.verification]
+run_literal_jump_equivalence = true
+require_gurobi = true
+regimes = ["stationary", "gradual", "recurring"]
+run_exact_norm_vs_quadratic = true
+seeds = [1, 2, 3, 4, 5]
+lambda = [0.001, 0.01, 0.1]
+tau = [1, 3, 5]
+
+[extras]
+source_root = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble"
+resume = true
+
+[system]
+julia_threads = 4
+blas = "LBTConfig([ILP64] libopenblas64_.dll)"
+julia_version = "1.12.6"
+architecture = "x86_64"
+kernel = "NT"
+hostname = "HenryMao"
+word_size = 64
+created_at_utc = "2026-07-30T23:41:11.322"
+cpu_threads = 24

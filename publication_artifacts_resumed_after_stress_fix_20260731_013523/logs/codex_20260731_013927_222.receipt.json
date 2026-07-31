@@ -1,0 +1,20 @@
+﻿{
+    "schema_version":  1,
+    "task_name":  "AdaptiveEnsemblePublication_20260731_013927_222",
+    "task_owner":  "Windows Task Scheduler",
+    "registered_user":  "HENRYMAO\\henry",
+    "created_at":  "2026-07-31T01:40:26.3451049+02:00",
+    "repository":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble",
+    "julia":  "C:\\Users\\henry\\AppData\\Local\\Microsoft\\WindowsApps\\julia.exe",
+    "threads":  4,
+    "config":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\config\\publication_full.toml",
+    "output":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523",
+    "stdout":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523\\logs\\codex_20260731_013927_222.stdout.log",
+    "stderr":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523\\logs\\codex_20260731_013927_222.stderr.log",
+    "exitcode":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523\\logs\\codex_20260731_013927_222.exitcode.txt",
+    "wrapper_pid":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523\\logs\\codex_20260731_013927_222.wrapper_pid.txt",
+    "started":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523\\logs\\codex_20260731_013927_222.started.txt",
+    "finished":  "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523\\logs\\codex_20260731_013927_222.finished.txt",
+    "resume":  true,
+    "release_tests_run":  true
+}

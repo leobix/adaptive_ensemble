@@ -1,0 +1,9 @@
+﻿julia.exe : ERROR: LoadError: matrix-free PCG did not converge: residual=2.9128462277454436e-8, 
+relative_residual=8.046604856590575e-9, iterations=5000, rtol=1.0e-11, atol=1.0e-13, maxiter=5000, parameters=510
+At C:\Users\henry\Documents\Research\adaptive-ensemble\scripts\publication\run_scheduled_task_wrapper.ps1:46 char:5
++     & $Julia @JuliaArguments 1>> $Stdout 2>> $Stderr
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ERROR: LoadErro... parameters=510:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+

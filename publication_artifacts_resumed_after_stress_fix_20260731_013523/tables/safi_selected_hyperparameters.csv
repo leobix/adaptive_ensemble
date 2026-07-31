@@ -1,0 +1,13 @@
+condition_number,fit_seconds,iterations,lambda,linear_solver,method,n_parameters,objective_variant,preparation_seconds,residual_norm,selection_metric,solve_seconds,tau,validation_cvar_05,validation_mae,validation_rmse,converged,convergence_reason,exact_fallback_used,relative_change,relative_objective_change,stationarity_residual,fit_and_validation_seconds,window,forgetting,ridge,eta,gamma,seed,share,C,epsilon,variance_forgetting,epochs,hidden,learning_rate,weight_decay,max_depth,min_leaf,n_trees
+239000.85440498026,0.0025908999999999997,0,0.0,cholesky,adaptive_ridge,42,quadratic_stacked_beta,0.0024806,8.009573144599156e-16,rmse,0.0001103,1,0.9604043385299735,0.25990764390578114,0.35174926756904373,,,,,,,,,,,,,,,,,,,,,,,,
+,0.0054148,2,0.0,irls+cholesky,adaptive_robust_norm,42,norm_plus_norm_irls,0.0044874,,rmse,0.0001929,1,0.9604043385299735,0.25990764390578114,0.35174926756904373,true,iterate_objective_and_strict_stationarity,false,0.0,0.0,4.033481409465495e-16,,,,,,,,,,,,,,,,,,
+,0.0001244,,0.001,,static_ridge,,,,,rmse,,,0.9682717065022908,0.27541178961788443,0.3698622181641722,,,,,,,,,,,,,,,,,,,,,,,,
+,,,0.001,,rolling_ridge,,,,,rmse,,,0.9895656799328216,0.25430733454480536,0.35220508785588345,,,,,,,0.0057296,168,,,,,,,,,,,,,,,,
+,,,,,rls,,,,,rmse,,,0.9829769941689377,0.2538065115468099,0.3507018227018098,,,,,,,0.0028232,,0.99,1.0e-6,,,,,,,,,,,,,,
+,,,,,hedge,,,,,rmse,,,1.0006623516860484,0.27172560232141224,0.3726877491440579,,,,,,,0.0015376,72,,,1.0,,,,,,,,,,,,,
+,,,,,exp3,,,,,rmse,,,1.0291874148938995,0.25930496423368976,0.3674866249781996,,,,,,,0.0018085,,,,,0.1,2026,,,,,,,,,,,
+,,,,,fixed_share,,,,,rmse,,,0.9945918584233779,0.24916905762198766,0.3550426231698314,,,,,,,0.0013963,,,,1.0,,,0.005,,,,,,,,,,
+,,,,,passive_aggressive,,,,,rmse,,,0.9877160492204708,0.252110420233426,0.35286292529644586,,,,,,,0.0003148,,,,,,,,0.01,0.1,,,,,,,,
+,,,,,dma,,,,,rmse,,,0.9860531974865339,0.2510214089128282,0.3513062004200947,,,,,,,0.0017402,,0.98,,,,,,,,0.98,,,,,,,
+,1.4237581,,,,neural_gate,,,,,rmse,,1,0.943207459395598,0.2461427847598898,0.34297113550869057,,,,,,,,,,,,,,,,,,250,8,0.001,0.0,,,
+,14.2886409,,,,boosted_meta,,,,,rmse,,5,0.9601002156818782,0.25382226985107526,0.3443893415082867,,,,,,,,,,,,,,,,,,,,0.05,,2,50,100

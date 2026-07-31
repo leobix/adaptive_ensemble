@@ -1,0 +1,3 @@
+dataset,observations,forecast_columns,effective_forecast_columns_after_legacy_overwrite,clean_mean_rmse,legacy_overwrite_mean_rmse,rmse_change
+safi,8494,6,5,0.7831113323242131,0.9646165233362316,0.18150519101201845
+energy,9858,10,9,60.762164680785176,61.95652470663692,1.1943600258517435

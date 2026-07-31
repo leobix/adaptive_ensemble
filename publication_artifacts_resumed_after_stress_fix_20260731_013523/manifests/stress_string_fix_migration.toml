@@ -1,0 +1,13 @@
+next_stage = "stress_full aggregation (no stress task recomputation)"
+migrated_stress_tasks = 420
+scientific_justification = "Every migrated stage and stress task was bound to the exact source fingerprint and every referenced output was re-hashed before copying. The failed heterogeneous-setting aggregation was not migrated."
+migrated_stage_outputs = 47
+stress_stage_marker_migrated = false
+migrated_stages = ["legacy_audit", "synthetic_full", "manuscript_sweeps", "synthetic_meta", "real_world_safi", "real_world_all", "sensitivity_safi", "sensitivity_all"]
+source_output = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble_before_stress_string_fix_20260731_013128\\publication_artifacts_synthetic_safi_20260730_203420"
+excluded_artifacts = ["old failure logs", "old receipts", "old wrapper markers", "incomplete stress stage marker", "serialized model objects"]
+source_run_fingerprint = "0e9320deaf6da755c152474c1e96dc22bc90719f90b27213cb523f4aade21c9a"
+target_output = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523"
+migrated_stress_task_outputs = 630
+created_at_utc = "2026-07-30T23:35:46.477"
+target_run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"

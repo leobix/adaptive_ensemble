@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="580" viewBox="0 0 1000 580">
+<rect width="100%" height="100%" fill="white"/>
+<text x="500.0" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold">safi: held-out MAE</text>
+<line x1="105" y1="415.0" x2="965" y2="415.0" stroke="#dddddd"/>
+<text x="97" y="419.0" text-anchor="end" font-family="Arial, sans-serif" font-size="12">-0.03316</text>
+<line x1="105" y1="345.0" x2="965" y2="345.0" stroke="#dddddd"/>
+<text x="97" y="349.0" text-anchor="end" font-family="Arial, sans-serif" font-size="12">0.09065</text>
+<line x1="105" y1="275.0" x2="965" y2="275.0" stroke="#dddddd"/>
+<text x="97" y="279.0" text-anchor="end" font-family="Arial, sans-serif" font-size="12">0.2145</text>
+<line x1="105" y1="204.99999999999997" x2="965" y2="204.99999999999997" stroke="#dddddd"/>
+<text x="97" y="208.99999999999997" text-anchor="end" font-family="Arial, sans-serif" font-size="12">0.3383</text>
+<line x1="105" y1="135.0" x2="965" y2="135.0" stroke="#dddddd"/>
+<text x="97" y="139.0" text-anchor="end" font-family="Arial, sans-serif" font-size="12">0.4621</text>
+<line x1="105" y1="65.0" x2="965" y2="65.0" stroke="#dddddd"/>
+<text x="97" y="69.0" text-anchor="end" font-family="Arial, sans-serif" font-size="12">0.5859</text>
+<line x1="105" y1="396.25" x2="965" y2="396.25" stroke="black"/>
+<line x1="105" y1="65" x2="105" y2="415" stroke="black"/>
+<rect x="111.88" y="125.42947189227243" width="43.57333333333334" height="270.82052810772757" fill="#0072B2"/>
+<text x="133.66666666666666" y="119.42947189227243" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.479</text>
+<text transform="translate(133.66666666666666,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">neural_gate</text>
+<rect x="169.21333333333334" y="121.76083321680323" width="43.57333333333334" height="274.48916678319677" fill="#D55E00"/>
+<text x="191.0" y="115.76083321680323" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.48549</text>
+<text transform="translate(191.0,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">boosted_meta</text>
+<rect x="226.54666666666668" y="117.64274554709493" width="43.57333333333334" height="278.60725445290507" fill="#009E73"/>
+<text x="248.33333333333334" y="111.64274554709493" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.49277</text>
+<text transform="translate(248.33333333333334,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">fixed_share</text>
+<rect x="283.88" y="116.0760835556186" width="43.57333333333334" height="280.1739164443814" fill="#CC79A7"/>
+<text x="305.6666666666667" y="110.0760835556186" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.49554</text>
+<text transform="translate(305.6666666666667,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">adaptive_ridge</text>
+<rect x="341.21333333333337" y="116.0760835556186" width="43.57333333333334" height="280.1739164443814" fill="#E69F00"/>
+<text x="363.00000000000006" y="110.0760835556186" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.49554</text>
+<text transform="translate(363.00000000000006,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">adaptive_robust_norm</text>
+<rect x="398.5466666666667" y="110.83014558000366" width="43.57333333333334" height="285.41985441999634" fill="#56B4E9"/>
+<text x="420.33333333333337" y="104.83014558000366" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.50482</text>
+<text transform="translate(420.33333333333337,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">passive_aggressive</text>
+<rect x="455.88" y="110.73250278195297" width="43.57333333333334" height="285.517497218047" fill="#000000"/>
+<text x="477.6666666666667" y="104.73250278195297" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.50499</text>
+<text transform="translate(477.6666666666667,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">rls</text>
+<rect x="513.2133333333334" y="110.47800351572391" width="43.57333333333334" height="285.7719964842761" fill="#999999"/>
+<text x="535.0" y="104.47800351572391" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.50544</text>
+<text transform="translate(535.0,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">dma</text>
+<rect x="570.5466666666667" y="109.70818916761033" width="43.57333333333334" height="286.5418108323897" fill="#F0E442"/>
+<text x="592.3333333333334" y="103.70818916761033" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.5068</text>
+<text transform="translate(592.3333333333334,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">oracle_best_member</text>
+<rect x="627.88" y="109.70818916761033" width="43.57333333333334" height="286.5418108323897" fill="#882255"/>
+<text x="649.6666666666666" y="103.70818916761033" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.5068</text>
+<text transform="translate(649.6666666666666,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">validation_best_member</text>
+<rect x="685.2133333333334" y="106.82109239016557" width="43.57333333333334" height="289.4289076098344" fill="#44AA99"/>
+<text x="707.0" y="100.82109239016557" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.51191</text>
+<text transform="translate(707.0,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">rolling_ridge</text>
+<rect x="742.5466666666667" y="101.51082833257647" width="43.57333333333334" height="294.73917166742353" fill="#117733"/>
+<text x="764.3333333333334" y="95.51082833257647" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.5213</text>
+<text transform="translate(764.3333333333334,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">static_ridge</text>
+<rect x="799.88" y="100.22139927799947" width="43.57333333333334" height="296.02860072200053" fill="#0072B2"/>
+<text x="821.6666666666666" y="94.22139927799947" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.52358</text>
+<text transform="translate(821.6666666666666,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">exp3</text>
+<rect x="857.2133333333334" y="89.5954578655265" width="43.57333333333334" height="306.6545421344735" fill="#D55E00"/>
+<text x="879.0" y="83.5954578655265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.54238</text>
+<text transform="translate(879.0,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">hedge</text>
+<rect x="914.5466666666667" y="83.75" width="43.57333333333334" height="312.5" fill="#009E73"/>
+<text x="936.3333333333334" y="77.75" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.55271</text>
+<text transform="translate(936.3333333333334,429) rotate(50)" text-anchor="start" font-family="Arial, sans-serif" font-size="12">ensemble_mean</text>
+<text transform="translate(27,240.0) rotate(-90)" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">MAE</text>
+</svg>

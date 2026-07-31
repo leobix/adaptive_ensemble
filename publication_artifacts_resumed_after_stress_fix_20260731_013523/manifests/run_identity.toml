@@ -1,0 +1,437 @@
+format_version = 2
+config_path = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\config\\publication_full.toml"
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+command = "migrate_after_stress_string_fix"
+data_sha256 = "4deedb4f42522a1d813dbef96375681c31839f0361c6e9b4e8b7d64616463de7"
+code_sha256 = "0a2c58f50724c74f00bb4da4b3e60a041b30b81747cfe335651cbd8626ff2b6f"
+output_root = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\publication_artifacts_resumed_after_stress_fix_20260731_013523"
+source_root = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble"
+config_file_sha256 = "16133615ea3558d28e9dd247b42a26fe9bea08462523fa5b2e021c8fe582e748"
+created_at_utc = "2026-07-30T23:35:39.160"
+effective_config_sha256 = "2a23c68f31e81cf35ac5e2242d71818c796e62a4d7d2498863f67dcf882365bb"
+
+[[data_files]]
+sha256 = "167eb3444005f6957b39e0ad0abed93aa7c14b622ab10788ab454cbea8dd5f65"
+bytes = 57901823
+path = "data/X_test.csv"
+[[data_files]]
+sha256 = "29eca7070f2409451e586be97ae67e7a1c7c62fe6010d758955cd6d1f8ccb888"
+bytes = 997962
+path = "data/X_test_adaptive.csv"
+[[data_files]]
+sha256 = "6c0873acf86034f117c4d2315c2a0d119cc3d15f3511cece475ada1998272a0d"
+bytes = 916703
+path = "data/X_test_speed_adaptive_out1.csv"
+[[data_files]]
+sha256 = "09fe92b865ba1ff165d1b7cd34c8d6b7b92935a89ffdbbf4122f255419afd6cc"
+bytes = 2066
+path = "data/X_toy_test.csv"
+[[data_files]]
+sha256 = "64a2ad4cb750a829feff0c631a1cfebc4d6e9675f5b5e773f1bb64bb76af0027"
+bytes = 1913182
+path = "data/alpha_beta_alphas.csv"
+[[data_files]]
+sha256 = "9085dadf7f6966ea4b18be54bcb8ae5a6156c937b5566f39e4af2b46195d9220"
+bytes = 58360
+path = "data/alpha_beta_ensemble.csv"
+[[data_files]]
+sha256 = "c6945ea911956f89fcfcdfa136d4479ff0ba2c95fda035ee72bb64937996e711"
+bytes = 1913032
+path = "data/alpha_beta_full_alphas.csv"
+[[data_files]]
+sha256 = "9e98887243e71f527f3e693d1de0d57292e62cc964c448d7b44c702dcaa12bee"
+bytes = 777
+path = "data/alpha_beta_full_betas.csv"
+[[data_files]]
+sha256 = "22044e2f5bac910f7ec1b45df61b2516c7cddfe1861d96287748e90d6216bf9d"
+bytes = 58367
+path = "data/alpha_beta_full_ensemble.csv"
+[[data_files]]
+sha256 = "2b907f43d7d97c3b1868624cd5b1a041297808f89547a8a90052ec0bac96631c"
+bytes = 3177239
+path = "data/alpha_cvar_ridge_alpha_full_test.csv"
+[[data_files]]
+sha256 = "2b907f43d7d97c3b1868624cd5b1a041297808f89547a8a90052ec0bac96631c"
+bytes = 3177239
+path = "data/alpha_ridge_alpha_full_test.csv"
+[[data_files]]
+sha256 = "f2cd09cd114e977fa00595e6ddd6046315449e8375a9b154a9eb66808b4522d7"
+bytes = 6117
+path = "data/column_names.csv"
+[[data_files]]
+sha256 = "39ceba20a49120bf8e521c3cde2e0dbfa5923baed56119ee53bac7a9e8a8781b"
+bytes = 83009754
+path = "data/energy_X_past6_future1.csv"
+[[data_files]]
+sha256 = "901bd1368f14aa0ac21657bc020a2065743d9bc3b8324824fe444aa49e12ebda"
+bytes = 4368866
+path = "data/energy_predictions_test_val.csv"
+[[data_files]]
+sha256 = "b981334a4b42796da186cafbb029d4f2eacceff2e4ccc9abe7e4dd643b990477"
+bytes = 1846346
+path = "data/energy_predictions_test_val2.csv"
+[[data_files]]
+sha256 = "ba9807d0217862496442ae398eb61f4cba81464858e0914133f11331067397b0"
+bytes = 8
+path = "data/energy_test_val.csv"
+[[data_files]]
+sha256 = "b095559f99ce2894417890fa54614f38cef2515748d00cf6104a7755b1ca832e"
+bytes = 493225
+path = "data/energy_y_past6_future1.csv"
+[[data_files]]
+sha256 = "ee53e928dba624d275e0a509f1ad9ffc99cd8755ea6472b9c3b80f16abfcfe35"
+bytes = 246625
+path = "data/energy_y_test_val.csv"
+[[data_files]]
+sha256 = "640596d302efa7f0b03dbd81be4eada82c07607df8c1dace50181a3be755a5e9"
+bytes = 6081771
+path = "data/predictions_test.csv"
+[[data_files]]
+sha256 = "b49032be2a462c80c88fd518094b3d94442cccab477a41734629ae2063d2ceb0"
+bytes = 5771470
+path = "data/predictions_test_cos.csv"
+[[data_files]]
+sha256 = "40136fbd5dcc05d767796975e186e456c95837b1699e5e33d49596e804ad832f"
+bytes = 5742875
+path = "data/predictions_test_sin.csv"
+[[data_files]]
+sha256 = "5a131f408d71a2368fd475bf2f4ba6c748e5f8945ef5601eaf83d7fbdde8c81a"
+bytes = 58326
+path = "data/preds_cvar_ridge_alpha_full_test.csv"
+[[data_files]]
+sha256 = "f3bb663fd26c7035d595517a8e45d740f50aed9774eae91d1568a4f4b3887fe3"
+bytes = 58368
+path = "data/preds_ridge_alpha_full_test.csv"
+[[data_files]]
+sha256 = "f734617fdb4464353182b95e72e707333fcedd9a5dfe769cdc38a6f749f93742"
+bytes = 58347
+path = "data/ridge_ensemble.csv"
+[[data_files]]
+sha256 = "0a0b146044c28f4d880f50544101570d057fb12847539c348f0388e3a16fa2bd"
+bytes = 163239
+path = "data/y_test_speed.csv"
+[[data_files]]
+sha256 = "981eff5d8e3ca6085ba55523c0f5032053fc122b5fbb9cd7a0f544aa3dc22b9e"
+bytes = 163239
+path = "data/y_test_speed_adaptive_out1.csv"
+[[data_files]]
+sha256 = "8b260da91ff3576a3de8e52d474ea9393be8562d95d977c8ad57ed39bb610706"
+bytes = 161
+path = "data/y_toy_test.csv"
+
+[[code_files]]
+sha256 = "7de88ea9739f4b682deda8326042f6955d3f60555a6ab5b6c7092a73894b5c4d"
+bytes = 45162
+path = "Manifest.toml"
+[[code_files]]
+sha256 = "31bc634f38f937d2f6f936eb0e542fdc22913796b58b3fdf32133f10b33cc043"
+bytes = 516
+path = "Project.toml"
+[[code_files]]
+sha256 = "a86891db9b14bfc9c1ccf59b0ae4a7e2c79375a2c19eccc7a29937bf77e88e3d"
+bytes = 3157
+path = "reports/ORIGINAL_PYTHON_INTEGRITY.csv"
+[[code_files]]
+sha256 = "13256dd1d87aaca8e39092dfad98bbcc404e1d6cba82b7aceca305aa789ad433"
+bytes = 210
+path = "scripts/publication/gurobi_preflight.jl"
+[[code_files]]
+sha256 = "65e43cfaccd1e1bd408e32378287ddea4ba830a5e363e722e78d26bbcfe0b5b3"
+bytes = 15664
+path = "scripts/publication/migrate_after_stress_string_fix.jl"
+[[code_files]]
+sha256 = "2296a9690568bfe2f01766a00420372ccd8c691064dac42702b3360334b9d79e"
+bytes = 1819
+path = "scripts/publication/migrate_after_stress_string_fix.ps1"
+[[code_files]]
+sha256 = "d705bc59737f9b8e765ba969d6e4ce776d5169d7e95f0616baa98e2255f45bce"
+bytes = 230
+path = "scripts/publication/run_audit.jl"
+[[code_files]]
+sha256 = "a0b634df658dcdc74cd736dab22882b18e8e03f0639d3dacec7d3fa577df1a78"
+bytes = 439
+path = "scripts/publication/run_full_detached.ps1"
+[[code_files]]
+sha256 = "3ec11cbdbb5884dcda9c2ecc242e33468d095943aff14daa5cb248dd54b3546b"
+bytes = 2771
+path = "scripts/publication/run_full_detached.sh"
+[[code_files]]
+sha256 = "2199857a535a769db94e320316537636737c97222a4039535fab94347555970a"
+bytes = 249
+path = "scripts/publication/run_manuscript_sweeps.jl"
+[[code_files]]
+sha256 = "149b8fd88e92d981587140fb59ba9268fa7a0867deb98cf8334068d883b7a04c"
+bytes = 1315
+path = "scripts/publication/run_original_examples.ps1"
+[[code_files]]
+sha256 = "a3ab2b5fbd5ce1ee9dbe292c8a3f91a85e7870b82de33d283e83659400427ab4"
+bytes = 1133
+path = "scripts/publication/run_original_examples.sh"
+[[code_files]]
+sha256 = "d7066641e65780f742cbeb87e6ed1d2bd71931d6d3851e3f2076c50da8a2c7e3"
+bytes = 214
+path = "scripts/publication/run_publication_suite.jl"
+[[code_files]]
+sha256 = "8f47f565b443a75a9dc1f2d9717969d39083fb22e78c95a10e5b7e625f2d567c"
+bytes = 235
+path = "scripts/publication/run_real_world.jl"
+[[code_files]]
+sha256 = "e521f6d1892799b56c99f38109523a6cb01fbdb3991a2de1ee41e839c0bd71fe"
+bytes = 232
+path = "scripts/publication/run_runtime.jl"
+[[code_files]]
+sha256 = "056be823cd049b0a27ce0c9b93f9472218400af88ba3c64f6bec0e20f0ec7fdf"
+bytes = 2141
+path = "scripts/publication/run_scheduled_task_wrapper.ps1"
+[[code_files]]
+sha256 = "90c7f278c02bfce6f9070b8c9ef179244cb3c8adeab28816b714d66bad7ff18a"
+bytes = 236
+path = "scripts/publication/run_sensitivity.jl"
+[[code_files]]
+sha256 = "66133bd769481aec04f5582eca933fdf01fe8cd5382bacbd0c68962060525807"
+bytes = 231
+path = "scripts/publication/run_status.jl"
+[[code_files]]
+sha256 = "61bbe481b393ae9882889b9af89196aef5144e228d3288a6d75e5d8154113636"
+bytes = 231
+path = "scripts/publication/run_stress.jl"
+[[code_files]]
+sha256 = "83bcf0805b57fc1988d073b8267bbebb212052996f6ac87ca534908f370c0992"
+bytes = 234
+path = "scripts/publication/run_synthetic.jl"
+[[code_files]]
+sha256 = "ee625455ef3b732e83a22d890586675b1bda0f052d97c77b760a60d8d442b8e1"
+bytes = 244
+path = "scripts/publication/run_verification.jl"
+[[code_files]]
+sha256 = "aeb7544b1f56c80400e318ee16d6aa28beb6afb74dc5a05996496ed28f2f2a40"
+bytes = 954
+path = "scripts/publication/setup_unix.sh"
+[[code_files]]
+sha256 = "283d345cde9152b3dea78e43175544f939b61f70597a5e85c03971b4231562c8"
+bytes = 1625
+path = "scripts/publication/setup_windows.ps1"
+[[code_files]]
+sha256 = "451d25767cc20916b34c33e5c2c67b316f7950d14cc5408e3da695a6c97f80ae"
+bytes = 4598
+path = "scripts/publication/show_codex_run.ps1"
+[[code_files]]
+sha256 = "a1671930321df249992572e28f2c34f2bdb6623efa6468ad8cbac7b69bc990dd"
+bytes = 709
+path = "scripts/publication/show_latest_codex_run.ps1"
+[[code_files]]
+sha256 = "31d021eaa804c3085fa1cf4f6fca84f9944458616223cc5414f09ec7c67e57d5"
+bytes = 3919
+path = "scripts/publication/show_results.jl"
+[[code_files]]
+sha256 = "5bcd5694ca28d0ba858d45b538aea926a189ea6ceef5bb6141d12ce42650fcb3"
+bytes = 523
+path = "scripts/publication/show_results.ps1"
+[[code_files]]
+sha256 = "68839d2225685efd14c7bf03e0fe9d51a2c56004dcea34d02fe20d3ad8dce00d"
+bytes = 282
+path = "scripts/publication/show_results.sh"
+[[code_files]]
+sha256 = "cb7920dc8f5c992d6be887ae2cbe603339ffbf2c845f6b612e7edf7ca3b449a8"
+bytes = 264
+path = "scripts/publication/show_status.ps1"
+[[code_files]]
+sha256 = "a4299e7514caba2fc2df5009e8423e04f27b3213d657321afb264d58060e6e54"
+bytes = 499
+path = "scripts/publication/show_status.sh"
+[[code_files]]
+sha256 = "9678296635b5ae157e1e2d1bbaec3aaddde66491bdcbfd70ac52d5a4b17e2d40"
+bytes = 10112
+path = "scripts/publication/start_codex_detached.ps1"
+[[code_files]]
+sha256 = "6458b683ab34e0c4c2636905f304646328327d25d97c589380aff52d3ca5dd5e"
+bytes = 1001
+path = "scripts/publication/stop_codex_run.ps1"
+[[code_files]]
+sha256 = "f8d44047a503427530885b5f4e8a9088cea046db7cc1b78af33160623b1079aa"
+bytes = 2924
+path = "scripts/publication/verify_original_python_integrity.jl"
+[[code_files]]
+sha256 = "4cb6873682b0a79b97f4ea33e0b30e771b620ae4bdf2d110aa772c514f7bb99a"
+bytes = 19072
+path = "scripts/publication/verify_publication_artifacts.jl"
+[[code_files]]
+sha256 = "cb19beb13e304b7d5b4efdf9614b590cbb4e41bf6c1c86820e04c4b074352fc5"
+bytes = 239
+path = "scripts/run_publication_suite.jl"
+[[code_files]]
+sha256 = "41d86fea9566ba828f273d48f7655c4612c9b4398895d17a5bbd2bc715721c17"
+bytes = 2622
+path = "src/AdaptiveEnsemblePublication.jl"
+[[code_files]]
+sha256 = "9ac40cfd727e14f7b6784e33e153bc52732f58021c3a198ba691c3fd5839a806"
+bytes = 1824
+path = "src/algos/OLS.jl"
+[[code_files]]
+sha256 = "5ea2c895660e49793d07f73d8f66443a5476f76afe9a8262ad806a10f03b8fe4"
+bytes = 8109
+path = "src/algos/adaptive_linear_decision_rule.jl"
+[[code_files]]
+sha256 = "7fa12e8a3eb9c36bba487d9e858934d44b02dfb86109d07f64a19b55faf98929"
+bytes = 5890
+path = "src/algos/benders.jl"
+[[code_files]]
+sha256 = "984426db097be73827be9842ad3bce3982b73db956f43fe9045fa8c237110964"
+bytes = 3047
+path = "src/algos/decision_tree_ensembler.jl"
+[[code_files]]
+sha256 = "d68088731d1c5d8a2981247af767f7d76d731d121696268826a18487ae3935c9"
+bytes = 21167
+path = "src/algos/fedformer.jl"
+[[code_files]]
+sha256 = "e4913724a6a3d9dc78734ce2b3ac674db815fc1af51d59b242aeccb01ad7bb6e"
+bytes = 1445
+path = "src/algos/gradient_boosting.jl"
+[[code_files]]
+sha256 = "910347b2ef7a316706b78b420cd987d71b922ebcd126a4a02c8eb1e299a5fc33"
+bytes = 780
+path = "src/algos/hedge.jl"
+[[code_files]]
+sha256 = "4871a8155e2bca7d7a5d092e678d3a601355e94791941c6611645b0e5b735602"
+bytes = 15366
+path = "src/algos/informer.jl"
+[[code_files]]
+sha256 = "f0b67f331a49eff55747fa1ffaa891aafa9c846ea7dd6d435c5fe451641206e9"
+bytes = 4626
+path = "src/algos/master_primal.jl"
+[[code_files]]
+sha256 = "adf4c6461688494bf28b242d37eecd28d5f05717879d7add4ad9bcd526402175"
+bytes = 694
+path = "src/algos/multi_armed_bandits.jl"
+[[code_files]]
+sha256 = "6f4a04d507e0b5ab7ff27a434d4bb47b29c1803d24054149ac57808ac284cc18"
+bytes = 428
+path = "src/algos/passive_agressive.jl"
+[[code_files]]
+sha256 = "1b7f3232c002bc7cff12ccc9978c7c548c7a11a333c687c5743fff5afd8458ef"
+bytes = 730
+path = "src/algos/rls.jl"
+[[code_files]]
+sha256 = "0d00ae3ca3296745722aa4a68acc1cee93a42eb23824f4483467e81da4785d6d"
+bytes = 12335
+path = "src/eval.jl"
+[[code_files]]
+sha256 = "7865657e0cc0055bf3f800b88868a1efc079dee1171054ce7a632c8e4a1875e6"
+bytes = 22657
+path = "src/eval2.jl"
+[[code_files]]
+sha256 = "2601eb10719e37c456ba12873f964dfd2a0a8754bbf8d5a7a0c1782bd4b3fdcc"
+bytes = 22965
+path = "src/eval_hurricane.jl"
+[[code_files]]
+sha256 = "7be678b64cd3998d983da2d21f406b18ed9d1edac593ff0b69fee47430ff307d"
+bytes = 10174
+path = "src/main.jl"
+[[code_files]]
+sha256 = "3f66c61460f8328e0c3899ddabeb98428474ec66edcd4468af51ed864adfd31a"
+bytes = 13646
+path = "src/main_hurricane.jl"
+[[code_files]]
+sha256 = "ddf568bb2b4244fd688f4923e69723a1b04066544a43d5497bd43a14b929f305"
+bytes = 9782
+path = "src/main_hypertune.jl"
+[[code_files]]
+sha256 = "d8c7912db0d0908f913ee223fff00939a68d1b2617d3b703784f17198d4d3e39"
+bytes = 10895
+path = "src/main_synthetic.jl"
+[[code_files]]
+sha256 = "527f5d9a1e6ef059bd77db1110481d110f31f9317f8f4ada934f4897aa90ecb4"
+bytes = 12362
+path = "src/main_synthetic_parallel.jl"
+[[code_files]]
+sha256 = "34a8bb43784a2014869a41fdccacf7a677bd2d1cf4157fc202af68f31f50af4b"
+bytes = 6313
+path = "src/metrics.jl"
+[[code_files]]
+sha256 = "8883e455189c410849cf1f700025b951ce5f09776bdfad139b221a80a3e250de"
+bytes = 55324
+path = "src/publication/adaptive_ridge.jl"
+[[code_files]]
+sha256 = "368dd7c5056f321263b3c80f800c419e2df5ffd24024860b84ef621a50d8cc32"
+bytes = 27443
+path = "src/publication/baselines.jl"
+[[code_files]]
+sha256 = "0a2784e56c683b2d8c7171814f28167a10d8256cc82d1496039b1ac4294cff1d"
+bytes = 12712
+path = "src/publication/cli.jl"
+[[code_files]]
+sha256 = "dfd32521e2ac0afeaa83d42b9f4b7f2936c31fc79f3dd48e233fd7cc61038e53"
+bytes = 11902
+path = "src/publication/datasets.jl"
+[[code_files]]
+sha256 = "c5323258c3705db05bc6d52c46eec0d9ee37374d40cf2d12dcdc36e8a60217d7"
+bytes = 82814
+path = "src/publication/experiments.jl"
+[[code_files]]
+sha256 = "ca34eb6c49c0cccd9ef6a359aece77873a29dcafc9f57a0f5795a4ae7675b13c"
+bytes = 8303
+path = "src/publication/features.jl"
+[[code_files]]
+sha256 = "34f92586187ecd624a4009a927faa47b889bae82b38c3464372b99ec7ad9ef74"
+bytes = 15966
+path = "src/publication/io_utils.jl"
+[[code_files]]
+sha256 = "89c7da47b6b5e1a2d95a96aed3e7257f4613c6337a16a945f7fd7e3bd79ddef3"
+bytes = 11894
+path = "src/publication/legacy_audit.jl"
+[[code_files]]
+sha256 = "f3801e800fb6159d170484612379d685795df1ada41a6b3959593c8565b6c3ad"
+bytes = 2665
+path = "src/publication/metrics.jl"
+[[code_files]]
+sha256 = "5aeb370cf81b0bca3aa3ade1bc708d9d2e488e01c6a446d3614e1468403bf4ad"
+bytes = 19582
+path = "src/publication/runtime.jl"
+[[code_files]]
+sha256 = "c47553eccf6224399b82bf44a08027e10f53e2c47974a4b8d52e52d55fbea595"
+bytes = 8731
+path = "src/publication/statistics.jl"
+[[code_files]]
+sha256 = "49756a0f8432520b35ddbb0ac51fb4c67ff05d5e05891924dc1f6fbab69061e8"
+bytes = 12209
+path = "src/publication/svg_plots.jl"
+[[code_files]]
+sha256 = "e72f22db8e3e45acc1f822e25ef3f5c41e2e8e07d6a5ca82769eb22e343fe373"
+bytes = 8188
+path = "src/publication/synthetic.jl"
+[[code_files]]
+sha256 = "370f3cd784907d5920544310ba9e6058d7ec723f8128f87972e247205f0bb41c"
+bytes = 3374
+path = "src/publication/types.jl"
+[[code_files]]
+sha256 = "df7ff293038442fd8972621fd8864abd8057968ff4f078f723a456be9c47f8bc"
+bytes = 33720
+path = "src/publication/validation.jl"
+[[code_files]]
+sha256 = "85376403789168d14859ad9b9b359ab521c0c9305d6dc0f5ab3dd4f473aeae6d"
+bytes = 17920
+path = "src/synthetic_experiments/Manifest.toml"
+[[code_files]]
+sha256 = "ebc01e4ddab769f2a21f2073cbe16ebfcd565b0f34e39df4d49be59a58c6a8e0"
+bytes = 324
+path = "src/synthetic_experiments/Project.toml"
+[[code_files]]
+sha256 = "3f2fd0356de54a15ceebd89c8e3bf4300956e5531e2386e26e862c7e8ba7211f"
+bytes = 2486
+path = "src/synthetic_experiments/utils_synthetic_experiments.jl"
+[[code_files]]
+sha256 = "1ae0b1836f3fe896ee5ba50a20b880fc3388076955212e1572cdf93871acebb7"
+bytes = 4718
+path = "src/transformer_args.jl"
+[[code_files]]
+sha256 = "ecb65a2821a41801f7c8ab95dc4a27060bfc697fb9e2524fb139db510618bb76"
+bytes = 2435
+path = "src/utils.jl"
+[[code_files]]
+sha256 = "804c9e73a3e1c864e67d9f1e7c266944344206543ecadfc74919d01411194ebb"
+bytes = 4207
+path = "src/utils_hurricane.jl"
+[[code_files]]
+sha256 = "2445ac435805cebaac8d692cdaebdd7296d5feef8f9bd7698bb6293b2495bafc"
+bytes = 27996
+path = "test/runtests.jl"

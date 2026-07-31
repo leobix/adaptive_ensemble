@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+<rect width="100%" height="100%" fill="white"/>
+<text x="500.0" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Corrected Julia replication of manuscript drift sweep</text>
+<line x1="100.0" y1="60" x2="100.0" y2="530" stroke="#eeeeee"/>
+<line x1="100" y1="530.0" x2="750" y2="530.0" stroke="#eeeeee"/>
+<text x="100.0" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">-0.06</text>
+<text x="92" y="534.0" text-anchor="end" font-family="Arial, sans-serif" font-size="11">7.475e-05</text>
+<line x1="230.0" y1="60" x2="230.0" y2="530" stroke="#eeeeee"/>
+<line x1="100" y1="436.0" x2="750" y2="436.0" stroke="#eeeeee"/>
+<text x="230.0" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.164</text>
+<text x="92" y="440.0" text-anchor="end" font-family="Arial, sans-serif" font-size="11">0.3397</text>
+<line x1="360.0" y1="60" x2="360.0" y2="530" stroke="#eeeeee"/>
+<line x1="100" y1="342.0" x2="750" y2="342.0" stroke="#eeeeee"/>
+<text x="360.0" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.388</text>
+<text x="92" y="346.0" text-anchor="end" font-family="Arial, sans-serif" font-size="11">0.6794</text>
+<line x1="490.0" y1="60" x2="490.0" y2="530" stroke="#eeeeee"/>
+<line x1="100" y1="248.0" x2="750" y2="248.0" stroke="#eeeeee"/>
+<text x="490.0" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.612</text>
+<text x="92" y="252.0" text-anchor="end" font-family="Arial, sans-serif" font-size="11">1.019</text>
+<line x1="620.0" y1="60" x2="620.0" y2="530" stroke="#eeeeee"/>
+<line x1="100" y1="154.0" x2="750" y2="154.0" stroke="#eeeeee"/>
+<text x="620.0" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">0.836</text>
+<text x="92" y="158.0" text-anchor="end" font-family="Arial, sans-serif" font-size="11">1.359</text>
+<line x1="750.0" y1="60" x2="750.0" y2="530" stroke="#eeeeee"/>
+<line x1="100" y1="60.0" x2="750" y2="60.0" stroke="#eeeeee"/>
+<text x="750.0" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">1.06</text>
+<text x="92" y="64.0" text-anchor="end" font-family="Arial, sans-serif" font-size="11">1.698</text>
+<rect x="100" y="60" width="650" height="470" fill="none" stroke="black"/>
+<polyline points="134.82142857142856,502.3307731590498 250.89285714285714,483.7492697296526 366.96428571428567,466.83416726238966 483.0357142857142,450.04207278207167 599.1071428571429,433.23574102614606 715.1785714285713,416.72867268609343" fill="none" stroke="#0072B2" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="502.3307731590498" r="2.7" fill="#0072B2"/>
+<circle cx="250.89285714285714" cy="483.7492697296526" r="2.7" fill="#0072B2"/>
+<circle cx="366.96428571428567" cy="466.83416726238966" r="2.7" fill="#0072B2"/>
+<circle cx="483.0357142857142" cy="450.04207278207167" r="2.7" fill="#0072B2"/>
+<circle cx="599.1071428571429" cy="433.23574102614606" r="2.7" fill="#0072B2"/>
+<circle cx="715.1785714285713" cy="416.72867268609343" r="2.7" fill="#0072B2"/>
+<line x1="770" y1="82" x2="800" y2="82" stroke="#0072B2" stroke-width="3"/>
+<text x="808" y="86" font-family="Arial, sans-serif" font-size="12">adaptive_ridge</text>
+<polyline points="134.82142857142856,463.45496624749086 250.89285714285714,457.50527152138187 366.96428571428567,439.29333531456075 483.0357142857142,414.0395555616076 599.1071428571429,385.97215552431834 715.1785714285713,356.37293268330836" fill="none" stroke="#D55E00" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="463.45496624749086" r="2.7" fill="#D55E00"/>
+<circle cx="250.89285714285714" cy="457.50527152138187" r="2.7" fill="#D55E00"/>
+<circle cx="366.96428571428567" cy="439.29333531456075" r="2.7" fill="#D55E00"/>
+<circle cx="483.0357142857142" cy="414.0395555616076" r="2.7" fill="#D55E00"/>
+<circle cx="599.1071428571429" cy="385.97215552431834" r="2.7" fill="#D55E00"/>
+<circle cx="715.1785714285713" cy="356.37293268330836" r="2.7" fill="#D55E00"/>
+<line x1="770" y1="104" x2="800" y2="104" stroke="#D55E00" stroke-width="3"/>
+<text x="808" y="108" font-family="Arial, sans-serif" font-size="12">ensemble_mean</text>
+<polyline points="134.82142857142856,367.3707111271218 250.89285714285714,340.93441685281994 366.96428571428567,283.3970622331391 483.0357142857142,216.74822120924932 599.1071428571429,140.08106626921375 715.1785714285713,85.17857142857144" fill="none" stroke="#009E73" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="367.3707111271218" r="2.7" fill="#009E73"/>
+<circle cx="250.89285714285714" cy="340.93441685281994" r="2.7" fill="#009E73"/>
+<circle cx="366.96428571428567" cy="283.3970622331391" r="2.7" fill="#009E73"/>
+<circle cx="483.0357142857142" cy="216.74822120924932" r="2.7" fill="#009E73"/>
+<circle cx="599.1071428571429" cy="140.08106626921375" r="2.7" fill="#009E73"/>
+<circle cx="715.1785714285713" cy="85.17857142857144" r="2.7" fill="#009E73"/>
+<line x1="770" y1="126" x2="800" y2="126" stroke="#009E73" stroke-width="3"/>
+<text x="808" y="130" font-family="Arial, sans-serif" font-size="12">exp3</text>
+<polyline points="134.82142857142856,482.99072767267677 250.89285714285714,469.4436768195609 366.96428571428567,454.2269469398204 483.0357142857142,434.32681684055717 599.1071428571429,414.01228721127995 715.1785714285713,394.6954581273609" fill="none" stroke="#CC79A7" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="482.99072767267677" r="2.7" fill="#CC79A7"/>
+<circle cx="250.89285714285714" cy="469.4436768195609" r="2.7" fill="#CC79A7"/>
+<circle cx="366.96428571428567" cy="454.2269469398204" r="2.7" fill="#CC79A7"/>
+<circle cx="483.0357142857142" cy="434.32681684055717" r="2.7" fill="#CC79A7"/>
+<circle cx="599.1071428571429" cy="414.01228721127995" r="2.7" fill="#CC79A7"/>
+<circle cx="715.1785714285713" cy="394.6954581273609" r="2.7" fill="#CC79A7"/>
+<line x1="770" y1="148" x2="800" y2="148" stroke="#CC79A7" stroke-width="3"/>
+<text x="808" y="152" font-family="Arial, sans-serif" font-size="12">fixed_share</text>
+<polyline points="134.82142857142856,466.1465405187943 250.89285714285714,461.1629429626766 366.96428571428567,446.85170206534815 483.0357142857142,428.26648050855823 599.1071428571429,408.2784866497287 715.1785714285713,387.4717210006863" fill="none" stroke="#E69F00" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="466.1465405187943" r="2.7" fill="#E69F00"/>
+<circle cx="250.89285714285714" cy="461.1629429626766" r="2.7" fill="#E69F00"/>
+<circle cx="366.96428571428567" cy="446.85170206534815" r="2.7" fill="#E69F00"/>
+<circle cx="483.0357142857142" cy="428.26648050855823" r="2.7" fill="#E69F00"/>
+<circle cx="599.1071428571429" cy="408.2784866497287" r="2.7" fill="#E69F00"/>
+<circle cx="715.1785714285713" cy="387.4717210006863" r="2.7" fill="#E69F00"/>
+<line x1="770" y1="170" x2="800" y2="170" stroke="#E69F00" stroke-width="3"/>
+<text x="808" y="174" font-family="Arial, sans-serif" font-size="12">hedge</text>
+<polyline points="134.82142857142856,452.6259831943788 250.89285714285714,424.8908167555202 366.96428571428567,381.50033398206983 483.0357142857142,346.54936232734707 599.1071428571429,305.368121630303 715.1785714285713,266.10864068694843" fill="none" stroke="#56B4E9" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="452.6259831943788" r="2.7" fill="#56B4E9"/>
+<circle cx="250.89285714285714" cy="424.8908167555202" r="2.7" fill="#56B4E9"/>
+<circle cx="366.96428571428567" cy="381.50033398206983" r="2.7" fill="#56B4E9"/>
+<circle cx="483.0357142857142" cy="346.54936232734707" r="2.7" fill="#56B4E9"/>
+<circle cx="599.1071428571429" cy="305.368121630303" r="2.7" fill="#56B4E9"/>
+<circle cx="715.1785714285713" cy="266.10864068694843" r="2.7" fill="#56B4E9"/>
+<line x1="770" y1="192" x2="800" y2="192" stroke="#56B4E9" stroke-width="3"/>
+<text x="808" y="196" font-family="Arial, sans-serif" font-size="12">oracle_best_member</text>
+<polyline points="134.82142857142856,499.68404445894436 250.89285714285714,483.9938792450837 366.96428571428567,470.7023635058761 483.0357142857142,459.3073923702368 599.1071428571429,448.8065764789709 715.1785714285713,440.33404332803326" fill="none" stroke="#000000" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="499.68404445894436" r="2.7" fill="#000000"/>
+<circle cx="250.89285714285714" cy="483.9938792450837" r="2.7" fill="#000000"/>
+<circle cx="366.96428571428567" cy="470.7023635058761" r="2.7" fill="#000000"/>
+<circle cx="483.0357142857142" cy="459.3073923702368" r="2.7" fill="#000000"/>
+<circle cx="599.1071428571429" cy="448.8065764789709" r="2.7" fill="#000000"/>
+<circle cx="715.1785714285713" cy="440.33404332803326" r="2.7" fill="#000000"/>
+<line x1="770" y1="214" x2="800" y2="214" stroke="#000000" stroke-width="3"/>
+<text x="808" y="218" font-family="Arial, sans-serif" font-size="12">passive_aggressive</text>
+<polyline points="134.82142857142856,504.7451792283901 250.89285714285714,488.3056279179706 366.96428571428567,474.70115556069214 483.0357142857142,461.9449523287079 599.1071428571429,450.1530082358381 715.1785714285713,440.6368357716957" fill="none" stroke="#999999" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="504.7451792283901" r="2.7" fill="#999999"/>
+<circle cx="250.89285714285714" cy="488.3056279179706" r="2.7" fill="#999999"/>
+<circle cx="366.96428571428567" cy="474.70115556069214" r="2.7" fill="#999999"/>
+<circle cx="483.0357142857142" cy="461.9449523287079" r="2.7" fill="#999999"/>
+<circle cx="599.1071428571429" cy="450.1530082358381" r="2.7" fill="#999999"/>
+<circle cx="715.1785714285713" cy="440.6368357716957" r="2.7" fill="#999999"/>
+<line x1="770" y1="236" x2="800" y2="236" stroke="#999999" stroke-width="3"/>
+<text x="808" y="240" font-family="Arial, sans-serif" font-size="12">rls</text>
+<polyline points="134.82142857142856,504.82142857142856 250.89285714285714,484.96205036042846 366.96428571428567,469.1163288746595 483.0357142857142,454.32321380547137 599.1071428571429,440.3685039246605 715.1785714285713,426.88037481207726" fill="none" stroke="#F0E442" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="504.82142857142856" r="2.7" fill="#F0E442"/>
+<circle cx="250.89285714285714" cy="484.96205036042846" r="2.7" fill="#F0E442"/>
+<circle cx="366.96428571428567" cy="469.1163288746595" r="2.7" fill="#F0E442"/>
+<circle cx="483.0357142857142" cy="454.32321380547137" r="2.7" fill="#F0E442"/>
+<circle cx="599.1071428571429" cy="440.3685039246605" r="2.7" fill="#F0E442"/>
+<circle cx="715.1785714285713" cy="426.88037481207726" r="2.7" fill="#F0E442"/>
+<line x1="770" y1="258" x2="800" y2="258" stroke="#F0E442" stroke-width="3"/>
+<text x="808" y="262" font-family="Arial, sans-serif" font-size="12">static_ridge</text>
+<polyline points="134.82142857142856,451.7146258471709 250.89285714285714,423.6519481331194 366.96428571428567,371.86895202293533 483.0357142857142,346.7092458817914 599.1071428571429,299.51542754401123 715.1785714285713,267.87373750008277" fill="none" stroke="#882255" stroke-width="2.2"/>
+<circle cx="134.82142857142856" cy="451.7146258471709" r="2.7" fill="#882255"/>
+<circle cx="250.89285714285714" cy="423.6519481331194" r="2.7" fill="#882255"/>
+<circle cx="366.96428571428567" cy="371.86895202293533" r="2.7" fill="#882255"/>
+<circle cx="483.0357142857142" cy="346.7092458817914" r="2.7" fill="#882255"/>
+<circle cx="599.1071428571429" cy="299.51542754401123" r="2.7" fill="#882255"/>
+<circle cx="715.1785714285713" cy="267.87373750008277" r="2.7" fill="#882255"/>
+<line x1="770" y1="280" x2="800" y2="280" stroke="#882255" stroke-width="3"/>
+<text x="808" y="284" font-family="Arial, sans-serif" font-size="12">validation_best_member</text>
+<text x="425.0" y="602" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">drift scale</text>
+<text transform="translate(25,295.0) rotate(-90)" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">CVAR_05</text>
+</svg>

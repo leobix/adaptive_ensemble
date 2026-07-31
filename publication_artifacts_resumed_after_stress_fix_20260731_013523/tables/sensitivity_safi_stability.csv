@@ -1,0 +1,2 @@
+dataset,objective_variant,best_validation_rmse,best_tau,best_lambda,near_optimal_fraction,near_optimal_cells,total_cells,near_optimal_tau_min,near_optimal_tau_max,near_optimal_lambda_min,near_optimal_lambda_max
+safi,quadratic_stacked,0.35142833382857747,4,0.0,0.01,28,72,1,10,0.0,0.001

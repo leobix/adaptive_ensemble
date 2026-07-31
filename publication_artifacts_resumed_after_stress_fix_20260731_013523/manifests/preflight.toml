@@ -1,0 +1,27 @@
+completed_at_utc = "2026-07-30T23:41:11.089"
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+datasets = ["safi"]
+
+[gurobi]
+cone_violation = 0.0
+objective = 1.000000000128825
+x = [1.0, 0.0]
+fixed_violation = 0.0
+raw_status = "Model was solved to optimality (subject to tolerances), and an optimal solution is available."
+threads = 1
+status = "OPTIMAL"
+radius = 1.000000000128825
+primal_status = "FEASIBLE_POINT"
+check_tolerance = 1.0e-5
+objective_mismatch = 0.0
+
+[system]
+julia_threads = 4
+blas = "LBTConfig([ILP64] libopenblas64_.dll)"
+julia_version = "1.12.6"
+architecture = "x86_64"
+kernel = "NT"
+hostname = "HenryMao"
+word_size = 64
+created_at_utc = "2026-07-30T23:41:11.089"
+cpu_threads = 24

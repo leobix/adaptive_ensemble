@@ -1,0 +1,27 @@
+event_count = 0
+validation = [4248, 5946]
+availability_lag = 1
+units = "km/h"
+name = "safi"
+m = 6
+test = [5947, 8494]
+train = [1, 4247]
+member_names = ["NUMTECH_speed", "speed", "DT_speed", "RIDGE_speed", "LASSO_speed", "OCT_speed"]
+n = 8494
+
+[metadata]
+source_y = "y_test_speed_adaptive_out1.csv"
+source_X = "X_test_speed_adaptive_out1.csv"
+split_rule = "chronological 4247/1699/2548 for the supplied 8494-row matrix"
+split_counts = [4247, 1699, 2548]
+member_set = "paper"
+
+    [metadata.source_files."X_test_speed_adaptive_out1.csv"]
+    absolute_path = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\data\\X_test_speed_adaptive_out1.csv"
+    sha256 = "6c0873acf86034f117c4d2315c2a0d119cc3d15f3511cece475ada1998272a0d"
+    bytes = 916703
+
+    [metadata.source_files."y_test_speed_adaptive_out1.csv"]
+    absolute_path = "C:\\Users\\henry\\Documents\\Research\\adaptive-ensemble\\data\\y_test_speed_adaptive_out1.csv"
+    sha256 = "981eff5d8e3ca6085ba55523c0f5032053fc122b5fbb9cd7a0f544aa3dc22b9e"
+    bytes = 163239
