@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "Adaptive Ensemble Forecasting with Adaptive Robust Optimization"
+message: "Please cite the associated paper and this software release when using the code."
+type: software
+authors:
+  - family-names: Bertsimas
+    given-names: Dimitris
+  - family-names: Boussioux
+    given-names: Léonard
+version: 0.2.0
+date-released: 2026-07-31
+license: MIT
+keywords:
+  - time-series forecasting
+  - ensemble learning
+  - adaptive robust optimization
+  - Julia
