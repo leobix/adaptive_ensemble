@@ -1,0 +1,403 @@
+\documentclass[10pt]{report}
+\usepackage[margin=0.72in]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{graphicx,float,caption,subcaption}
+\usepackage{xcolor,colortbl}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\definecolor{good}{RGB}{225,245,225}
+\definecolor{partial}{RGB}{255,244,204}
+\definecolor{missing}{RGB}{255,225,225}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.25em,topsep=0.25em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.25em,topsep=0.25em}
+\newcommand{\complete}{\cellcolor{good}\textbf{Complete}}
+\newcommand{\substantial}{\cellcolor{partial}\textbf{Substantial}}
+\newcommand{\pending}{\cellcolor{missing}\textbf{Pending}}
+\title{Interim Reviewer-Response Evidence and Publication Readiness Audit\\[0.5em]\large Adaptive Robust Time-Series Ensembles: Synthetic + Safi Scope}
+\author{Evidence compiled from the current Julia publication run}
+\date{30 July 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This report evaluates whether the currently successful experiment artifacts are sufficient to answer the mixed NeurIPS reviewer feedback. The answer is \textbf{not yet for every question}. The run has completed the expanded 30-seed synthetic regime study, the corrected manuscript sweeps, the Julia-native meta-learning comparison, the Safi application, Safi sensitivity, and all 420 stress-test tasks. The stress stage failed only while converting a numeric setting label to \texttt{String}; no stress model failed. Same-machine runtime benchmarking, controlled solver verification, and final artifact verification have not yet run. The current evidence therefore resolves most questions about drift, baselines, sensitivity, limited data, correlated members, and cold starts, but it does not yet resolve the reviewers' computational-cost request and does not support renewed energy or hurricane claims.
+\end{abstract}
+\tableofcontents
+
+\chapter{Executive assessment}
+\section{Bottom line}
+The successful artifacts are enough to produce a strong, candid reviewer response on most empirical concerns. They are not enough to assert that every reviewer request is resolved. In particular:
+\begin{itemize}
+\item The broadened drift study is complete and materially changes the scientific conclusion: Adaptive Ridge is excellent under periodic and recurring reliability patterns, but can fail badly under unprecedented abrupt, persistent-bias, member-degradation, and variance-burst shifts.
+\item Modern comparators are complete. RLS and Rolling Ridge dominate abrupt shifts; a neural error-history gate narrowly beats Adaptive Ridge in recurring regimes and beats it on Safi.
+\item Window, regularization, limited-history, correlation, pruning, and event-boundary studies are available.
+\item The current scope includes one verified real-world application, Safi. Energy was deliberately removed from the active profile after uncertified IRLS and interrupted SOCP solves; hurricane matrices are absent.
+\item Same-machine runtime comparisons and the final exact solver-verification stage remain pending. These are necessary to answer the computational-burden criticism fully.
+\end{itemize}
+
+\section{Run status and provenance}
+The evidence comes from run fingerprint
+\begin{center}
+\texttt{0e9320deaf6da755c152474c1e96dc22bc90719f90b27213cb523f4aade21c9a}.
+\end{center}
+The following are complete: 270 expanded-synthetic tasks, 1,020 manuscript-sweep tasks, 120 synthetic-meta tasks, the Safi benchmark, the Safi sensitivity grid, and 420 stress tasks. The stress aggregation failed after all tasks completed because \texttt{String(::Float64)} is undefined for numeric setting labels. The corrected code uses \texttt{string(value)} and regenerates the stress summary and figures without recomputing the 420 tasks.
+
+\section{Reviewer-question coverage matrix}
+\begin{longtable}{p{0.29\textwidth}p{0.16\textwidth}p{0.48\textwidth}}
+\toprule
+Reviewer concern & Status & Current evidence and qualification \\
+\midrule
+\endhead
+Additional abrupt, periodic, bias, and member-specific drift & \complete & Nine regimes, 30 seeds each, 12 methods. Directly answers the principal synthetic-design criticism. \\
+Modern ensemble and meta-learning baselines & \complete & RLS, Rolling Ridge, Fixed Share, DMA, Hedge, genuine Exp3, neural gate, and boosted meta-learner are included. \\
+Fair tuning protocols & \substantial & Chronological validation grids and selected-hyperparameter tables exist for each method. The paper must print these grids and clearly separate deployable validation selection from the test oracle. \\
+Sensitivity to $\tau$ and $\lambda$ & \complete & Safi has 72 chronological $\tau\times\lambda$ cells; the corrected manuscript sweep evaluates 10 window sizes over 30 seeds. \\
+Limited historical data & \complete & Six history sizes over 30 seeds; results strongly favor RLS or Rolling Ridge below several hundred observations. \\
+Highly correlated members and pruning & \complete & Seven correlation levels, five pruning thresholds, 30 seeds. Numerical conditioning is reported. \\
+Initial history and event boundaries & \complete & Reset, carry, and cross-event borrowing policies are compared over 30 seeds, including first-10-point RMSE. \\
+Computational cost and complete-search runtime & \pending & The runtime stage did not start. Historical paper timings are not a controlled comparison against the new implementation and baselines. \\
+Exact IRLS/JuMP/Gurobi verification & \pending & Controlled verification stage did not start. This is implementation assurance rather than a primary reviewer experiment, but it is required by the repository's final gate. \\
+Breadth across all three historical applications & \pending & Current verified scope is Safi only. Energy and hurricane claims must be removed or explicitly labeled historical and not regenerated. \\
+Weighted-voting extension & \substantial & A softmax/simplex version is conceptually straightforward, but no weighted-voting experiment is in the current artifact. \\
+\bottomrule
+\end{longtable}
+
+\chapter{Expanded synthetic evidence}
+\section{Nine drift regimes}
+The original synthetic design emphasized gradual drift. The current suite holds the target-generation structure fixed and varies the member-error process across nine regimes. Each regime uses 30 seeds and a chronological train/validation/test protocol.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Adaptive Ridge versus the best deployable comparator in each expanded regime. Rank excludes the test-oracle member.}
+\begin{tabular}{lrrrr}
+\toprule
+Regime & Adaptive RMSE & Best deployable method & Best RMSE & Adaptive rank \\
+\midrule
+stationary & 0.0396 & RLS & 0.0383 & 4/11 \\
+gradual & 0.1019 & Passive-Aggressive & 0.0945 & 4/11 \\
+abrupt & 0.7994 & RLS & 0.0661 & 10/11 \\
+periodic & 0.0487 & Adaptive Ridge & 0.0487 & 1/11 \\
+persistent bias & 0.5586 & Rolling Ridge & 0.0599 & 9/11 \\
+member degradation & 0.5874 & RLS & 0.0823 & 9/11 \\
+recurring & 0.0271 & Adaptive Ridge & 0.0271 & 1/11 \\
+variance burst & 0.2511 & RLS & 0.0784 & 9/11 \\
+discrete gaussian & 0.0935 & Static Ridge & 0.0916 & 5/11 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/synthetic_regime_rmse.pdf}
+\caption{Mean test RMSE across the expanded synthetic regimes. A logarithmic vertical axis makes the large abrupt-shift failures visible without obscuring smaller stationary and recurring-regime differences.}
+\end{figure}
+
+\section{Scientific interpretation}
+The result is not universal robustness. The defensible claim is conditional:
+\begin{quote}
+The affine error-history rule is most effective when recent relative-reliability patterns recur or evolve predictably. Recursive or short-window online methods are safer when the test regime contains an unprecedented discontinuous change.
+\end{quote}
+This statement is supported by paired 30-seed intervals. Under periodic drift, the comparator-minus-Adaptive-Ridge RMSE differences are positive for RLS ($0.00464$, 95\% interval $[0.00292,0.00636]$) and Rolling Ridge ($0.00576$, $[0.00395,0.00757]$). Under recurring regimes, Rolling Ridge is worse by $0.01741$ ($[0.01452,0.02030]$) and RLS by $0.02094$ ($[0.01728,0.02460]$). Conversely, under abrupt change, RLS is better by approximately $0.733$ and wins every seed; similar one-sided failures occur under persistent bias, member degradation, and variance bursts.
+
+\section{How this answers the reviewer}
+The expanded design directly answers the request for sudden regime shifts, periodic drift, persistent bias, and member-specific degradation. More importantly, it discovers failure modes rather than merely adding favorable examples. The paper should replace broad language such as ``robust to drift'' with a statement about predictable or recurring member-error dynamics.
+
+\chapter{Modern baseline and meta-learning comparison}
+\section{Completed comparison}
+The Julia suite includes both lightweight online methods and nonlinear error-history learners. Table~\ref{tab:meta} reports the four regimes selected for the meta-learning comparison.
+\begin{longtable}{llrr}
+\caption{Modern/meta comparison over 30 seeds.}\label{tab:meta}\\
+\toprule
+Regime & Method & RMSE & CVaR 5\% \\
+\midrule
+\endfirsthead
+\toprule
+Regime & Method & RMSE & CVaR 5\% \\
+\midrule
+\endhead
+gradual & RLS & 0.0949 & 0.2232 \\
+gradual & Rolling Ridge & 0.0961 & 0.2255 \\
+gradual & Adaptive Ridge & 0.1019 & 0.2384 \\
+gradual & Neural gate & 0.1020 & 0.2389 \\
+gradual & Boosted meta & 0.1180 & 0.2773 \\
+abrupt & RLS & 0.0661 & 0.1705 \\
+abrupt & Rolling Ridge & 0.0682 & 0.1806 \\
+abrupt & Neural gate & 0.3514 & 0.6976 \\
+abrupt & Boosted meta & 0.3923 & 0.8419 \\
+abrupt & Adaptive Ridge & 0.7994 & 1.6446 \\
+member degradation & RLS & 0.0823 & 0.2043 \\
+member degradation & Rolling Ridge & 0.0848 & 0.2102 \\
+member degradation & Neural gate & 0.3344 & 0.8986 \\
+member degradation & Boosted meta & 0.3413 & 0.9473 \\
+member degradation & Adaptive Ridge & 0.5874 & 1.7664 \\
+recurring & Neural gate & 0.0253 & 0.0658 \\
+recurring & Adaptive Ridge & 0.0271 & 0.0726 \\
+recurring & Rolling Ridge & 0.0445 & 0.1404 \\
+recurring & RLS & 0.0480 & 0.1543 \\
+recurring & Boosted meta & 0.0635 & 0.1686 \\
+\bottomrule
+\end{longtable}
+
+\section{Findings}
+\begin{itemize}
+\item Gradual drift: RLS is best (RMSE $0.0949$), followed by Rolling Ridge ($0.0961$); Adaptive Ridge is $0.1019$.
+\item Abrupt change: RLS ($0.0661$) and Rolling Ridge ($0.0682$) are dramatically safer than all learned error-history gates.
+\item Member degradation: RLS ($0.0823$) and Rolling Ridge ($0.0848$) dominate; the affine rule fails to extrapolate the unprecedented reliability collapse.
+\item Recurring regimes: the neural gate is best ($0.0253$), Adaptive Ridge is close ($0.0271$), and both beat RLS and Rolling Ridge.
+\end{itemize}
+These results answer the request for modern baselines, but they require a more nuanced significance claim. Interpretability and optimization provenance remain advantages of Adaptive Ridge; universal predictive superiority does not.
+
+\chapter{Safi real-world evidence}
+\section{Held-out results}
+The current Safi run uses 2,548 held-out observations and 15 methods. The journal manuscript describes 8,494 one-hour-ahead forecasts from six fixed members and motivates tail risk in pollution management. The new run retains the strictly chronological protocol but finds stronger nonlinear comparators than the original baseline set.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Selected Safi held-out results. Lower is better.}
+\begin{tabular}{lrrrr}
+\toprule
+Method & MAE & RMSE & CVaR 5\% & CVaR 15\% \\
+\midrule
+Neural gate & 0.4790 & 0.6496 & 1.7726 & 1.2867 \\
+Boosted meta & 0.4855 & 0.6527 & 1.7624 & 1.2966 \\
+Adaptive Ridge & 0.4955 & 0.6715 & 1.8376 & 1.3409 \\
+RLS & 0.5050 & 0.6781 & 1.8318 & 1.3490 \\
+Static Ridge & 0.5213 & 0.7182 & 2.0274 & 1.4181 \\
+Ensemble Mean & 0.5527 & 0.7831 & 2.2716 & 1.5235 \\
+Test-oracle member & 0.5068 & 0.7562 & 2.2682 & 1.4623 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/safi_metrics.pdf}
+\caption{Selected Safi methods on average error, squared-error sensitivity, and the worst 5\% absolute-error tail.}
+\end{figure}
+
+\section{Quantitative conclusions}
+Relative to Static Ridge, Adaptive Ridge reduces RMSE by $6.5\%$, MAE by $4.9\%$, CVaR 5\% by $9.4\%$, and CVaR 15\% by $5.4\%$. Relative to the ensemble mean, its RMSE reduction is $14.3\%$ and CVaR 5\% reduction is $19.1\%$. It also improves on the selected individual member by $11.2\%$ in RMSE.
+
+However, the neural gate has RMSE $0.6496$ and the boosted meta-learner $0.6527$, both below Adaptive Ridge's $0.6715$. The 2,000-replication moving-block bootstrap gives a neural-gate-minus-Adaptive-Ridge RMSE interval of approximately $[-0.0320,-0.0119]$ and a boosted-meta interval of $[-0.0344,-0.0032]$. Thus, the revised paper can claim a clear advantage over static Ridge, equal weighting, and the selected member on this split, but not superiority over modern nonlinear meta-learning.
+
+\chapter{Hyperparameter sensitivity}
+\section{Safi $\tau\times\lambda$ surface}
+The Safi sensitivity stage evaluates 9 history windows and 8 regularization levels, for 72 chronological validation cells. The best validation RMSE is $0.35143$ at $\tau=4$ and $\lambda=0$. Twenty-eight cells are within 1\% of the optimum, spanning $\tau=1$ through $10$ and $\lambda=0$ through $10^{-3}$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/safi_sensitivity_heatmap.pdf}
+\caption{Safi validation RMSE. The surface is relatively flat near small regularization and short-to-moderate windows, but degrades at large $\lambda$ and long windows.}
+\end{figure}
+
+\section{Synthetic window sweep}
+\begin{table}[H]
+\centering
+\small
+\caption{Corrected 30-seed window sweep: mean test RMSE.}
+\begin{tabular}{rrrrr}
+\toprule
+$\tau$ & Adaptive Ridge & Static Ridge & RLS & Passive-Aggressive \\
+\midrule
+1 & 0.1018 & 0.1064 & 0.0947 & 0.0974 \\
+2 & 0.1035 & 0.1064 & 0.0947 & 0.0974 \\
+3 & 0.1056 & 0.1064 & 0.0947 & 0.0974 \\
+5 & 0.1100 & 0.1064 & 0.0947 & 0.0974 \\
+10 & 0.1195 & 0.1064 & 0.0947 & 0.0974 \\
+15 & 0.1292 & 0.1064 & 0.0947 & 0.0974 \\
+20 & 0.1373 & 0.1064 & 0.0947 & 0.0974 \\
+25 & 0.1444 & 0.1064 & 0.0947 & 0.0974 \\
+\bottomrule
+\end{tabular}
+\end{table}
+Adaptive Ridge RMSE rises from $0.1018$ at $\tau=1$ to $0.1444$ at $\tau=25$. This supports the reviewers' concern about overfitting at large windows and justifies chronological tuning rather than a fixed universal window.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/manuscript_window_history.pdf}
+\caption{Corrected manuscript-style sweeps for window length and available historical observations.}
+\end{figure}
+
+\chapter{Limited-history behavior}
+\begin{table}[H]
+\centering
+\small
+\caption{Mean test RMSE over 30 seeds as historical data increase.}
+\begin{tabular}{rrrrrr}
+\toprule
+History & Adaptive & Static & Rolling & RLS & Passive-Aggressive \\
+\midrule
+100 & 0.3865 & 0.2860 & 0.0688 & 0.0621 & 0.0770 \\
+200 & 0.5463 & 0.2647 & 0.0740 & 0.0626 & 0.0781 \\
+400 & 0.0439 & 0.0731 & 0.0592 & 0.0531 & 0.0701 \\
+750 & 0.0322 & 0.0683 & 0.0483 & 0.0528 & 0.0674 \\
+1500 & 0.0285 & 0.0650 & 0.0449 & 0.0484 & 0.0639 \\
+3000 & 0.0271 & 0.0643 & 0.0445 & 0.0480 & 0.0624 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/limited_history_rmse.pdf}
+\caption{Limited-history stress test. The adaptive model is unstable at 100--200 observations, improves sharply by 400, and becomes competitive only with substantially more history.}
+\end{figure}
+
+The current evidence gives a clear answer to the reviewers' small-data question. The previous broad recommendation that ``a few hundred'' points suffice is not supported by this corrected experiment. The practical recommendation should be conditional: use RLS, Rolling Ridge, or Static Ridge under limited history unless chronological validation demonstrates a stable adaptive gain.
+
+\chapter{Correlated members and pruning}
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Correlated-member stress test over 30 seeds. The final column shows that conditioning worsens rapidly even though predictive RMSE remains stable or improves in this generator.}
+\begin{tabular}{rrrrrr}
+\toprule
+$\rho$ & Adaptive & Adaptive + pruning & Static & RLS & Median condition number \\
+\midrule
+0 & 0.0271 & 0.0271 & 0.0643 & 0.0480 & $8.35\times10^{5}$ \\
+0.25 & 0.0319 & 0.0318 & 0.0749 & 0.0564 & $1.40\times10^{6}$ \\
+0.5 & 0.0305 & 0.0305 & 0.0739 & 0.0555 & $2.25\times10^{6}$ \\
+0.75 & 0.0253 & 0.0253 & 0.0612 & 0.0502 & $7.87\times10^{6}$ \\
+0.9 & 0.0193 & 0.0194 & 0.0428 & 0.0372 & $5.76\times10^{7}$ \\
+0.95 & 0.0156 & 0.0155 & 0.0314 & 0.0283 & $2.31\times10^{8}$ \\
+0.99 & 0.0093 & 0.0094 & 0.0145 & 0.0134 & $5.73\times10^{9}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{figures/correlation_stress_rmse.pdf}
+\caption{Predictive RMSE.}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{figures/correlation_condition_number.pdf}
+\caption{Numerical conditioning.}
+\end{subfigure}
+\caption{Correlation stress evidence.}
+\end{figure}
+
+The main result is numerical rather than a universal predictive penalty: the median condition number increases from roughly $8.4\times10^5$ at $\rho=0$ to $5.7\times10^9$ at $\rho=0.99$, while the selected regularization and shorter window keep predictions stable. Validation-controlled pruning changes mean RMSE only marginally and usually retains nearly all members. Therefore, automatic aggressive pruning is not supported; conditioning diagnostics and validation-controlled selection are preferable.
+
+\chapter{Cold start and event boundaries}
+\begin{table}[H]
+\centering
+\small
+\caption{Boundary-policy results over 30 seeds. Cold-start RMSE is computed on the first ten points after event boundaries.}
+\begin{tabular}{llrr}
+\toprule
+Policy & Method & Overall RMSE & Cold-start RMSE \\
+\midrule
+borrow across events & Adaptive Ridge  Borrow Across Events & 0.0271 & 0.0474 \\
+carry & Rls  Carry & 0.0480 & 0.1383 \\
+carry & Passive Aggressive  Carry & 0.0625 & 0.0755 \\
+carry & Hedge  Carry & 0.1098 & 0.1393 \\
+reset & Adaptive Ridge  Reset & 0.0267 & 0.0382 \\
+reset & Rls  Reset & 0.0502 & 0.1660 \\
+reset & Passive Aggressive  Reset & 0.0629 & 0.0890 \\
+reset & Hedge  Reset & 0.1108 & 0.1633 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/boundary_cold_start.pdf}
+\caption{Cold-start error under reset, carry, and cross-event borrowing policies.}
+\end{figure}
+
+The adaptive static fallback with event reset has the best cold-start RMSE ($0.0382$), compared with $0.0474$ when histories are borrowed across events. This answers the reviewer's question about initial validation/test points: the implementation now uses an explicit fallback until sufficient same-event verified history exists, and the policy is empirically evaluated rather than left implicit.
+
+\chapter{Baseline selection and fairness}
+The current implementation addresses the concern that some dynamic baselines appeared implausibly poor. It distinguishes:
+\begin{itemize}
+\item Hedge, which receives full information about every member's loss;
+\item genuine bandit-feedback Exp3;
+\item Fixed Share for tracking a changing best expert;
+\item RLS and Rolling Ridge as strong lightweight adaptive regressors;
+\item Passive-Aggressive with chronological margin tuning;
+\item DMA with tuned forgetting factors;
+\item neural and boosted error-history meta-learners.
+\end{itemize}
+Every tunable method uses the same chronological validation segment and the test set is evaluated once. The test-oracle member is explicitly labeled nondeployable; a validation-selected member is reported separately. This is a substantial answer to tuning fairness, but the revised manuscript should print the exact grids, validation metric, and update-information timing for every method.
+
+\chapter{What remains before a complete reviewer response}
+\section{Runtime and computational burden}
+The current artifact is not enough to answer the runtime criticism. The runtime stage was scheduled after stress aggregation and never began. The historical paper's timing tables cannot be used as controlled comparisons because they mix an older JuMP formulation, different hardware, and no same-machine comparator timings. The corrected run must still produce:
+\begin{itemize}
+\item selected-model fit time;
+\item complete $\tau\times\lambda$ search time;
+\item prediction/update latency;
+\item scaling with $n$, $m$, and $\tau$;
+\item parameter and memory counts;
+\item same-machine comparisons against RLS, Rolling Ridge, Fixed Share, Passive-Aggressive, and static Ridge.
+\end{itemize}
+
+\section{Exact numerical verification}
+The controlled solver-verification stage also remains pending. It is not required to interpret the completed predictive results, but it is necessary for the repository's claim that reduced, iterative, and exact JuMP/Gurobi formulations agree within tolerance.
+
+\section{Empirical scope}
+The active verified scope is synthetic + Safi. The current NeurIPS draft still describes energy and tropical-cyclone applications, while the present artifact does not regenerate them. The paper must either restore and verify those applications or narrow the abstract, introduction, contribution list, result tables, conclusion, and checklist to the current scope.
+
+\section{Weighted voting}
+The reviewer's weighted-voting question can be answered conceptually: soft voting can use affine scores followed by a simplex projection or softmax, while hard voting leads to a classification objective and does not inherit the current linear-regression robustification equivalence directly. No current experiment validates that extension, so it should be presented as future work rather than a completed contribution.
+
+\chapter{Recommended revised claims}
+\section{Claims supported now}
+\begin{itemize}
+\item Adaptive Ridge is interpretable and materially improves on Static Ridge, equal weighting, and a selected individual member on the Safi split.
+\item The method is especially effective under periodic and recurring member-reliability patterns.
+\item Chronological tuning of $\tau$ and $\lambda$ is necessary; long windows and limited history can be harmful.
+\item Modern recursive and nonlinear baselines define important safety and performance frontiers.
+\item Explicit cold-start and event-boundary handling removes an implementation ambiguity identified by reviewers.
+\end{itemize}
+
+\section{Claims that should be removed or moderated}
+\begin{itemize}
+\item Remove universal claims of robustness to arbitrary drift.
+\item Do not claim overall superiority to modern meta-learning; the neural gate and boosted meta-learner outperform Adaptive Ridge on Safi.
+\item Replace the ``few hundred observations'' recommendation with a validation-dependent rule; corrected experiments show severe instability at 100--200 observations.
+\item Do not present energy or hurricane results as regenerated by the current verified package.
+\item Do not claim the computational-cost concern is resolved until the runtime stage passes.
+\end{itemize}
+
+\chapter{Pipeline failure and recovery status}
+The current run did not fail in any of the 420 stress tasks. It failed after writing the 3,180-row stress table and the 1,050-row pruning table, while constructing a summary label:
+\begin{verbatim}
+setting=[String(subset.setting[1])]
+\end{verbatim}
+CSV type inference represented numeric settings as \texttt{Float64}. In Julia, \texttt{String(x)} is a type constructor/conversion and has no method for \texttt{Float64}; \texttt{string(x)} is the generic textual representation. The corrected code uses \texttt{string} consistently in aggregation, plotting, runtime labels, and artifact verification, and adds a mixed numeric/text regression test.
+
+A guarded migration utility preserves the eight completed stages and all 420 fingerprint-bound stress task outputs. It does not copy old failure logs, the incomplete stress stage marker, wrapper receipts, or serialized model objects. The resumed run performs only stress aggregation/figures, solver verification, runtime benchmarking, and final verification.
+
+\chapter{Conclusion}
+The current result set answers most reviewer questions about empirical robustness, modern baselines, tuning, failure modes, limited data, correlated members, and boundary handling. It is not yet sufficient to answer every question because the controlled runtime study and exact solver-verification stage remain incomplete, and the current empirical scope is Safi rather than all three historical applications. A strong reviewer response is already possible, but it must be candid, narrow the claims, and reserve computational-efficiency claims for the completed repaired run.
+
+\appendix
+\chapter{Artifact inventory used in this report}
+\begin{itemize}
+\item \texttt{synthetic\_regimes\_summary.csv}: 108 method-regime rows.
+\item \texttt{synthetic\_paired\_rmse\_intervals.csv}: 99 paired comparisons.
+\item \texttt{manuscript\_sweeps\_summary.csv}: 340 sweep-setting-method rows.
+\item \texttt{synthetic\_meta\_summary.csv}: 20 regime-method rows.
+\item \texttt{real\_world\_all\_metrics.csv}: 15 Safi methods.
+\item \texttt{safi\_moving\_block\_bootstrap.csv}: 2,000-replication paired bootstrap contrasts.
+\item \texttt{sensitivity\_safi.csv}: 72 validation cells.
+\item \texttt{stress\_tests\_per\_seed.csv}: 3,180 completed method-task rows.
+\item \texttt{stress\_correlation\_pruning\_validation.csv}: 1,050 threshold candidates.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{journal} D. Bertsimas and L. Boussioux. \emph{Ensemble Modeling for Time Series Forecasting: an Adaptive Robust Optimization Approach}. Journal manuscript / arXiv version, 2023.
+\bibitem{neurips} Anonymous submission. \emph{Ensemble Modeling for Time Series Forecasting: an Adaptive Robust Optimization Approach}. NeurIPS 2026 submission draft.
+\bibitem{neuripscheck} NeurIPS. \emph{Paper Checklist Guidelines}, accessed July 2026.
+\bibitem{julia} The Julia Language. \emph{Strings, Conversion, and Base Documentation}, version 1.x.
+\end{thebibliography}
+\end{document}

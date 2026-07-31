@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420">
+<rect width="100%" height="100%" fill="#f7f7f7"/>
+<rect x="20" y="20" width="940" height="380" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="40" y="48" font-size="22" font-weight="700" fill="#222222">Transformer predictions: Energy Forecasting</text>
+<text x="40" y="68" font-size="12" fill="#666666">Held-out steps 4933-4956, unstandardized to the target scale.</text>
+<line x1="72" x2="950" y1="360.0" y2="360.0" stroke="#e8e8e8"/>
+<text x="62" y="364.0" text-anchor="end" font-size="11" fill="#666666">-152</text>
+<line x1="72" x2="950" y1="289.0" y2="289.0" stroke="#e8e8e8"/>
+<text x="62" y="293.0" text-anchor="end" font-size="11" fill="#666666">-10.6</text>
+<line x1="72" x2="950" y1="218.0" y2="218.0" stroke="#e8e8e8"/>
+<text x="62" y="222.0" text-anchor="end" font-size="11" fill="#666666">131</text>
+<line x1="72" x2="950" y1="147.0" y2="147.0" stroke="#e8e8e8"/>
+<text x="62" y="151.0" text-anchor="end" font-size="11" fill="#666666">273</text>
+<line x1="72" x2="950" y1="76.0" y2="76.0" stroke="#e8e8e8"/>
+<text x="62" y="80.0" text-anchor="end" font-size="11" fill="#666666">415</text>
+<polyline points="72.00,103.48 110.17,178.58 148.35,238.66 186.52,233.65 224.70,238.66 262.87,238.66 301.04,233.65 339.22,233.65 377.39,233.65 415.57,218.63 453.74,153.55 491.91,228.64 530.09,228.64 568.26,228.64 606.43,228.64 644.61,228.64 682.78,228.64 720.96,228.64 759.13,228.64 797.30,243.66 835.48,238.66 873.65,243.66 911.83,243.66 950.00,248.67" fill="none" stroke="#222222" stroke-width="2.4"/>
+<polyline points="72.00,329.10 110.17,320.78 148.35,332.52 186.52,295.21 224.70,248.87 262.87,238.14 301.04,230.13 339.22,238.09 377.39,210.11 415.57,223.98 453.74,235.99 491.91,251.15 530.09,288.77 568.26,240.93 606.43,241.69 644.61,235.56 682.78,242.98 720.96,223.42 759.13,228.73 797.30,222.88 835.48,237.96 873.65,212.55 911.83,215.53 950.00,225.64" fill="none" stroke="#5b3f8c" stroke-width="2.0"/>
+<polyline points="72.00,174.96 110.17,181.89 148.35,187.08 186.52,162.70 224.70,154.72 262.87,160.72 301.04,160.48 339.22,164.83 377.39,166.86 415.57,167.24 453.74,171.26 491.91,176.33 530.09,185.24 568.26,169.30 606.43,175.02 644.61,172.95 682.78,170.19 720.96,169.22 759.13,169.30 797.30,171.93 835.48,173.59 873.65,174.20 911.83,179.51 950.00,178.98" fill="none" stroke="#c43b4d" stroke-width="2.0"/>
+<line x1="690" x2="712" y1="92" y2="92" stroke="#222222" stroke-width="3"/>
+<text x="718" y="96" font-size="12" fill="#333333">Actual</text>
+<line x1="782" x2="804" y1="92" y2="92" stroke="#5b3f8c" stroke-width="3"/>
+<text x="810" y="96" font-size="12" fill="#333333">FEDFormer</text>
+<line x1="874" x2="896" y1="92" y2="92" stroke="#c43b4d" stroke-width="3"/>
+<text x="902" y="96" font-size="12" fill="#333333">Informer</text>
+<text x="950" y="394" text-anchor="end" font-size="11" fill="#777777">held-out step</text>
+</svg>

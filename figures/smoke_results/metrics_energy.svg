@@ -1,0 +1,413 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="938" height="894" viewBox="0 0 938 894">
+<rect width="100%" height="100%" fill="#f7f7f7"/>
+<text x="20" y="32" font-size="22" font-weight="700" fill="#222222">Smoke-run metric comparison: energy</text>
+<text x="20" y="54" font-size="12" fill="#666666">Bars compare the methods emitted by eval_method for one tested configuration. Lower is better except R2.</text>
+<rect x="20" y="76" width="440" height="260" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="34" y="98" font-size="15" font-weight="600" fill="#222222">MAE</text>
+<line x1="74" x2="448" y1="264.0" y2="264.0" stroke="#e8e8e8"/>
+<text x="66" y="268.0" text-anchor="end" font-size="10" fill="#666666">-13.2</text>
+<line x1="74" x2="448" y1="226.0" y2="226.0" stroke="#e8e8e8"/>
+<text x="66" y="230.0" text-anchor="end" font-size="10" fill="#666666">34.7</text>
+<line x1="74" x2="448" y1="188.0" y2="188.0" stroke="#e8e8e8"/>
+<text x="66" y="192.0" text-anchor="end" font-size="10" fill="#666666">82.7</text>
+<line x1="74" x2="448" y1="150.0" y2="150.0" stroke="#e8e8e8"/>
+<text x="66" y="154.0" text-anchor="end" font-size="10" fill="#666666">131</text>
+<line x1="74" x2="448" y1="112.0" y2="112.0" stroke="#e8e8e8"/>
+<text x="66" y="116.0" text-anchor="end" font-size="10" fill="#666666">179</text>
+<line x1="74" x2="448" y1="253.51724137931035" y2="253.51724137931035" stroke="#9a9a9a"/>
+<rect x="82.0" y="135.2912081766536" width="25.272727272727273" height="118.22603320265674" rx="2" fill="#2f6f9f"/>
+<text x="94.63636363636364" y="130.2912081766536" text-anchor="middle" font-size="9" fill="#333333">149</text>
+<text x="94.63636363636364" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="94.63636363636364" y="290" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="115.27272727272728" y="131.61818708706215" width="25.272727272727273" height="121.8990542922482" rx="2" fill="#4c9f70"/>
+<text x="127.90909090909092" y="126.61818708706215" text-anchor="middle" font-size="9" fill="#333333">154</text>
+<text x="127.90909090909092" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge std.</text>
+<text x="127.90909090909092" y="290" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="148.54545454545456" y="147.42031783653567" width="25.272727272727273" height="106.09692354277468" rx="2" fill="#75aadb"/>
+<text x="161.1818181818182" y="142.42031783653567" text-anchor="middle" font-size="9" fill="#333333">134</text>
+<text x="161.1818181818182" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="161.1818181818182" y="290" text-anchor="middle" font-size="9" fill="#333333">exact</text>
+
+<rect x="181.8181818181818" y="159.14661859996977" width="25.272727272727273" height="94.37062277934058" rx="2" fill="#78c6a3"/>
+<text x="194.45454545454544" y="154.14661859996977" text-anchor="middle" font-size="9" fill="#333333">119</text>
+<text x="194.45454545454544" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="194.45454545454544" y="290" text-anchor="middle" font-size="9" fill="#333333">standard</text>
+
+<rect x="215.0909090909091" y="122.48275862068965" width="25.272727272727273" height="131.0344827586207" rx="2" fill="#d95f02"/>
+<text x="227.72727272727272" y="117.48275862068965" text-anchor="middle" font-size="9" fill="#333333">165</text>
+<text x="227.72727272727272" y="279" text-anchor="middle" font-size="9" fill="#333333">Passive-</text>
+<text x="227.72727272727272" y="290" text-anchor="middle" font-size="9" fill="#333333">Aggressive</text>
+
+<rect x="248.36363636363637" y="130.66429887407804" width="25.272727272727273" height="122.8529425052323" rx="2" fill="#7570b3"/>
+<text x="261.0" y="125.66429887407804" text-anchor="middle" font-size="9" fill="#333333">155</text>
+<text x="261.0" y="279" text-anchor="middle" font-size="9" fill="#333333">Ridge</text>
+
+<rect x="281.6363636363636" y="148.94769578102944" width="25.272727272727273" height="104.56954559828091" rx="2" fill="#e7298a"/>
+<text x="294.27272727272725" y="143.94769578102944" text-anchor="middle" font-size="9" fill="#333333">132</text>
+<text x="294.27272727272725" y="279" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="294.27272727272725" y="290" text-anchor="middle" font-size="9" fill="#333333">recent</text>
+
+<rect x="314.9090909090909" y="148.912482317939" width="25.272727272727273" height="104.60475906137134" rx="2" fill="#a6761d"/>
+<text x="327.5454545454545" y="143.912482317939" text-anchor="middle" font-size="9" fill="#333333">132</text>
+<text x="327.5454545454545" y="279" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="327.5454545454545" y="290" text-anchor="middle" font-size="9" fill="#333333">full</text>
+
+<rect x="348.1818181818182" y="205.96226787011605" width="25.272727272727273" height="47.5549735091943" rx="2" fill="#1b9e77"/>
+<text x="360.8181818181818" y="200.96226787011605" text-anchor="middle" font-size="9" fill="#333333">60.0</text>
+<text x="360.8181818181818" y="279" text-anchor="middle" font-size="9" fill="#333333">Best model</text>
+<text x="360.8181818181818" y="290" text-anchor="middle" font-size="9" fill="#333333">in hindsight</text>
+
+<rect x="381.45454545454544" y="158.40729436092175" width="25.272727272727273" height="95.1099470183886" rx="2" fill="#666666"/>
+<text x="394.09090909090907" y="153.40729436092175" text-anchor="middle" font-size="9" fill="#333333">120</text>
+<text x="394.09090909090907" y="279" text-anchor="middle" font-size="9" fill="#333333">Last</text>
+<text x="394.09090909090907" y="290" text-anchor="middle" font-size="9" fill="#333333">timestep</text>
+
+<rect x="414.72727272727275" y="150.2069635379188" width="25.272727272727273" height="103.31027784139155" rx="2" fill="#999999"/>
+<text x="427.3636363636364" y="145.2069635379188" text-anchor="middle" font-size="9" fill="#333333">130</text>
+<text x="427.3636363636364" y="279" text-anchor="middle" font-size="9" fill="#333333">Ensemble</text>
+<text x="427.3636363636364" y="290" text-anchor="middle" font-size="9" fill="#333333">mean</text>
+
+<text x="446" y="326" text-anchor="end" font-size="10" fill="#777777">energy</text>
+
+<rect x="478" y="76" width="440" height="260" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="492" y="98" font-size="15" font-weight="600" fill="#222222">RMSE</text>
+<line x1="532" x2="906" y1="264.0" y2="264.0" stroke="#e8e8e8"/>
+<text x="524" y="268.0" text-anchor="end" font-size="10" fill="#666666">-13.5</text>
+<line x1="532" x2="906" y1="226.0" y2="226.0" stroke="#e8e8e8"/>
+<text x="524" y="230.0" text-anchor="end" font-size="10" fill="#666666">35.4</text>
+<line x1="532" x2="906" y1="188.0" y2="188.0" stroke="#e8e8e8"/>
+<text x="524" y="192.0" text-anchor="end" font-size="10" fill="#666666">84.3</text>
+<line x1="532" x2="906" y1="150.0" y2="150.0" stroke="#e8e8e8"/>
+<text x="524" y="154.0" text-anchor="end" font-size="10" fill="#666666">133</text>
+<line x1="532" x2="906" y1="112.0" y2="112.0" stroke="#e8e8e8"/>
+<text x="524" y="116.0" text-anchor="end" font-size="10" fill="#666666">182</text>
+<line x1="532" x2="906" y1="253.51724137931035" y2="253.51724137931035" stroke="#9a9a9a"/>
+<rect x="540.0" y="137.59335054301124" width="25.272727272727273" height="115.92389083629911" rx="2" fill="#2f6f9f"/>
+<text x="552.6363636363636" y="132.59335054301124" text-anchor="middle" font-size="9" fill="#333333">149</text>
+<text x="552.6363636363636" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="552.6363636363636" y="290" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="573.2727272727273" y="133.79280527057773" width="25.272727272727273" height="119.72443610873262" rx="2" fill="#4c9f70"/>
+<text x="585.9090909090909" y="128.79280527057773" text-anchor="middle" font-size="9" fill="#333333">154</text>
+<text x="585.9090909090909" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge std.</text>
+<text x="585.9090909090909" y="290" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="606.5454545454545" y="144.80258268057943" width="25.272727272727273" height="108.71465869873091" rx="2" fill="#75aadb"/>
+<text x="619.1818181818181" y="139.80258268057943" text-anchor="middle" font-size="9" fill="#333333">140</text>
+<text x="619.1818181818181" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="619.1818181818181" y="290" text-anchor="middle" font-size="9" fill="#333333">exact</text>
+
+<rect x="639.8181818181818" y="159.10853700320484" width="25.272727272727273" height="94.4087043761055" rx="2" fill="#78c6a3"/>
+<text x="652.4545454545454" y="154.10853700320484" text-anchor="middle" font-size="9" fill="#333333">122</text>
+<text x="652.4545454545454" y="279" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="652.4545454545454" y="290" text-anchor="middle" font-size="9" fill="#333333">standard</text>
+
+<rect x="673.0909090909091" y="124.35292211539127" width="25.272727272727273" height="129.16431926391908" rx="2" fill="#d95f02"/>
+<text x="685.7272727272727" y="119.35292211539127" text-anchor="middle" font-size="9" fill="#333333">166</text>
+<text x="685.7272727272727" y="279" text-anchor="middle" font-size="9" fill="#333333">Passive-</text>
+<text x="685.7272727272727" y="290" text-anchor="middle" font-size="9" fill="#333333">Aggressive</text>
+
+<rect x="706.3636363636364" y="122.48275862068965" width="25.272727272727273" height="131.0344827586207" rx="2" fill="#7570b3"/>
+<text x="719.0" y="117.48275862068965" text-anchor="middle" font-size="9" fill="#333333">169</text>
+<text x="719.0" y="279" text-anchor="middle" font-size="9" fill="#333333">Ridge</text>
+
+<rect x="739.6363636363636" y="136.41007498388717" width="25.272727272727273" height="117.10716639542318" rx="2" fill="#e7298a"/>
+<text x="752.2727272727273" y="131.41007498388717" text-anchor="middle" font-size="9" fill="#333333">151</text>
+<text x="752.2727272727273" y="279" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="752.2727272727273" y="290" text-anchor="middle" font-size="9" fill="#333333">recent</text>
+
+<rect x="772.9090909090909" y="136.16942604228683" width="25.272727272727273" height="117.34781533702352" rx="2" fill="#a6761d"/>
+<text x="785.5454545454545" y="131.16942604228683" text-anchor="middle" font-size="9" fill="#333333">151</text>
+<text x="785.5454545454545" y="279" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="785.5454545454545" y="290" text-anchor="middle" font-size="9" fill="#333333">full</text>
+
+<rect x="806.1818181818182" y="191.78824791449784" width="25.272727272727273" height="61.728993464812504" rx="2" fill="#1b9e77"/>
+<text x="818.8181818181819" y="186.78824791449784" text-anchor="middle" font-size="9" fill="#333333">79.5</text>
+<text x="818.8181818181819" y="279" text-anchor="middle" font-size="9" fill="#333333">Best model</text>
+<text x="818.8181818181819" y="290" text-anchor="middle" font-size="9" fill="#333333">in hindsight</text>
+
+<rect x="839.4545454545455" y="160.2852398245459" width="25.272727272727273" height="93.23200155476445" rx="2" fill="#666666"/>
+<text x="852.0909090909091" y="155.2852398245459" text-anchor="middle" font-size="9" fill="#333333">120</text>
+<text x="852.0909090909091" y="279" text-anchor="middle" font-size="9" fill="#333333">Last</text>
+<text x="852.0909090909091" y="290" text-anchor="middle" font-size="9" fill="#333333">timestep</text>
+
+<rect x="872.7272727272727" y="137.16788415722198" width="25.272727272727273" height="116.34935722208837" rx="2" fill="#999999"/>
+<text x="885.3636363636364" y="132.16788415722198" text-anchor="middle" font-size="9" fill="#333333">150</text>
+<text x="885.3636363636364" y="279" text-anchor="middle" font-size="9" fill="#333333">Ensemble</text>
+<text x="885.3636363636364" y="290" text-anchor="middle" font-size="9" fill="#333333">mean</text>
+
+<text x="904" y="326" text-anchor="end" font-size="10" fill="#777777">energy</text>
+
+<rect x="20" y="354" width="440" height="260" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="34" y="376" font-size="15" font-weight="600" fill="#222222">MAPE (%)</text>
+<line x1="74" x2="448" y1="542.0" y2="542.0" stroke="#e8e8e8"/>
+<text x="66" y="546.0" text-anchor="end" font-size="10" fill="#666666">-11.5</text>
+<line x1="74" x2="448" y1="504.0" y2="504.0" stroke="#e8e8e8"/>
+<text x="66" y="508.0" text-anchor="end" font-size="10" fill="#666666">30.3</text>
+<line x1="74" x2="448" y1="466.0" y2="466.0" stroke="#e8e8e8"/>
+<text x="66" y="470.0" text-anchor="end" font-size="10" fill="#666666">72.1</text>
+<line x1="74" x2="448" y1="428.0" y2="428.0" stroke="#e8e8e8"/>
+<text x="66" y="432.0" text-anchor="end" font-size="10" fill="#666666">114</text>
+<line x1="74" x2="448" y1="390.0" y2="390.0" stroke="#e8e8e8"/>
+<text x="66" y="394.0" text-anchor="end" font-size="10" fill="#666666">156</text>
+<line x1="74" x2="448" y1="531.5172413793103" y2="531.5172413793103" stroke="#9a9a9a"/>
+<rect x="82.0" y="422.8664322649207" width="25.272727272727273" height="108.65080911438963" rx="2" fill="#2f6f9f"/>
+<text x="94.63636363636364" y="417.8664322649207" text-anchor="middle" font-size="9" fill="#333333">120</text>
+<text x="94.63636363636364" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="94.63636363636364" y="568" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="115.27272727272728" y="423.30715726597737" width="25.272727272727273" height="108.21008411333298" rx="2" fill="#4c9f70"/>
+<text x="127.90909090909092" y="418.30715726597737" text-anchor="middle" font-size="9" fill="#333333">119</text>
+<text x="127.90909090909092" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge std.</text>
+<text x="127.90909090909092" y="568" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="148.54545454545456" y="446.6868457223777" width="25.272727272727273" height="84.83039565693264" rx="2" fill="#75aadb"/>
+<text x="161.1818181818182" y="441.6868457223777" text-anchor="middle" font-size="9" fill="#333333">93.3</text>
+<text x="161.1818181818182" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="161.1818181818182" y="568" text-anchor="middle" font-size="9" fill="#333333">exact</text>
+
+<rect x="181.8181818181818" y="452.6040148466351" width="25.272727272727273" height="78.91322653267525" rx="2" fill="#78c6a3"/>
+<text x="194.45454545454544" y="447.6040148466351" text-anchor="middle" font-size="9" fill="#333333">86.8</text>
+<text x="194.45454545454544" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="194.45454545454544" y="568" text-anchor="middle" font-size="9" fill="#333333">standard</text>
+
+<rect x="215.0909090909091" y="417.2702169730741" width="25.272727272727273" height="114.24702440623622" rx="2" fill="#d95f02"/>
+<text x="227.72727272727272" y="412.2702169730741" text-anchor="middle" font-size="9" fill="#333333">126</text>
+<text x="227.72727272727272" y="557" text-anchor="middle" font-size="9" fill="#333333">Passive-</text>
+<text x="227.72727272727272" y="568" text-anchor="middle" font-size="9" fill="#333333">Aggressive</text>
+
+<rect x="248.36363636363637" y="400.48275862068965" width="25.272727272727273" height="131.0344827586207" rx="2" fill="#7570b3"/>
+<text x="261.0" y="395.48275862068965" text-anchor="middle" font-size="9" fill="#333333">144</text>
+<text x="261.0" y="557" text-anchor="middle" font-size="9" fill="#333333">Ridge</text>
+
+<rect x="281.6363636363636" y="415.2771529165233" width="25.272727272727273" height="116.24008846278707" rx="2" fill="#e7298a"/>
+<text x="294.27272727272725" y="410.2771529165233" text-anchor="middle" font-size="9" fill="#333333">128</text>
+<text x="294.27272727272725" y="557" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="294.27272727272725" y="568" text-anchor="middle" font-size="9" fill="#333333">recent</text>
+
+<rect x="314.9090909090909" y="415.0838574761496" width="25.272727272727273" height="116.43338390316075" rx="2" fill="#a6761d"/>
+<text x="327.5454545454545" y="410.0838574761496" text-anchor="middle" font-size="9" fill="#333333">128</text>
+<text x="327.5454545454545" y="557" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="327.5454545454545" y="568" text-anchor="middle" font-size="9" fill="#333333">full</text>
+
+<rect x="348.1818181818182" y="473.18935652812314" width="25.272727272727273" height="58.32788485118721" rx="2" fill="#1b9e77"/>
+<text x="360.8181818181818" y="468.18935652812314" text-anchor="middle" font-size="9" fill="#333333">64.2</text>
+<text x="360.8181818181818" y="557" text-anchor="middle" font-size="9" fill="#333333">Best model</text>
+<text x="360.8181818181818" y="568" text-anchor="middle" font-size="9" fill="#333333">in hindsight</text>
+
+<rect x="381.45454545454544" y="410.29124523809793" width="25.272727272727273" height="121.22599614121242" rx="2" fill="#666666"/>
+<text x="394.09090909090907" y="405.29124523809793" text-anchor="middle" font-size="9" fill="#333333">133</text>
+<text x="394.09090909090907" y="557" text-anchor="middle" font-size="9" fill="#333333">Last</text>
+<text x="394.09090909090907" y="568" text-anchor="middle" font-size="9" fill="#333333">timestep</text>
+
+<rect x="414.72727272727275" y="416.1802409449645" width="25.272727272727273" height="115.33700043434584" rx="2" fill="#999999"/>
+<text x="427.3636363636364" y="411.1802409449645" text-anchor="middle" font-size="9" fill="#333333">127</text>
+<text x="427.3636363636364" y="557" text-anchor="middle" font-size="9" fill="#333333">Ensemble</text>
+<text x="427.3636363636364" y="568" text-anchor="middle" font-size="9" fill="#333333">mean</text>
+
+<text x="446" y="604" text-anchor="end" font-size="10" fill="#777777">energy</text>
+
+<rect x="478" y="354" width="440" height="260" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="492" y="376" font-size="15" font-weight="600" fill="#222222">R2</text>
+<line x1="532" x2="906" y1="542.0" y2="542.0" stroke="#e8e8e8"/>
+<text x="524" y="546.0" text-anchor="end" font-size="10" fill="#666666">-7.39</text>
+<line x1="532" x2="906" y1="504.0" y2="504.0" stroke="#e8e8e8"/>
+<text x="524" y="508.0" text-anchor="end" font-size="10" fill="#666666">-5.61</text>
+<line x1="532" x2="906" y1="466.0" y2="466.0" stroke="#e8e8e8"/>
+<text x="524" y="470.0" text-anchor="end" font-size="10" fill="#666666">-3.83</text>
+<line x1="532" x2="906" y1="428.0" y2="428.0" stroke="#e8e8e8"/>
+<text x="524" y="432.0" text-anchor="end" font-size="10" fill="#666666">-2.04</text>
+<line x1="532" x2="906" y1="390.0" y2="390.0" stroke="#e8e8e8"/>
+<text x="524" y="394.0" text-anchor="end" font-size="10" fill="#666666">-0.262</text>
+<rect x="540.0" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#2f6f9f"/>
+<text x="552.6363636363636" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-5.18</text>
+<text x="552.6363636363636" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="552.6363636363636" y="568" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="573.2727272727273" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#4c9f70"/>
+<text x="585.9090909090909" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-5.60</text>
+<text x="585.9090909090909" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge std.</text>
+<text x="585.9090909090909" y="568" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="606.5454545454545" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#75aadb"/>
+<text x="619.1818181818181" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-4.44</text>
+<text x="619.1818181818181" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="619.1818181818181" y="568" text-anchor="middle" font-size="9" fill="#333333">exact</text>
+
+<rect x="639.8181818181818" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#78c6a3"/>
+<text x="652.4545454545454" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-3.10</text>
+<text x="652.4545454545454" y="557" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="652.4545454545454" y="568" text-anchor="middle" font-size="9" fill="#333333">standard</text>
+
+<rect x="673.0909090909091" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#d95f02"/>
+<text x="685.7272727272727" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-6.68</text>
+<text x="685.7272727272727" y="557" text-anchor="middle" font-size="9" fill="#333333">Passive-</text>
+<text x="685.7272727272727" y="568" text-anchor="middle" font-size="9" fill="#333333">Aggressive</text>
+
+<rect x="706.3636363636364" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#7570b3"/>
+<text x="719.0" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-6.90</text>
+<text x="719.0" y="557" text-anchor="middle" font-size="9" fill="#333333">Ridge</text>
+
+<rect x="739.6363636363636" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#e7298a"/>
+<text x="752.2727272727273" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-5.31</text>
+<text x="752.2727272727273" y="557" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="752.2727272727273" y="568" text-anchor="middle" font-size="9" fill="#333333">recent</text>
+
+<rect x="772.9090909090909" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#a6761d"/>
+<text x="785.5454545454545" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-5.34</text>
+<text x="785.5454545454545" y="557" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="785.5454545454545" y="568" text-anchor="middle" font-size="9" fill="#333333">full</text>
+
+<rect x="806.1818181818182" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#1b9e77"/>
+<text x="818.8181818181819" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-0.754</text>
+<text x="818.8181818181819" y="557" text-anchor="middle" font-size="9" fill="#333333">Best model</text>
+<text x="818.8181818181819" y="568" text-anchor="middle" font-size="9" fill="#333333">in hindsight</text>
+
+<rect x="872.7272727272727" y="384.422499863706" width="25.272727272727273" height="0.0" rx="2" fill="#999999"/>
+<text x="885.3636363636364" y="379.422499863706" text-anchor="middle" font-size="9" fill="#333333">-5.23</text>
+<text x="885.3636363636364" y="557" text-anchor="middle" font-size="9" fill="#333333">Ensemble</text>
+<text x="885.3636363636364" y="568" text-anchor="middle" font-size="9" fill="#333333">mean</text>
+
+<text x="904" y="604" text-anchor="end" font-size="10" fill="#777777">energy</text>
+
+<rect x="20" y="632" width="440" height="260" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="34" y="654" font-size="15" font-weight="600" fill="#222222">CVaR 5%</text>
+<line x1="74" x2="448" y1="820.0" y2="820.0" stroke="#e8e8e8"/>
+<text x="66" y="824.0" text-anchor="end" font-size="10" fill="#666666">-0.080</text>
+<line x1="74" x2="448" y1="782.0" y2="782.0" stroke="#e8e8e8"/>
+<text x="66" y="786.0" text-anchor="end" font-size="10" fill="#666666">0.210</text>
+<line x1="74" x2="448" y1="744.0" y2="744.0" stroke="#e8e8e8"/>
+<text x="66" y="748.0" text-anchor="end" font-size="10" fill="#666666">0.500</text>
+<line x1="74" x2="448" y1="706.0" y2="706.0" stroke="#e8e8e8"/>
+<text x="66" y="710.0" text-anchor="end" font-size="10" fill="#666666">0.790</text>
+<line x1="74" x2="448" y1="668.0" y2="668.0" stroke="#e8e8e8"/>
+<text x="66" y="672.0" text-anchor="end" font-size="10" fill="#666666">1.08</text>
+<line x1="74" x2="448" y1="809.5172413793103" y2="809.5172413793103" stroke="#9a9a9a"/>
+<rect x="82.0" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#2f6f9f"/>
+<text x="94.63636363636364" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="94.63636363636364" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="94.63636363636364" y="846" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="115.27272727272728" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#4c9f70"/>
+<text x="127.90909090909092" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="127.90909090909092" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge std.</text>
+<text x="127.90909090909092" y="846" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="148.54545454545456" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#75aadb"/>
+<text x="161.1818181818182" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="161.1818181818182" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="161.1818181818182" y="846" text-anchor="middle" font-size="9" fill="#333333">exact</text>
+
+<rect x="181.8181818181818" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#78c6a3"/>
+<text x="194.45454545454544" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="194.45454545454544" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="194.45454545454544" y="846" text-anchor="middle" font-size="9" fill="#333333">standard</text>
+
+<rect x="215.0909090909091" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#d95f02"/>
+<text x="227.72727272727272" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="227.72727272727272" y="835" text-anchor="middle" font-size="9" fill="#333333">Passive-</text>
+<text x="227.72727272727272" y="846" text-anchor="middle" font-size="9" fill="#333333">Aggressive</text>
+
+<rect x="248.36363636363637" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#7570b3"/>
+<text x="261.0" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="261.0" y="835" text-anchor="middle" font-size="9" fill="#333333">Ridge</text>
+
+<rect x="281.6363636363636" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#e7298a"/>
+<text x="294.27272727272725" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="294.27272727272725" y="835" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="294.27272727272725" y="846" text-anchor="middle" font-size="9" fill="#333333">recent</text>
+
+<rect x="314.9090909090909" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#a6761d"/>
+<text x="327.5454545454545" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="327.5454545454545" y="835" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="327.5454545454545" y="846" text-anchor="middle" font-size="9" fill="#333333">full</text>
+
+<rect x="348.1818181818182" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#1b9e77"/>
+<text x="360.8181818181818" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="360.8181818181818" y="835" text-anchor="middle" font-size="9" fill="#333333">Best model</text>
+<text x="360.8181818181818" y="846" text-anchor="middle" font-size="9" fill="#333333">in hindsight</text>
+
+<rect x="381.45454545454544" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#666666"/>
+<text x="394.09090909090907" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="394.09090909090907" y="835" text-anchor="middle" font-size="9" fill="#333333">Last</text>
+<text x="394.09090909090907" y="846" text-anchor="middle" font-size="9" fill="#333333">timestep</text>
+
+<rect x="414.72727272727275" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#999999"/>
+<text x="427.3636363636364" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="427.3636363636364" y="835" text-anchor="middle" font-size="9" fill="#333333">Ensemble</text>
+<text x="427.3636363636364" y="846" text-anchor="middle" font-size="9" fill="#333333">mean</text>
+
+<text x="446" y="882" text-anchor="end" font-size="10" fill="#777777">energy</text>
+
+<rect x="478" y="632" width="440" height="260" fill="#ffffff" stroke="#d6d6d6"/>
+<text x="492" y="654" font-size="15" font-weight="600" fill="#222222">Time (ms)</text>
+<line x1="532" x2="906" y1="820.0" y2="820.0" stroke="#e8e8e8"/>
+<text x="524" y="824.0" text-anchor="end" font-size="10" fill="#666666">-327</text>
+<line x1="532" x2="906" y1="782.0" y2="782.0" stroke="#e8e8e8"/>
+<text x="524" y="786.0" text-anchor="end" font-size="10" fill="#666666">858</text>
+<line x1="532" x2="906" y1="744.0" y2="744.0" stroke="#e8e8e8"/>
+<text x="524" y="748.0" text-anchor="end" font-size="10" fill="#666666">2042</text>
+<line x1="532" x2="906" y1="706.0" y2="706.0" stroke="#e8e8e8"/>
+<text x="524" y="710.0" text-anchor="end" font-size="10" fill="#666666">3226</text>
+<line x1="532" x2="906" y1="668.0" y2="668.0" stroke="#e8e8e8"/>
+<text x="524" y="672.0" text-anchor="end" font-size="10" fill="#666666">4411</text>
+<line x1="532" x2="906" y1="809.5172413793103" y2="809.5172413793103" stroke="#9a9a9a"/>
+<rect x="540.0" y="807.9771691039887" width="25.272727272727273" height="1.540072275321677" rx="2" fill="#2f6f9f"/>
+<text x="552.6363636363636" y="802.9771691039887" text-anchor="middle" font-size="9" fill="#333333">48.0</text>
+<text x="552.6363636363636" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="552.6363636363636" y="846" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="573.2727272727273" y="809.3247323448951" width="25.272727272727273" height="0.19250903441525224" rx="2" fill="#4c9f70"/>
+<text x="585.9090909090909" y="804.3247323448951" text-anchor="middle" font-size="9" fill="#333333">6.00</text>
+<text x="585.9090909090909" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge std.</text>
+<text x="585.9090909090909" y="846" text-anchor="middle" font-size="9" fill="#333333">error rule</text>
+
+<rect x="606.5454545454545" y="752.8233307440305" width="25.272727272727273" height="56.69391063527985" rx="2" fill="#75aadb"/>
+<text x="619.1818181818181" y="747.8233307440305" text-anchor="middle" font-size="9" fill="#333333">1767</text>
+<text x="619.1818181818181" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="619.1818181818181" y="846" text-anchor="middle" font-size="9" fill="#333333">exact</text>
+
+<rect x="639.8181818181818" y="805.0253639096221" width="25.272727272727273" height="4.491877469688234" rx="2" fill="#78c6a3"/>
+<text x="652.4545454545454" y="800.0253639096221" text-anchor="middle" font-size="9" fill="#333333">140</text>
+<text x="652.4545454545454" y="835" text-anchor="middle" font-size="9" fill="#333333">Adaptive Ridge</text>
+<text x="652.4545454545454" y="846" text-anchor="middle" font-size="9" fill="#333333">standard</text>
+
+<rect x="673.0909090909091" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#d95f02"/>
+<text x="685.7272727272727" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="685.7272727272727" y="835" text-anchor="middle" font-size="9" fill="#333333">Passive-</text>
+<text x="685.7272727272727" y="846" text-anchor="middle" font-size="9" fill="#333333">Aggressive</text>
+
+<rect x="706.3636363636364" y="678.4827586206897" width="25.272727272727273" height="131.0344827586207" rx="2" fill="#7570b3"/>
+<text x="719.0" y="673.4827586206897" text-anchor="middle" font-size="9" fill="#333333">4084</text>
+<text x="719.0" y="835" text-anchor="middle" font-size="9" fill="#333333">Ridge</text>
+
+<rect x="739.6363636363636" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#e7298a"/>
+<text x="752.2727272727273" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="752.2727272727273" y="835" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="752.2727272727273" y="846" text-anchor="middle" font-size="9" fill="#333333">recent</text>
+
+<rect x="772.9090909090909" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#a6761d"/>
+<text x="785.5454545454545" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="785.5454545454545" y="835" text-anchor="middle" font-size="9" fill="#333333">Exp3</text>
+<text x="785.5454545454545" y="846" text-anchor="middle" font-size="9" fill="#333333">full</text>
+
+<rect x="806.1818181818182" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#1b9e77"/>
+<text x="818.8181818181819" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="818.8181818181819" y="835" text-anchor="middle" font-size="9" fill="#333333">Best model</text>
+<text x="818.8181818181819" y="846" text-anchor="middle" font-size="9" fill="#333333">in hindsight</text>
+
+<rect x="839.4545454545455" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#666666"/>
+<text x="852.0909090909091" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="852.0909090909091" y="835" text-anchor="middle" font-size="9" fill="#333333">Last</text>
+<text x="852.0909090909091" y="846" text-anchor="middle" font-size="9" fill="#333333">timestep</text>
+
+<rect x="872.7272727272727" y="809.5172413793103" width="25.272727272727273" height="0.0" rx="2" fill="#999999"/>
+<text x="885.3636363636364" y="804.5172413793103" text-anchor="middle" font-size="9" fill="#333333">0.000</text>
+<text x="885.3636363636364" y="835" text-anchor="middle" font-size="9" fill="#333333">Ensemble</text>
+<text x="885.3636363636364" y="846" text-anchor="middle" font-size="9" fill="#333333">mean</text>
+
+<text x="904" y="882" text-anchor="end" font-size="10" fill="#777777">energy</text>
+
+</svg>

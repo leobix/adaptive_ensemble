@@ -1,0 +1,17 @@
+# Copy this file to config/hurricane_schema.toml after restoring the exact
+# ATCF/Hurricast matrices named below in data/:
+#   NA_ARO_Intensity_2014_clean_v2.csv
+#   EP_ARO_Intensity_2014_clean_v2.csv
+# Replace the example column names with the exact names in those matrices.
+target = "TRUTH"
+storm_id = "storm_id"
+member_columns = [
+  "HUML_stat_xgb",
+  "HUML_stat_viz_xgb_td",
+  "HUML_stat_viz_xgb_cnn_gru",
+  "HUML_stat_viz_xgb_cnn_transfo",
+  "Decay_SHIPS",
+  "GFSO",
+  "HWRF",
+]
+benchmark_columns = ["FSSE", "OFCL"]

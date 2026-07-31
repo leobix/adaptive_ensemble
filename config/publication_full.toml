@@ -1,0 +1,162 @@
+# Publication-grade synthetic + Safi reviewer-response profile.
+# Energy is intentionally excluded because the weakly regularized energy SOCP
+# repeatedly returned INTERRUPTED; hurricane matrices are absent. This profile
+# retains all publication-scale synthetic, Safi, sensitivity, stress, runtime,
+# and controlled solver-verification work.
+
+[run]
+name = "reviewer_response_synthetic_safi"
+profile = "synthetic_safi"
+required_julia_threads = 4
+
+[scope]
+label = "synthetic_safi"
+included = ["expanded_synthetic", "manuscript_sweeps", "synthetic_meta", "safi", "safi_sensitivity", "synthetic_stress", "solver_verification", "runtime"]
+excluded = ["energy_historical_selected_10", "energy_all_available", "hurricane_north_atlantic", "hurricane_eastern_pacific"]
+reason = "Energy robust-norm candidates are numerically unstable in the supplied matrix and the hurricane matrices are absent. The active profile reports only the completed synthetic and Safi empirical scope."
+paper_application_scope_complete = false
+
+
+[experiment]
+selection_metric = "rmse"
+standardize_real_world = true
+
+[adaptive]
+# The historical experiments used a squared objective. The exact norm-plus-norm robust
+# counterpart is exposed separately as adaptive_robust_norm and is run on real data and
+# in the solver-verification stage.
+primary_objective = "quadratic_stacked"
+# Moderate reduced systems use exact dense Cholesky/QR subject to both guards. Larger
+# positive-lambda stacked-beta systems use the algebraically equivalent observation-space
+# dual when n <= dual_max_rows; matrix-free PCG is the safeguarded fallback.
+direct_max_parameters = 3500
+max_dense_bytes = 750000000
+dual_max_rows = 3500
+cg_rtol = 1.0e-9
+cg_atol = 1.0e-12
+cg_maxiter = 0
+irls_smoothing = 1.0e-8
+# IRLS keeps strict iterate, objective, and first-order stationarity tolerances.
+# A second, still stringent 1e-7 stationarity threshold is accepted only when the
+# smoothed objective has also stabilized below 1e-8. It remains part of the audited
+# solver contract, although the unstable energy matrices are excluded from this profile.
+irls_rtol = 1.0e-8
+irls_objective_rtol = 1.0e-8
+irls_stationarity_rtol = 1.0e-8
+irls_practical_stationarity_rtol = 1.0e-7
+irls_maxiter = 1000
+irls_min_iterations = 2
+# Exact SOCP solves are restricted to the controlled solver-verification stage.
+# Real-data fitting uses certified IRLS only; no large data-set fallback is attempted.
+irls_fallback_solver = "none"
+gurobi_threads = 1
+gurobi_output_flag = 0
+gurobi_time_limit = 1800.0
+gurobi_optimality_tolerance = 1.0e-8
+
+[boundary]
+online_event_policy = "reset"
+
+[synthetic]
+seeds = 30
+n = 4000
+m = 10
+regimes = ["stationary", "gradual", "abrupt", "periodic", "persistent_bias", "member_degradation", "recurring", "variance_burst", "discrete_gaussian"]
+methods = ["adaptive_ridge", "static_ridge", "rolling_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "dma", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+save_all_tuning = true
+save_seed_predictions = [1]
+
+[manuscript_sweeps]
+enabled = true
+seeds = 30
+# Reproduce the paper's synthetic protocol: fixed tau=5 except in the window sweep,
+# and select hyperparameters by validation MAE as stated in Section 4.1.4.
+fixed_tau = 5
+selection_metric = "mae"
+reproduction_grid = [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0]
+member_sizes = [3, 6, 10, 15, 25, 50]
+drift_levels = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+window_sizes = [1, 2, 3, 4, 5, 8, 10, 15, 20, 25]
+history_sizes = [100, 200, 400, 750, 1500, 3000]
+discrete_probabilities = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+methods = ["adaptive_ridge", "static_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+
+[synthetic_meta]
+enabled = true
+seeds = 30
+n = 4000
+m = 10
+regimes = ["gradual", "abrupt", "member_degradation", "recurring"]
+methods = ["adaptive_ridge", "rolling_ridge", "rls", "neural_gate", "boosted_meta"]
+
+[real_world]
+datasets = ["safi"]
+bootstrap_reps = 2000
+bootstrap_block_length = 0
+methods = ["adaptive_ridge", "adaptive_robust_norm", "static_ridge", "rolling_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "dma", "neural_gate", "boosted_meta", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+
+[grids]
+lambda = [0.0, 1.0e-6, 1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 2.0]
+tau = [1, 2, 3, 5, 7, 10]
+ridge_lambda = [0.0, 1.0e-8, 1.0e-6, 1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0]
+rolling_window = [24, 72, 168, 336]
+forgetting = [0.90, 0.95, 0.98, 0.99, 0.995]
+rls_ridge = [1.0e-6, 1.0e-4, 1.0e-2, 1.0e-1]
+hedge_eta = [0.01, 0.05, 0.10, 0.25, 0.50, 1.0]
+hedge_window = [0, 24, 72, 168, 336]
+exp3_gamma = [0.01, 0.05, 0.10, 0.20, 0.40]
+fixed_share = [0.005, 0.01, 0.02, 0.05, 0.10]
+pa_C = [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 10.0]
+pa_epsilon = [0.0, 0.01, 0.05, 0.10]
+dma_forgetting = [0.90, 0.95, 0.98, 0.99, 0.995]
+dma_variance_forgetting = [0.90, 0.95, 0.98, 0.995]
+
+[meta]
+neural_tau = [1, 3, 5]
+neural_hidden = [8, 16]
+neural_learning_rate = [0.001, 0.003]
+neural_weight_decay = [0.0, 0.0001]
+neural_epochs = 250
+neural_batch_size = 128
+boosted_tau = [1, 5]
+boosted_trees = [100]
+boosted_depth = [1, 2]
+boosted_min_leaf = [20, 50]
+boosted_learning_rate = [0.05]
+
+[sensitivity]
+datasets = ["safi"]
+# Reviewer-facing tau-by-lambda sensitivity uses the primary smooth Adaptive Ridge
+# estimator. The theory-aligned norm-plus-norm estimator remains in the completed Safi
+# benchmark and in the controlled small-problem solver-verification stage.
+tau = [1, 2, 3, 4, 5, 7, 10, 15, 25]
+lambda = [0.0, 1.0e-6, 1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0, 2.0]
+objective_variants = ["quadratic_stacked"]
+near_optimal_fraction = 0.01
+
+[stress]
+seeds = 30
+methods = ["adaptive_ridge", "static_ridge", "rolling_ridge", "rls", "exp3", "passive_aggressive", "ensemble_mean"]
+history_sizes = [100, 200, 400, 750, 1500, 3000]
+correlations = [0.0, 0.25, 0.50, 0.75, 0.90, 0.95, 0.99]
+correlation_pruning_thresholds = [0.80, 0.90, 0.95, 0.99, 1.0]
+event_length = 500
+cold_start_points = 10
+
+[verification]
+require_gurobi = true
+run_exact_norm_vs_quadratic = true
+seeds = [1, 2, 3, 4, 5]
+regimes = ["stationary", "gradual", "recurring"]
+tau = [1, 3, 5]
+lambda = [0.001, 0.01, 0.1]
+run_literal_jump_equivalence = true
+
+[runtime]
+reps = 11
+warmup = 3
+sample_sizes = [100, 200, 400, 750, 1500, 3000]
+window_sizes = [2, 3, 5, 10, 15, 25]
+member_sizes = [3, 6, 10, 15, 25, 50]
+regularization_path = [0.0, 1.0e-6, 1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 1.0]
+run_gurobi_verification = true
