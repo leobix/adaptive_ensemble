@@ -1,0 +1,12 @@
+completed_at_utc = "2026-07-30T23:35:39.374"
+fixed_tau = 5
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+outputs = ["tables\\manuscript_sweeps_per_seed.csv", "tables\\manuscript_sweeps_summary.csv", "tables\\manuscript_sweeps_paired_intervals.csv", "tables\\manuscript_sweeps_tuning.csv", "tables\\manuscript_sweeps_selected_hyperparameters.csv", "figures\\manuscript_members_rmse.svg", "figures\\manuscript_members_cvar_05.svg", "figures\\manuscript_drift_rmse.svg", "figures\\manuscript_drift_cvar_05.svg", "figures\\manuscript_window_rmse.svg", "figures\\manuscript_window_cvar_05.svg", "figures\\manuscript_history_rmse.svg", "figures\\manuscript_history_cvar_05.svg", "figures\\manuscript_discrete_probability_rmse.svg", "figures\\manuscript_discrete_probability_cvar_05.svg"]
+seeds = 30
+sweeps = ["members", "drift", "window", "history", "discrete_probability"]
+reproduction_grid = [0.0001, 0.001, 0.01, 0.1, 1.0]
+total_regime_seed_tasks = 1020
+methods = ["adaptive_ridge", "static_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+stage = "manuscript_sweeps"
+selection_metric = "mae"
+output_sha256 = ["062fc7fc1c441438ebf3df645204e104d8e72fc7f88f6beda0fb4739aa9df713", "8377e5a78a9e343c0f9894d0a39ca3cf09181df554d1772d12c6d0b89eaf3b1d", "ef42cf344e4552d9efcdaaadf0bcd7069693cb1b3d297484db174e3842ed7b52", "f9ccce387fb18cf0d39648932b813a3f06cf0f11532805360d52d3bcceadd6b4", "0fdf62b9e0410ad590e345517ec04491edad7c2a97883df7fbb81bbbcb05ed5b", "8bc8ebf499e7f681deeb06466159c0126b0741fe421f38ff71da5904cdbe5c0b", "339e30c7be412aa58e60bcfb1a8953419509213627aaee6f9d3838eebf4acd39", "ef2e82029c8c4c070a1d8fddfb08261c7830470f66b7a8d191c8dbaad2591b73", "9acc551f0c0c09b22e3c1edb7b2e3c70ad060d57fb671f938ce5f4b3e1607cb1", "9a8b8279f2e61848cfdac5f1c84fecf95c8556f3fb8740a6e8c7e4140f60cab5", "59bb018ad94e4cecf887e7b7623b727d326b0539131c5db4be79bf4b96e4d284", "09714939eea91df4e87697064342f48039a111d4dc3e63f97f5e9e0f67666b36", "d86387a36ef1c73fdd640813b76c4a811af4d43adc0203286ae0960c161c569a", "91670407efdfcb3cbef7ddf8a97a251045bfa6243308fd64067bddcdb9295dc2", "5ac9a41dc2d509cb833e8b710c2540a0218f3273ebef8729bd6804200c1381c8"]

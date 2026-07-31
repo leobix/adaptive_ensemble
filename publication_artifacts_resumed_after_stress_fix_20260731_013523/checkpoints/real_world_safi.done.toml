@@ -1,0 +1,8 @@
+bootstrap_reps = 2000
+methods = ["adaptive_ridge", "adaptive_robust_norm", "static_ridge", "rolling_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "dma", "neural_gate", "boosted_meta", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+completed_at_utc = "2026-07-30T23:35:39.452"
+outputs = ["tables\\safi_metrics.csv", "predictions\\safi_predictions.csv", "tables\\safi_tuning.csv", "tables\\safi_selected_hyperparameters.csv", "tables\\safi_moving_block_bootstrap.csv", "manifests\\safi_dataset.toml", "manifests\\safi_members.csv", "figures\\safi_rmse.svg", "figures\\safi_mae.svg", "figures\\safi_cvar_05.svg"]
+bootstrap_block_length = 14
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+stage = "real_world_safi"
+output_sha256 = ["b0ef32d4fa56e0e41ce12920710c08b9e8564d43963f5c5e92fd2ec6ba6a15ea", "059765be943866669a50e66daf0fac8a7b9a598b9f41ebbe777f84413f3ac7bf", "436befc564104afb29af10e2879bffc61682dcfe3f8aba42167507b161d1b670", "87db4c308df3274509fa45ec27e4f6630ba84fa1635ce4db0ae9fd6498f7a68a", "8cca2a5fc70f3e70c50c630941bbb0bb9a6df027e7b681bb0de44db56999ac69", "547e60eaf670ccef48d022606b2c10f3021d71ee1d946b38d420ebe314dc9837", "48767f58d7d3f9582358df9193bfb4ca9518a2e3d3b6113f42aeb7b286db670f", "3ee167cfd31596701bcfbf2fcb166c05682b5ccc5488cf40af4df779ea8836fc", "2d5b270c79b4f3f38266732865d7587ee462d51a030175bc3e5e2332cf82fc97", "72b3c44854d67b6a59a71e18020ce97856fcf1e0adf45697b870e0522f558b45"]

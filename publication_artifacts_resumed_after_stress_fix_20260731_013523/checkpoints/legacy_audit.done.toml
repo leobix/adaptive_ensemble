@@ -1,0 +1,6 @@
+completed_at_utc = "2026-07-30T23:35:39.275"
+outputs = ["tables\\julia_source_audit.csv", "tables\\data_inventory.csv", "tables\\legacy_loader_semantics.csv", "tables\\legacy_commands.csv"]
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+stage = "legacy_audit"
+findings = 17
+output_sha256 = ["875a5e699a0ad74e4df637664a54c0531dc1b9fb45b9fb7e15544058332caa42", "bedfe0b9927fc89607cb24aaf4c56997b76f7c1548256cb6296a092809b6975d", "f6dadbf850dfde7efc9422edfd4af0d42ea9a4d01457b7f587150b47f22e7b93", "67077911e7ad4637b9b7e4de24c113f1c3d4e734206e72fa5c4740803d9cb584"]

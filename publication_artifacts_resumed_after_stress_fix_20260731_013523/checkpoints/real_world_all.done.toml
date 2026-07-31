@@ -1,0 +1,6 @@
+completed_at_utc = "2026-07-30T23:41:14.281"
+outputs = ["tables\\real_world_all_metrics.csv", "tables\\real_world_all_bootstrap.csv"]
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+stage = "real_world_all"
+datasets = ["safi"]
+output_sha256 = ["b0ef32d4fa56e0e41ce12920710c08b9e8564d43963f5c5e92fd2ec6ba6a15ea", "8cca2a5fc70f3e70c50c630941bbb0bb9a6df027e7b681bb0de44db56999ac69"]

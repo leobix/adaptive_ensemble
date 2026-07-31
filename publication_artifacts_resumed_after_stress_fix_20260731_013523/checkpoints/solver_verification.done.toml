@@ -1,0 +1,10 @@
+completed_at_utc = "2026-07-30T23:49:37.514"
+outputs = ["tables\\solver_objective_verification.csv", "tables\\solver_literal_jump_equivalence.csv"]
+exact_comparison_run = true
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+gurobi_required = true
+solver_independent_comparison_run = true
+stage = "solver_verification"
+task_count = 135
+literal_jump_run = true
+output_sha256 = ["52db9f7fedd6aa1244f18a269e4f50c62be186af37298769232b05a3c74a72c9", "e6f5ae5e24e83b719cb113462c0a2865329f6cc396e45ce7ee9fc46c286a5586"]
