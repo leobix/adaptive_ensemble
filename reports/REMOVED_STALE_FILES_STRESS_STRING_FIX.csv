@@ -1,0 +1,12 @@
+relative_path,reason
+publication_artifacts_synthetic_safi_20260730_203420/,bulky failed run excluded from release; successful summary evidence preserved and guarded migration reads the user's archived source output
+SYNTHETIC_SAFI_RECOVERY.md,superseded by STRESS_STRING_FIX_RECOVERY.md
+reports/STATIC_VALIDATION_SYNTHETIC_SAFI_2026-07-30.md,superseded by current validation report
+reports/SYNTHETIC_SAFI_CHANGED_FILES.csv,superseded by current modified-file manifest
+reports/REMOVED_STALE_FILES.csv,superseded by current stale-file log
+reports/STATIC_VALIDATION.md,obsolete earlier validation report
+reports/CODEX_STATIC_VALIDATION_2026-07-28.md,obsolete earlier validation report
+reports/PACKAGE_VALIDATION.md,obsolete earlier packaging report
+reports/RESULTS_AND_ARTIFACT_INDEX.md,obsolete earlier artifact index
+reports/CODEX_JULIA_AUDIT_2026-07-28.md,obsolete earlier audit
+reports/JULIA_CODE_AUDIT.md,obsolete earlier audit

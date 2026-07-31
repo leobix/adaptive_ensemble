@@ -1,0 +1,14 @@
+stage,status,evidence
+legacy_audit,complete,stage marker and output hashes present
+synthetic_full,complete,"270/270 task markers; 3,240 method rows"
+manuscript_sweeps,complete,"1,020/1,020 task markers; 10,200 method rows"
+synthetic_meta,complete,120/120 task markers; 600 method rows
+real_world_safi,complete,"15 methods and 2,000-rep moving-block bootstrap"
+real_world_all,complete,Safi-only aggregate
+sensitivity_safi,complete,72 tau-lambda cells
+sensitivity_all,complete,Safi-only aggregate
+stress_full_tasks,complete_tasks_only,"420/420 task markers; 3,180 method rows"
+stress_full,failed_aggregation,String(::Float64) in summary label conversion
+solver_verification,not_started,pending
+runtime_full,not_started,pending
+publication_suite,not_complete,pending
