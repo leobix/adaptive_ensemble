@@ -8,6 +8,87 @@ include("metrics.jl")
 
 using Dates
 
+const TRANSFORMER_BASELINES_AVAILABLE = Ref{Union{Nothing,Bool}}(nothing)
+
+function ensure_transformer_baselines!()
+    if TRANSFORMER_BASELINES_AVAILABLE[] !== nothing
+        return TRANSFORMER_BASELINES_AVAILABLE[]
+    end
+    try
+        include(joinpath(@__DIR__, "algos", "fedformer.jl"))
+        include(joinpath(@__DIR__, "algos", "informer.jl"))
+        TRANSFORMER_BASELINES_AVAILABLE[] = true
+    catch e
+        @warn "Transformer baselines unavailable; install Flux and FFTW to use --fedformer or --informer" exception=(e, catch_backtrace())
+        TRANSFORMER_BASELINES_AVAILABLE[] = false
+    end
+    return TRANSFORMER_BASELINES_AVAILABLE[]
+end
+
+function train_transformer_baselines(args, X, y, training_index_begin, training_index_end, split_index, val)
+    fedformer_pred = nothing
+    informer_pred = nothing
+    fedformer_time = 0
+    informer_time = 0
+
+    wants_fedformer = get(args, "fedformer", false)
+    wants_informer = get(args, "informer", false)
+    if !(wants_fedformer || wants_informer)
+        return fedformer_pred, fedformer_time, informer_pred, informer_time
+    end
+
+    if !ensure_transformer_baselines!()
+        println("Skipping transformer baselines because Flux/FFTW could not be loaded.")
+        return fedformer_pred, fedformer_time, informer_pred, informer_time
+    end
+
+    train_start = training_index_begin
+    train_end = min(training_index_begin + training_index_end - 1, split_index)
+
+    if wants_fedformer
+        try
+            start = now()
+            fedformer_fn = Base.invokelatest(getfield, @__MODULE__, :fedformer_train_predict)
+            fedformer_pred = Base.invokelatest(fedformer_fn, args, X, y, train_start, train_end, split_index, val)
+            fedformer_time = (now() - start).value
+            if fedformer_pred === nothing
+                println("FEDFormer skipped: not enough training data for requested sequence lengths.")
+            end
+        catch e
+            println("FEDFormer failed: ", e)
+        end
+    end
+
+    if wants_informer
+        try
+            start = now()
+            informer_fn = Base.invokelatest(getfield, @__MODULE__, :informer_train_predict)
+            informer_pred = Base.invokelatest(informer_fn, args, X, y, train_start, train_end, split_index, val)
+            informer_time = (now() - start).value
+            if informer_pred === nothing
+                println("Informer skipped: not enough training data for requested sequence lengths.")
+            end
+        catch e
+            println("Informer failed: ", e)
+        end
+    end
+
+    return fedformer_pred, fedformer_time, informer_pred, informer_time
+end
+
+function report_transformer_baseline(args, method, title, preds, elapsed_time, yt_true, mean_y, std_y, val, save_flag, save_name)
+    if preds === nothing
+        return
+    end
+    n_eval = min(val, length(preds), length(yt_true))
+    err = [abs(yt_true[s] - (preds[s] * std_y + mean_y)) for s=1:n_eval]
+    println("\n### ", title, " ###")
+    get_metrics(args, method, err, yt_true[1:n_eval], elapsed_time)
+    if get(args, save_flag, false)
+        save_array_as_csv(args, reshape(preds[1:n_eval], :, 1), "results_beta/", save_name)
+    end
+end
+
 function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, std_y)
 
     n, p = size(X)
@@ -94,6 +175,9 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
 
     last_timesteps = zeros(val)
 
+    fedformer_pred, fedformer_time, informer_pred, informer_time =
+        train_transformer_baselines(args, X, y, training_index_begin, training_index_end, split_index, val)
+
     for s=1:val
 
         #TODO check split_index with max(split index, 1) and CHECK the MIN
@@ -172,6 +256,12 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     println("\n### Best Model Baseline ###")
     get_metrics(args, "best_model", err_best_model, yt_true)
 
+    report_transformer_baseline(args, "fedformer", "FEDFormer", fedformer_pred, fedformer_time,
+        yt_true, mean_y, std_y, val, "fedformer_save_preds", "fedformer_preds")
+
+    report_transformer_baseline(args, "informer", "Informer", informer_pred, informer_time,
+        yt_true, mean_y, std_y, val, "informer_save_preds", "informer_preds")
+
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
     save_array_as_csv(args, β_list_bandits_all,"results_beta/", "bandits_full")
@@ -231,7 +321,9 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         val = size(X)[1]
     end
 
-    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"])
+    training_index_begin = max(split_index-num_past*past+1, 1)
+    training_index_end = min(num_past*past, split_index)
+    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, training_index_begin, training_index_end, val, args["uncertainty"])
     println("Training data X0 size ", size(X0))
     println("Testing data Xt size ", size(Xt))
     println("Z ", size(Z0))
@@ -265,6 +357,9 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     #IMPORTANT: We initialize with equal weights but we could also initialize with l2 weights
     β_PA = ones(p)/(p)#β_l2_init[2:end]
     println("Optimization finished. Evaluation starts.")
+
+    fedformer_pred, fedformer_time, informer_pred, informer_time =
+        train_transformer_baselines(args, X, y, training_index_begin, training_index_end, split_index, val)
 
     #SOLVE PROBLEM WITH s=1
     for s=1:val
@@ -322,6 +417,12 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
 
     println("\n### Ridge Baseline ###")
     get_metrics(args, "ridge", err_baseline, yt_true)
+
+    report_transformer_baseline(args, "fedformer", "FEDFormer", fedformer_pred, fedformer_time,
+        yt_true, mean_y, std_y, val, "fedformer_save_preds", "fedformer_preds")
+
+    report_transformer_baseline(args, "informer", "Informer", informer_pred, informer_time,
+        yt_true, mean_y, std_y, val, "informer_save_preds", "informer_preds")
 
 #     println("\n### Ridge + Stat Baseline ###")
 #     get_metrics(args, "ridge_stat", err_baseline_stat, yt_true)

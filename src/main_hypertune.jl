@@ -15,6 +15,7 @@ using Random
 
 #NOTE: IMPORTANT Change from eval2.jl to eval_hurricane.jl for the specific hurricane dataset that requires adjustment in building the Z matrix
 # (since we skip 4 timesteps ahead instead of 1 and want to avoid cheating in hindsight, see paper if interested)
+include("transformer_args.jl")
 include("eval2.jl")
 include("utils.jl")
 include("utils_hurricane.jl")
@@ -162,8 +163,8 @@ function parse_commandline()
             arg_type = Int
             default = 1
 
-
     end
+    add_transformer_args!(s)
     return parse_args(s)
 end
 

@@ -1,9 +1,12 @@
 include("algos/multi_armed_bandits.jl")
+include("algos/hedge.jl")
+include("algos/rls.jl")
 include("algos/passive_agressive.jl")
 include("algos/benders.jl")
 include("algos/master_primal.jl")
 include("algos/OLS.jl")
 include("algos/adaptive_linear_decision_rule.jl")
+include("algos/fedformer.jl")
 include("metrics.jl")
 
 using Dates
@@ -90,12 +93,21 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     #Initialize the different benchmarks
     β_list_bandits_t = zeros(val, p-1)
     β_list_bandits_all = zeros(val, p-1)
+    β_list_hedge = zeros(val, p-1)
     β_list_PA = zeros(val, p)
     #IMPORTANT: We initialize with equal weights but we could also initialize with l2 weights
     β_PA = ones(p)/(p)#β_l2_init[2:end]
     println("Optimization finished. Evaluation starts.")
 
     last_timesteps = zeros(val)
+
+    # FEDformer (train once on the training window)
+    fedformer_pred = nothing
+    if haskey(args, "fedformer") && args["fedformer"]
+        train_start = training_index_begin
+        train_end = min(training_index_begin + training_index_end - 1, split_index)
+        fedformer_pred = fedformer_train_predict(args, X, y, train_start, train_end, split_index, val)
+    end
 
     for s=1:val
 
@@ -196,6 +208,15 @@ function eval_method(args, X, y, y_true, split_, past, num_past, val, mean_y, st
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true, arole_beta0andV_regression_time)
 
+    if fedformer_pred !== nothing
+        err_fedformer = [abs(yt_true[s]-(fedformer_pred[s].*std_y.+mean_y)) for s=1:val]
+        println("\n### FEDformer ###")
+        get_metrics(args, "fedformer", err_fedformer, yt_true)
+        if haskey(args, "fedformer_save_preds") && args["fedformer_save_preds"]
+            save_array_as_csv(args, reshape(fedformer_pred, :, 1), "results_beta/", "fedformer_preds")
+        end
+    end
+
     #SAME AS LAST 2, BUT WITH ERROR RULES i.e., instead of forecast values we use the previous errors of the models
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE + ERROR RULE for Z ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
@@ -226,7 +247,9 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
         val = size(X)[1]
     end
 
-    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, max(split_index-num_past*past+1, 1), min(num_past*past, split_index), val, args["uncertainty"], args["last_yT"])
+    training_index_begin = max(split_index-num_past*past+1, 1)
+    training_index_end = min(num_past*past, split_index)
+    X0, Z0, y0, Xt, Zt, yt, yt_true, D_min, D_max = prepare_data_from_y_hurricane(X, Z, y, training_index_begin, training_index_end, val, args["uncertainty"], args["last_yT"])
     println("Training data X0 size ", size(X0))
     println("Testing data Xt size ", size(Xt))
     println("Z ", size(Z0))
@@ -257,22 +280,77 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     β_list_bandits_t = zeros(val, p-1)
     β_list_bandits_all = zeros(val, p-1)
     β_list_PA = zeros(val, p)
+    β_list_hedge_ewa = zeros(val, p-1)
+    β_list_rls = zeros(val, p-1)
     #IMPORTANT: We initialize with equal weights but we could also initialize with l2 weights
     β_PA = ones(p)/(p)#β_l2_init[2:end]
     println("Optimization finished. Evaluation starts.")
 
     #SOLVE PROBLEM WITH s=1
+    hedge_eta = 0.0
+    try
+        hedge_eta = args["hedge_eta"]
+    catch e
+        hedge_eta = 0.0
+    end
+    w_ewa = ones(p-1)/(p-1)
+    λ_rls = 0.99
+    try
+        λ_rls = args["rls_lambda"]
+    catch e
+        λ_rls = 0.99
+    end
+    w_rls, P_rls = rls_init(p-1; δ=1000.0)
+    # Warm start RLS with initial training window
+    for r in 1:size(X0,1)
+        x_r = vec(X0[r, 1:end-1])
+        y_r = y0[r]
+        w_rls, P_rls = rls_update(w_rls, P_rls, x_r, y_r, λ_rls)
+    end
+
+    # FEDformer (train once on the training window)
+    fedformer_pred = nothing
+    if haskey(args, "fedformer") && args["fedformer"]
+        train_start = training_index_begin
+        train_end = min(training_index_begin + training_index_end - 1, split_index)
+        fedformer_pred = fedformer_train_predict(args, X, y, train_start, train_end, split_index, val)
+    end
     for s=1:val
         #BASELINES
         #The reason why 5 in particular, is because the first 4 samples represent 4*6h of predictions and we are meant to predict 24h in advance so there is a lag to take into account.
         #Note that with hurricanes the samples are not necessarily contiguous, and that for a next hurricane we reuse the best weights obtained from the previous one.
         if s < 5
             β_list_bandits_all[s,:] = ones(p-1)/(p-1)
+            β_list_hedge[s,:] = ones(p-1)/(p-1)
+            β_list_hedge_ewa[s,:] = w_ewa
+            β_list_rls[s,:] = w_rls
         else
             β_list_bandits_all[s,:] = compute_bandit_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]))
+            if hedge_eta > 0
+                β_list_hedge[s,:] = compute_hedge_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]); η=hedge_eta)
+            else
+                β_list_hedge[s,:] = compute_hedge_weights(vcat(X0,Xt[1:s-4,:])[:,1:end-1], vcat(y0,yt[1:s-4]))
+            end
+            # Dynamic Hedge (EWA): update with most recent usable sample (lag 4)
+            m = p-1
+            η_s = hedge_eta > 0 ? hedge_eta : sqrt(8log(m)/max(s,1))
+            x_s = Matrix(Xt)[s-4, 1:end-1]
+            y_s = yt[s-4]
+            losses_s = abs2.(x_s .- y_s)
+            w_ewa .*= exp.(-η_s .* losses_s)
+            Zs = sum(w_ewa)
+            if Zs == 0 || !isfinite(Zs)
+                w_ewa .= 1/m
+            else
+                w_ewa ./= Zs
+            end
+            β_list_hedge_ewa[s,:] = w_ewa
             #do not take the intercept term into account
             #β_list_bandits_t[s,:] = compute_bandit_weights(Xt[1:s,1:end-1], yt[s])
             β_PA = compute_PA_weights(args["rho_beta"], β_PA, Matrix(Xt)[s-4,:], yt[s-4])
+            # RLS update
+            w_rls, P_rls = rls_update(w_rls, P_rls, vec(x_s), y_s, λ_rls)
+            β_list_rls[s,:] = w_rls
         end
         β_list_PA[s,:] = β_PA
 
@@ -293,6 +371,9 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     err_mean = [abs(yt_true[s]-(mean(Xt[s,1:end-1]).*std_y.+mean_y)) for s=1:val]
     err_best_model = get_best_model_errors(yt_true, Xt, mean_y, std_y)
     err_bandit_full = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_bandits_all[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_hedge = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_hedge[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_hedge_ewa = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_hedge_ewa[s,:]).*std_y.+mean_y)) for s=1:val]
+    err_rls = [abs(yt_true[s]-(dot(Xt[s,1:end-1],β_list_rls[s,:]).*std_y.+mean_y)) for s=1:val]
     err_last_timestep = [abs(yt_true[s]-(Zt[s,end].*std_y.+mean_y)) for s=2:val]
     err_PA = [abs(yt_true[s]-(dot(Xt[s,:],β_list_PA[s,:]).*std_y.+mean_y)) for s=1:val]
     err_baseline = [abs(yt_true[s]-(dot(Xt[s,:],β_l2_init).*std_y.+mean_y)) for s=1:val]
@@ -328,6 +409,15 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     println("\n### Bandits Full Baseline ###")
     get_metrics(args, "bandits_full", err_bandit_full, yt_true)
 
+    println("\n### Hedge Baseline ###")
+    get_metrics(args, "hedge", err_hedge, yt_true)
+
+    println("\n### Hedge (EWA) Baseline ###")
+    get_metrics(args, "hedge-ewa", err_hedge_ewa, yt_true)
+
+    println("\n### RLS (Forgetting) Baseline ###")
+    get_metrics(args, "rls", err_rls, yt_true)
+
     println("\n### Last Timestep Baseline ###")
     get_metrics(args, "last_timestep", err_last_timestep, yt_true[2:end])
 
@@ -348,5 +438,14 @@ function eval_method_hurricane(args, X, Z, y, y_true, split_, past, num_past, va
     println("\n### βt Linear Decision Rule Adaptive with NO Stable Part and Trained ONCE STANDARD ###")
     ### Using Beta t+1 = Beta 0 + V0*Z_{t+1}, with Beta 0, V0 that is originating from the linear adaptive formulation with NO stable part
     get_metrics(args, "adaptive_ridge_standard", err_linear_adaptive_trained_one_standard, yt_true)
+
+    if fedformer_pred !== nothing
+        err_fedformer = [abs(yt_true[s]-(fedformer_pred[s].*std_y.+mean_y)) for s=1:val]
+        println("\n### FEDformer ###")
+        get_metrics(args, "fedformer", err_fedformer, yt_true)
+        if haskey(args, "fedformer_save_preds") && args["fedformer_save_preds"]
+            save_array_as_csv(args, reshape(fedformer_pred, :, 1), "results_beta/", "fedformer_preds")
+        end
+    end
 
 end

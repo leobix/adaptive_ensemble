@@ -16,6 +16,7 @@ using Random
 #using MosekTools
 using Convex
 
+include("transformer_args.jl")
 include("eval2.jl")
 include("utils.jl")
 include("utils_hurricane.jl")
@@ -175,8 +176,8 @@ function parse_commandline()
             arg_type = Int
             default = 0
 
-
     end
+    add_transformer_args!(s)
     return parse_args(s)
 end
 
