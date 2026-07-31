@@ -1,0 +1,10 @@
+pruning_thresholds = [0.8, 0.9, 0.95, 0.99, 1.0]
+completed_at_utc = "2026-07-30T23:37:17.911"
+outputs = ["tables\\stress_tests_per_seed.csv", "tables\\stress_correlation_pruning_validation.csv", "tables\\stress_tests_summary.csv", "figures\\stress_limited_history_rmse.svg", "figures\\stress_correlation_rmse.svg", "figures\\stress_boundary_cold_start_rmse.svg"]
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+seeds = 30
+correlations = [0.0, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99]
+stage = "stress_full"
+task_count = 420
+history_sizes = [100, 200, 400, 750, 1500, 3000]
+output_sha256 = ["9ca0911ed90a15d22d342cac6fa0699739dc347ec243098a1add9d5e064016b4", "07d5fb4b040a571d08c5b934402843b65e63a189543d1f26e7888b7d5b28b5c6", "dfb24b97b347b7b9129da82b697494e4a7bfd3d8fe7deef071660381225188ba", "51901d0452be749e85ad29d9ef77190377a69fd76ed2ba6934516a95fd469eb5", "fddfa640b634967074e9060ce096c4ff4e563c068741bb3731ee0c7b1aee4219", "39c54f0d437b0da9cfc65b2442af7109d1eb5552f4a7de4a49cbdba2eb89d58c"]
