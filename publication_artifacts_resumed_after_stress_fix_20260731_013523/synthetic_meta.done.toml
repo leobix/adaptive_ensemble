@@ -1,0 +1,10 @@
+methods = ["adaptive_ridge", "rolling_ridge", "rls", "neural_gate", "boosted_meta"]
+completed_at_utc = "2026-07-30T23:35:39.431"
+outputs = ["tables\\synthetic_meta_per_seed.csv", "tables\\synthetic_meta_summary.csv", "tables\\synthetic_meta_paired_intervals.csv", "tables\\synthetic_meta_tuning.csv", "tables\\synthetic_meta_selected_hyperparameters.csv"]
+m = 10
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+regimes = ["gradual", "abrupt", "member_degradation", "recurring"]
+seeds = 30
+stage = "synthetic_meta"
+output_sha256 = ["28db7fb37c3e1ed8f1676c9fd754ba93bc1e24c5a07d5bf718bee7258e7d1075", "7c4f21e5b9377251f9784169cb2a6eeba5db26bcb7524c8fbe4232441106765d", "08e6c2f79056e77d1732173cb6ac1f77a059a5425cf348ce8c4d8fc53b02c5f5", "c12179bc946321486471326ac2afc7b9c2c7f36dabf786dabe5ceb6f26b83bdb", "2c13c3c4a124265b02de96d3297136a15d0e4824c23b22f345a424767ea38e9a"]
+n = 4000

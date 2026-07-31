@@ -1,0 +1,8 @@
+methods = ["adaptive_ridge", "static_ridge", "rolling_ridge", "rls", "hedge", "exp3", "fixed_share", "passive_aggressive", "dma", "ensemble_mean", "oracle_best_member", "validation_best_member"]
+completed_at_utc = "2026-07-30T23:35:39.315"
+outputs = ["tables\\synthetic_regimes_per_seed.csv", "tables\\synthetic_regimes_summary.csv", "tables\\synthetic_paired_rmse_intervals.csv", "tables\\synthetic_selected_hyperparameters.csv", "figures\\synthetic_regime_rmse.svg", "figures\\synthetic_regime_cvar_05.svg"]
+run_fingerprint = "67b0aedf614d994d9c73d4e57954bb8238e518c34d2b00c3a77f50962fa4d04a"
+regimes = ["stationary", "gradual", "abrupt", "periodic", "persistent_bias", "member_degradation", "recurring", "variance_burst", "discrete_gaussian"]
+seeds = 30
+stage = "synthetic_full"
+output_sha256 = ["900f3ad7df617dc9f54433c838a7b737a405be81c9cfcbfab103d4af95a076a2", "734a06a37162dc6f5f8b72403b5b25a958006de467386ac56a35485d5e200f0d", "b704ef2f3e665009a2068528d61df360e353da900ef985cd6d38f2d6bb48d911", "93dfa09036b7f80f2f27ebc18235ddbd022aa03cd77f32c6fa933ba3b2b97ab8", "a787d586ef95ae13e2ac3a1401907bf1da87321ee694710dd48aba96acd3029a", "5508a7a8557046e192062f4ed60c027738d14a04f6289dbe10ceefbbf9915be4"]
